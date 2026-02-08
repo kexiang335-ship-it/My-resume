@@ -3,166 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>邵柯翔 | 创业公司CEO & 项目负责人</title>
+    <title>邵柯翔 | 复合型项目负责人 & 创业者</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        .hover-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
-        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .glass-nav { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+        .hero-gradient { background: radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.05) 0%, rgba(255, 255, 255, 0) 50%); }
+        .card-hover { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(226, 232, 240, 0.8); }
+        .card-hover:hover { transform: translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08); border-color: #3b82f6; }
+        .text-gradient { background: linear-gradient(135deg, #1e293b 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .badge { background: rgba(59, 130, 246, 0.1); color: #2563eb; border: 1px solid rgba(59, 130, 246, 0.2); }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans">
+<body class="bg-white text-slate-900 leading-relaxed hero-gradient">
 
-    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
-        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-            <span class="text-xl font-bold bg-gradient-to-r from-blue-700 to-indigo-700 bg-clip-text text-transparent">SHAO KEXIANG</span>
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="#home" class="hover:text-blue-600 transition">个人概况</a>
-                <a href="#skills" class="hover:text-blue-600 transition">专业技能</a>
-                <a href="#projects" class="hover:text-blue-600 transition">核心项目</a>
-                <a href="#contact" class="hover:text-blue-600 transition">联系方式</a>
+    <nav class="fixed w-full z-50 glass-nav border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <span class="text-2xl font-extrabold tracking-tighter text-slate-900">SHAO.<span class="text-blue-600">KX</span></span>
+            <div class="hidden md:flex space-x-10 text-sm font-semibold tracking-wide uppercase">
+                <a href="#home" class="hover:text-blue-600 transition">概览</a>
+                <a href="#skills" class="hover:text-blue-600 transition">能力库</a>
+                <a href="#projects" class="hover:text-blue-600 transition">实战</a>
+                <a href="#contact" class="px-5 py-2 bg-slate-900 text-white rounded-full hover:bg-blue-600 transition">联系我</a>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="pt-32 pb-20 px-4">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
-            <div class="flex-1 text-center md:text-left">
-                <h2 class="text-blue-600 font-semibold tracking-wide mb-2">你好，我是 邵柯翔</h2>
-                <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
-                    懂医学技术的 <br><span class="text-indigo-600">全能型项目运营者</span>
+    <section id="home" class="relative pt-44 pb-32 px-6">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
+            <div class="flex-1 space-y-8 text-center md:text-left">
+                <div class="inline-block px-4 py-1.5 badge rounded-full text-xs font-bold tracking-widest uppercase">
+                    CEO / Project Manager / Medical Background
+                </div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.1]">
+                    以严谨医学背景 <br> 驱动 <span class="text-blue-600">高效项目增长</span>
                 </h1>
-                <p class="text-lg text-slate-600 mb-8 max-w-2xl">
-                    金陵科技学院动物医学背景。曾任瑞雨山科技CEO，具备从0到1搭建团队、校园物流运营及AI跨境电商优化经验。擅长风险管控与高效流程重构。
+                <p class="text-xl text-slate-500 max-w-2xl leading-relaxed">
+                    邵柯翔，金陵科技学院动物医学背景。曾任瑞雨山科技CEO。擅长利用 AI 工具实现业务流程的标准化与自动化，在校园物流及跨境电商领域拥有卓越的降本增效实战经验。
                 </p>
-                <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
-                    <a href="#projects" class="px-8 py-3 bg-blue-700 text-white rounded-lg font-medium hover:bg-blue-800 transition shadow-lg shadow-blue-200">查看项目案例</a>
-                    <a href="mailto:2306367140@qq.com" class="px-8 py-3 border border-slate-300 rounded-lg font-medium hover:bg-white transition">获取完整简历</a>
+                <div class="flex flex-wrap justify-center md:justify-start gap-5">
+                    <a href="#projects" class="px-10 py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-xl shadow-blue-200">浏览核心项目</a>
+                    <a href="#skills" class="px-10 py-4 border-2 border-slate-200 rounded-2xl font-bold hover:bg-slate-50 transition-all">技术栈</a>
                 </div>
             </div>
-            <div class="flex-1 flex justify-center">
-                <div class="w-64 h-64 md:w-72 md:h-72 bg-white p-3 rounded-2xl shadow-2xl rotate-2">
-                    <div class="w-full h-full bg-slate-200 rounded-xl overflow-hidden">
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Shao Kexiang" class="w-full h-full object-cover">
+            
+            <div class="flex-1 relative group">
+                <div class="absolute -inset-4 bg-gradient-to-tr from-blue-600 to-indigo-400 rounded-[3rem] blur-2xl opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+                <div class="relative aspect-[4/5] w-full max-w-md mx-auto bg-slate-100 rounded-[2.5rem] overflow-hidden shadow-2xl grayscale hover:grayscale-0 transition-all duration-700">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Shao Kexiang" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-slate-900/80 to-transparent">
+                        <p class="text-white font-bold text-2xl tracking-wide">邵柯翔</p>
+                        <p class="text-blue-300 text-sm">需求导向 · 数据说话 · 能力为本</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="skills" class="py-20 bg-slate-100 px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900">核心能力矩阵</h2>
-                <p class="text-slate-500 mt-2">医学专业严谨性与商业运营敏锐度的结合</p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover-lift">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center mb-6 text-xl font-bold">01</div>
-                    <h3 class="text-xl font-bold mb-4">动物医学专业技能</h3>
-                    <ul class="text-slate-600 space-y-2 text-sm">
-                        <li>• 精通动物解剖、生理及病理学基础</li>
-                        <li>• 熟练掌握临床视/触/听/叩诊及实验采样</li>
-                        <li>• 具备药物剂量精确计算与给药能力</li>
-                        <li>• 掌握常见动物保定与疾病防控知识</li>
-                    </ul>
+    <section id="skills" class="py-32 bg-slate-50 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+                <div class="space-y-4">
+                    <h2 class="text-4xl font-extrabold tracking-tight">核心能力矩阵</h2>
+                    <p class="text-slate-500 text-lg">跨学科背景赋予的差异化竞争优势</p>
                 </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover-lift">
-                    <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center mb-6 text-xl font-bold">02</div>
-                    <h3 class="text-xl font-bold mb-4">项目管理与运营</h3>
-                    <ul class="text-slate-600 space-y-2 text-sm">
-                        <li>• <b>团队领导：</b>曾管理南京瑞雨山科技各部门</li>
-                        <li>• <b>校园物流：</b>美团校园送日均单量500+</li>
-                        <li>• <b>风险控制：</b>实现运营“零事故”运行</li>
-                        <li>• <b>流程优化：</b>将4人工作量优化至1人完成</li>
-                    </ul>
-                </div>
-                <div class="bg-white p-8 rounded-2xl shadow-sm hover-lift">
-                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-lg flex items-center justify-center mb-6 text-xl font-bold">03</div>
-                    <h3 class="text-xl font-bold mb-4">数字营销与AI工具</h3>
-                    <ul class="text-slate-600 space-y-2 text-sm">
-                        <li>• <b>流量转化：</b>小红书矩阵线索1000+条</li>
-                        <li>• <b>销售战绩：</b>单项目达成6万元成交额</li>
-                        <li>• <b>AI赋能：</b>利用AI工具优化跨境电商上架流程</li>
-                        <li>• <b>渠道维护：</b>拥有宠物医疗行业渠道维护经验</li>
-                    </ul>
-                </div>
+                <div class="text-slate-400 font-mono text-sm hidden md:block uppercase tracking-widest">Expertise / 2026</div>
             </div>
-        </div>
-    </section>
-
-    <section id="projects" class="py-20 bg-white px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="mb-12">
-                <h2 class="text-3xl font-bold mb-4 text-slate-900">实战项目</h2>
-                <div class="w-20 h-1.5 bg-blue-600 rounded-full"></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="group border border-slate-100 rounded-3xl p-8 hover:bg-slate-50 transition">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="px-4 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-bold">运营管理</span>
-                        <span class="text-slate-400 text-sm">2025.02 - 至今</span>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <div class="bg-white p-10 rounded-[2rem] card-hover">
+                    <div class="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-8">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.628.282a2 2 0 01-1.806 0l-.628-.282A6 6 0 004.4 14.404l-2.387.477a2 2 0 00-1.022.547l-.35.35a2 2 0 000 2.828l1.246 1.246a2 2 0 002.828 0L5 20l5.928-5.928"></path></svg>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4 italic">美团校园送 - 幕府校区负责人</h3>
-                    <p class="text-slate-600 mb-6 line-clamp-3">
-                        搭建高效配送团队，通过科学排班与资源配置，将日均单量稳步提升至500+，并确保了项目运营的零事故与高满意度。
-                    </p>
-                    <div class="flex gap-4">
-                        <div class="text-center">
-                            <p class="text-2xl font-bold text-blue-600">500+</p>
-                            <p class="text-xs text-slate-400">日均单量</p>
-                        </div>
-                        <div class="text-center border-l pl-4">
-                            <p class="text-2xl font-bold text-blue-600">0</p>
-                            <p class="text-xs text-slate-400">运营事故</p>
-                        </div>
+                    <h3 class="text-2xl font-bold mb-6 italic">动物医学专业背景</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">具备医学严谨逻辑，精通临床诊断、解剖及实验室检查，能以科研心态处理业务流程中的痛点。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600">解剖生理</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600">临床诊断</span>
                     </div>
                 </div>
 
-                <div class="group border border-slate-100 rounded-3xl p-8 hover:bg-slate-50 transition">
-                    <div class="flex justify-between items-start mb-6">
-                        <span class="px-4 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">销售转化</span>
-                        <span class="text-slate-400 text-sm">2025.12 - 至今</span>
+                <div class="bg-white p-10 rounded-[2rem] card-hover">
+                    <div class="w-14 h-14 bg-indigo-50 text-indigo-600 rounded-2xl flex items-center justify-center mb-8">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
                     </div>
-                    <h3 class="text-2xl font-bold mb-4 italic">小红书销售转化矩阵</h3>
-                    <p class="text-slate-600 mb-6">
-                        管理矩阵账号进行内容获客，通过微信1对1深挖需求。累计获取1000条潜在客户线索，达成6万元成交额。
-                    </p>
-                    <div class="flex gap-4">
-                        <div class="text-center">
-                            <p class="text-2xl font-bold text-red-600">1000</p>
-                            <p class="text-xs text-slate-400">获取线索</p>
-                        </div>
-                        <div class="text-center border-l pl-4">
-                            <p class="text-2xl font-bold text-red-600">6W</p>
-                            <p class="text-xs text-slate-400">成交总额</p>
-                        </div>
+                    <h3 class="text-2xl font-bold mb-6 italic">项目运营与管理</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">曾管理初创科技公司整体运营，擅长团队搭建、薪酬制度制定及突发风险管控，实现运营“零事故”。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600">团队孵化</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600">风险管控</span>
+                    </div>
+                </div>
+
+                <div class="bg-white p-10 rounded-[2rem] card-hover">
+                    <div class="w-14 h-14 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mb-8">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-6 italic">AI 自动化工具赋能</h3>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">擅长将 AI 技术融入业务。曾将跨境电商 4 人天的工作量优化至 1 人 4 小时，效率提升超过 300%。</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600">流程自动化</span>
+                        <span class="px-3 py-1 bg-slate-100 rounded-md text-[10px] font-bold text-slate-600">效率建模</span>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer id="contact" class="bg-slate-900 text-slate-400 py-20 px-4 text-center">
-        <div class="max-w-4xl mx-auto">
-            <h2 class="text-3xl font-bold text-white mb-8">期待与您建立联系</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <div>
-                    <p class="text-white font-medium mb-2">电话 / 微信</p>
-                    <p>13814632349</p>
+    <section id="projects" class="py-32 bg-white px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex items-center space-x-4 mb-20">
+                <div class="h-px bg-slate-200 flex-1"></div>
+                <h2 class="text-3xl font-black uppercase tracking-widest text-slate-400">Selected Works</h2>
+                <div class="h-px bg-slate-200 flex-1"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-[2.5rem] bg-slate-100 aspect-video mb-8">
+                        <div class="absolute inset-0 bg-blue-600 mix-blend-multiply opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-6xl font-black text-white/20 group-hover:scale-110 transition-transform duration-700">MEITUAN</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div class="space-y-3">
+                            <span class="text-blue-600 text-xs font-bold uppercase tracking-widest">2025.02 - 2025.06</span>
+                            <h3 class="text-3xl font-bold">美团校园送 - 幕府校区负责人</h3>
+                            <p class="text-slate-500 max-w-md">统筹建立校区配送标准体系。在极短时间内实现日均单量 500+，达成零事故运营记录，大幅提升校区物流吞吐力。</p>
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <p class="text-white font-medium mb-2">电子邮箱</p>
-                    <p>2306367140@qq.com</p>
-                </div>
-                <div>
-                    <p class="text-white font-medium mb-2">办公地点</p>
-                    <p>南京市栖霞区</p>
+
+                <div class="group cursor-pointer">
+                    <div class="relative overflow-hidden rounded-[2.5rem] bg-slate-100 aspect-video mb-8">
+                        <div class="absolute inset-0 bg-red-600 mix-blend-multiply opacity-0 group-hover:opacity-10 transition-opacity duration-500"></div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-6xl font-black text-white/20 group-hover:scale-110 transition-transform duration-700">GROWTH</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start">
+                        <div class="space-y-3">
+                            <span class="text-red-600 text-xs font-bold uppercase tracking-widest">Digital Marketing</span>
+                            <h3 class="text-3xl font-bold text-slate-900">小红书销售转化矩阵</h3>
+                            <p class="text-slate-500 max-w-md">通过矩阵号获客模型，获取 1000+ 高质量线索。精准对接 1v1 需求，达成 6 万元阶段性销售总额。</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs">
-                <p>© 2026 邵柯翔. 动物医学本科 | 金陵科技学院</p>
-                <p class="mt-4 md:mt-0 italic">"需求导向，能力为本"</p>
+        </div>
+    </section>
+
+    <footer id="contact" class="bg-slate-950 text-white py-32 px-6 overflow-hidden relative">
+        <div class="absolute top-0 right-0 w-96 h-96 bg-blue-600/10 blur-[120px] rounded-full"></div>
+        <div class="max-w-7xl mx-auto relative z-10 text-center">
+            <h2 class="text-5xl md:text-7xl font-black tracking-tighter mb-16">READY TO <br> <span class="text-blue-500 text-gradient">COLLABORATE?</span></h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-left border-t border-white/10 pt-20">
+                <div class="space-y-4 text-center md:text-left">
+                    <p class="text-slate-500 uppercase text-xs font-bold tracking-widest">微信 / 电话</p>
+                    <p class="text-2xl font-semibold">13814632349</p>
+                </div>
+                <div class="space-y-4 text-center md:text-left">
+                    <p class="text-slate-500 uppercase text-xs font-bold tracking-widest">Email</p>
+                    <p class="text-2xl font-semibold">2306367140@qq.com</p>
+                </div>
+                <div class="space-y-4 text-center md:text-left">
+                    <p class="text-slate-500 uppercase text-xs font-bold tracking-widest">Location</p>
+                    <p class="text-2xl font-semibold">南京市栖霞区</p>
+                </div>
+            </div>
+            
+            <div class="mt-32 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+                <p class="text-slate-500 text-sm">© 2026 SHAO KEXIANG. ALL RIGHTS RESERVED.</p>
+                <p class="text-slate-500 text-sm italic">"需求导向，能力为本"</p>
             </div>
         </div>
     </footer>
