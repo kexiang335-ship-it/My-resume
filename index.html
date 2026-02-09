@@ -7,55 +7,78 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        /* 鎏金沙背景核心逻辑 */
         body { 
             font-family: 'Inter', sans-serif; 
-            background: #050505; 
+            background: #000000; 
             color: #d4af37; 
             overflow-x: hidden;
             position: relative;
         }
 
-        /* 模拟金沙流动的动态层 */
-        body::before {
-            content: "";
+        /* 核心：重磅鎏金沙动态背景层 */
+        .sand-container {
             position: fixed;
-            top: 0; left: 0; width: 200%; height: 200%;
-            background: radial-gradient(circle at 50% 50%, rgba(184, 134, 11, 0.08) 0%, transparent 50%),
-                        linear-gradient(125deg, transparent 40%, rgba(184, 134, 11, 0.03) 50%, transparent 60%);
-            background-size: 100% 100%;
-            animation: sandFlow 15s linear infinite;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -1;
-            pointer-events: none;
+            overflow: hidden;
+            background: #000;
         }
 
-        @keyframes sandFlow {
-            0% { transform: translate(-25%, -25%) rotate(0deg); }
-            100% { transform: translate(0%, 0%) rotate(5deg); }
+        /* 第一层：厚重的流动金沙块 */
+        .sand-layer-1 {
+            position: absolute;
+            width: 150%; height: 150%;
+            top: -25%; left: -25%;
+            background: radial-gradient(circle at 30% 30%, rgba(184, 134, 11, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 70%, rgba(245, 224, 163, 0.12) 0%, transparent 45%);
+            filter: blur(60px);
+            animation: moveSand 20s ease-in-out infinite alternate;
         }
 
-        .gold-text { 
-            background: linear-gradient(135deg, #f5e0a3 0%, #b8860b 100%); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+        /* 第二层：斜向穿梭的金流沙 */
+        .sand-layer-2 {
+            position: absolute;
+            width: 200%; height: 200%;
+            top: -50%; left: -50%;
+            background: linear-gradient(115deg, 
+                transparent 20%, 
+                rgba(184, 134, 11, 0.08) 35%, 
+                rgba(245, 224, 163, 0.18) 50%, 
+                rgba(184, 134, 11, 0.08) 65%, 
+                transparent 80%
+            );
+            filter: blur(40px);
+            animation: sweepSand 12s linear infinite;
         }
 
-        /* 强化卡片的玻璃感，以便透出底层的金沙流 */
+        @keyframes moveSand {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(10%, 15%) scale(1.1); }
+        }
+
+        @keyframes sweepSand {
+            0% { transform: translateX(-20%) translateY(-10%) rotate(-5deg); }
+            100% { transform: translateX(10%) translateY(5%) rotate(5deg); }
+        }
+
+        .gold-text { background: linear-gradient(135deg, #f5e0a3 0%, #b8860b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* 强化卡片的玻璃感 */
         .glass-card { 
-            background: rgba(10, 10, 10, 0.6); 
-            backdrop-filter: blur(15px); 
-            border: 1px solid rgba(184, 134, 11, 0.2); 
+            background: rgba(15, 15, 15, 0.5); 
+            backdrop-filter: blur(25px); 
+            border: 1px solid rgba(184, 134, 11, 0.25); 
             position: relative; 
             overflow: hidden; 
-            transition: all 0.4s; 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
         }
         
-        /* 斜向扫金特效（保留并优化） */
+        /* 扫金特效：更亮的斜向贯穿 */
         .glass-card::after {
             content: "";
             position: absolute;
             top: 0; left: -150%; width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(245, 224, 163, 0.15), transparent);
+            background: linear-gradient(120deg, transparent, rgba(245, 224, 163, 0.25), transparent);
             transform: skewX(-25deg);
             transition: 0s;
         }
@@ -63,71 +86,76 @@
             left: 150%;
             transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .glass-card:hover { border-color: rgba(245, 224, 163, 0.6); transform: translateY(-5px); }
+        .glass-card:hover { border-color: rgba(245, 224, 163, 0.8); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
 
-        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #b8860b; color: white; padding: 10px 24px; border-radius: 99px; display: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #b8860b; color: white; padding: 12px 28px; border-radius: 99px; display: none; z-index: 1000; box-shadow: 0 10px 40px rgba(184,134,11,0.4); }
     </style>
 </head>
 <body class="leading-relaxed">
 
-    <div id="toast" class="copy-toast font-bold text-sm tracking-widest uppercase">已复制到剪贴板</div>
+    <div class="sand-container">
+        <div class="sand-layer-1"></div>
+        <div class="sand-layer-2"></div>
+    </div>
 
-    <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
+    <div id="toast" class="copy-toast font-bold text-xs tracking-widest uppercase italic">SUCCESSFULLY COPIED</div>
+
+    <nav class="fixed w-full z-50 bg-black/40 backdrop-blur-2xl border-b border-white/5">
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
             <span class="text-2xl font-extrabold tracking-tighter gold-text">SHAO.<span class="text-white">KX</span></span>
-            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase">
+            <div class="hidden lg:flex space-x-10 text-[11px] font-bold tracking-widest uppercase">
                 <a href="#home" class="hover:text-white transition">概览</a>
                 <a href="#work" class="hover:text-white transition">工作经验</a>
                 <a href="#projects" class="hover:text-white transition">项目经历</a>
                 <a href="#skills" class="hover:text-white transition">专业技能</a>
                 <a href="#education" class="hover:text-white transition">教育背景</a>
-                <a href="#contact" class="px-5 py-2 border border-[#b8860b] text-[#b8860b] rounded hover:bg-[#b8860b] hover:text-black transition-all duration-500">联系方式</a>
+                <a href="#contact" class="px-6 py-2 bg-[#b8860b] text-black rounded-sm hover:bg-white hover:text-black transition-all duration-300">联系方式</a>
             </div>
         </div>
     </nav>
 
     <section id="home" class="relative pt-44 pb-32 px-10">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 justify-center relative z-10">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 justify-center">
             <div class="flex-1 space-y-8 text-center md:text-left">
-                <div class="inline-block px-4 py-1 border border-[#b8860b]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
+                <div class="inline-block px-4 py-1 border border-[#b8860b]/60 rounded-full text-[10px] font-bold tracking-widest uppercase text-white shadow-[0_0_15px_rgba(184,134,11,0.2)]">Startup CEO & Project Leader</div>
                 <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
                 <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。曾任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
             </div>
-            <div class="flex-1 relative">
-                <div class="absolute -inset-4 bg-[#b8860b]/15 rounded-[2.5rem] blur-3xl opacity-50"></div>
-                <div class="relative aspect-[4/5] w-64 md:w-80 mx-auto rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl">
+            <div class="flex-1 relative group">
+                <div class="absolute -inset-4 bg-[#b8860b]/20 rounded-[2.5rem] blur-3xl opacity-60"></div>
+                <div class="relative aspect-[4/5] w-64 md:w-80 mx-auto rounded-[2rem] overflow-hidden border border-[#b8860b]/30 shadow-2xl">
                     <img src="https://i.ibb.co/JRGwm7R7/20250312151127.jpg" alt="邵柯翔" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black via-black/60 to-transparent">
-                        <p class="text-white font-bold text-xl tracking-wide">邵柯翔</p>
-                        <p class="text-[#b8860b] text-xs uppercase tracking-widest">Demand Driven · Ability Based</p>
+                    <div class="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black via-black/70 to-transparent">
+                        <p class="text-white font-bold text-2xl tracking-wide">邵柯翔</p>
+                        <p class="text-[#b8860b] text-xs uppercase tracking-[0.2em] mt-1">Project Leader · CEO</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="work" class="py-24 px-10 relative">
+    <section id="work" class="py-24 px-10">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">工作经验 / Work Experience</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-10 rounded-3xl">
-                    <span class="text-[#b8860b] text-xs font-mono">2024 - 至今</span>
-                    <h3 class="text-2xl font-bold text-white mt-2 mb-2">南京市瑞雨山科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">执行董事</p>
-                    <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 组织及协调各部门负责人，主导新员工标准化培训体系</li>
-                        <li>• 建立完善公司招聘流程，编制各阶段人才引进计划</li>
-                        <li>• 制定公司薪酬绩效制度，组织策划大型品牌活动</li>
+            <h2 class="text-3xl font-bold mb-16 gold-text tracking-widest text-center uppercase italic">Work Experience / 工作经验</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="glass-card p-12 rounded-3xl">
+                    <span class="text-[#b8860b] text-xs font-mono font-bold tracking-widest uppercase">2024 - PRESENT</span>
+                    <h3 class="text-2xl font-bold text-white mt-3 mb-2">南京市瑞雨山科技有限公司</h3>
+                    <p class="text-[#b8860b] text-xs mb-6 font-bold uppercase tracking-[0.3em]">执行董事</p>
+                    <ul class="text-sm text-slate-300 space-y-4">
+                        <li class="flex items-start"><span class="text-[#b8860b] mr-2">✦</span> 主导新员工标准化培训体系，提升人效 </li>
+                        <li class="flex items-start"><span class="text-[#b8860b] mr-2">✦</span> 编制人才引进计划，完善公司招聘闭环</li>
+                        <li class="flex items-start"><span class="text-[#b8860b] mr-2">✦</span> 制定薪酬绩效制度，驱动团队核心凝聚力</li>
                     </ul>
                 </div>
-                <div class="glass-card p-10 rounded-3xl">
-                    <span class="text-[#b8860b] text-xs font-mono">2025.02 - 2025.06</span>
-                    <h3 class="text-2xl font-bold text-white mt-2 mb-2">北京三块在线科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园负责人</p>
-                    <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 负责校区配送团队的组建、培训及日常管理考核</li>
-                        <li>• 优化校区物流配送路径，确保日均500+单量高效送达</li>
-                        <li>• 实时监控运营数据，处理突发异常，维持零事故记录</li>
+                <div class="glass-card p-12 rounded-3xl">
+                    <span class="text-[#b8860b] text-xs font-mono font-bold tracking-widest uppercase">2025.02 - 2025.06</span>
+                    <h3 class="text-2xl font-bold text-white mt-3 mb-2">北京三块在线科技有限公司</h3>
+                    <p class="text-[#b8860b] text-xs mb-6 font-bold uppercase tracking-[0.3em]">美团校园负责人</p>
+                    <ul class="text-sm text-slate-300 space-y-4">
+                        <li class="flex items-start"><span class="text-[#b8860b] mr-2">✦</span> 负责配送团队组建与考核，保障业务高周转</li>
+                        <li class="flex items-start"><span class="text-[#b8860b] mr-2">✦</span> 优化物流路径，日均500+单量高效达</li>
+                        <li class="flex items-start"><span class="text-[#b8860b] mr-2">✦</span> 数据实时管控与异常处理，维持零事故运营</li>
                     </ul>
                 </div>
             </div>
@@ -136,27 +164,27 @@
 
     <section id="projects" class="py-24 px-10">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">项目实战 / Project Experience</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="glass-card p-6 rounded-2xl">
+            <h2 class="text-3xl font-bold mb-16 gold-text tracking-widest text-center uppercase italic text-shadow-lg">Project Experience / 项目实战</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="glass-card p-8 rounded-2xl">
                     <h4 class="text-lg font-bold text-white mb-2 italic">美团校园送项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">幕府校区负责人</p>
-                    <p class="text-[13px] text-slate-400">统筹建立标准化体系，实现单量突破与稳定运营。</p>
+                    <p class="text-[11px] text-[#b8860b] mb-4 font-bold uppercase">Campus Logistics</p>
+                    <p class="text-[13px] text-slate-400 leading-relaxed">建立配送标准化体系，实现校区单量指数级增长与安全运营。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
+                <div class="glass-card p-8 rounded-2xl">
                     <h4 class="text-lg font-bold text-white mb-2 italic">小红书转化项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">获客转化负责人</p>
-                    <p class="text-[13px] text-slate-400">管理矩阵账号获取1000条线索，达成6万元成交额。</p>
+                    <p class="text-[11px] text-[#b8860b] mb-4 font-bold uppercase">Digital Marketing</p>
+                    <p class="text-[13px] text-slate-400 leading-relaxed">矩阵号获客1000+线索，精准私域运营达成6万元阶段性成交。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">跨境电商优化</h4>
-                    <p class="text-xs text-slate-500 mb-4">AI自动化应用</p>
-                    <p class="text-[13px] text-slate-400">重构商品上架流程，将4人工作量压缩至1人4小时。</p>
+                <div class="glass-card p-8 rounded-2xl">
+                    <h4 class="text-lg font-bold text-white mb-2 italic">跨境电商系统优化</h4>
+                    <p class="text-[11px] text-[#b8860b] mb-4 font-bold uppercase">AI Automation</p>
+                    <p class="text-[13px] text-slate-400 leading-relaxed">重构上架流程，将4人工作量压缩至1人4小时，效率大幅飞跃。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
+                <div class="glass-card p-8 rounded-2xl">
                     <h4 class="text-lg font-bold text-white mb-2 italic">宠物医药推广</h4>
-                    <p class="text-xs text-slate-500 mb-4">渠道维护</p>
-                    <p class="text-[13px] text-slate-400">对接周边宠物医院，协助整理信息并完成推广活动。</p>
+                    <p class="text-[11px] text-[#b8860b] mb-4 font-bold uppercase">Supply Chain</p>
+                    <p class="text-[13px] text-slate-400 leading-relaxed">深耕宠物医院渠道，完成高精准度的产品推广与客户信息维护。</p>
                 </div>
             </div>
         </div>
@@ -164,19 +192,19 @@
 
     <section id="skills" class="py-24 px-10">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">专业技能 / Core Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 backdrop-blur-sm">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">医学严谨逻辑</h4>
-                    <p class="text-xs text-slate-400">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p>
+            <h2 class="text-3xl font-bold mb-16 gold-text tracking-widest text-center uppercase italic">Core Skills / 专业技能</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="p-10 border-l-2 border-[#b8860b] bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all">
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-tighter">医学严谨逻辑</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">掌握解剖与病理分析，将严谨的临床诊断思维引入商业流程把控与风险管理。</p>
                 </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 backdrop-blur-sm">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">AI 自动化赋能</h4>
-                    <p class="text-xs text-slate-400">精通利用AI重构重复性流程，实现核心业务降本增效。</p>
+                <div class="p-10 border-l-2 border-[#b8860b] bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all">
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-tighter">AI 自动化赋能</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">精通利用 AI 工具重构标准化作业流程，在跨境与内容领域实现效率 300% 提升。</p>
                 </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 backdrop-blur-sm">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">团队与财务管理</h4>
-                    <p class="text-xs text-slate-400">具备完整的制度搭建、人员培训及年度预算制定经验。</p>
+                <div class="p-10 border-l-2 border-[#b8860b] bg-white/5 backdrop-blur-md hover:bg-white/10 transition-all">
+                    <h4 class="text-white font-bold mb-4 uppercase tracking-tighter">团队与战略管理</h4>
+                    <p class="text-sm text-slate-400 leading-relaxed">拥有完整的 CEO 管理视点，涵盖招聘考核、薪酬绩效及年度战略成本控制。</p>
                 </div>
             </div>
         </div>
@@ -184,40 +212,43 @@
 
     <section id="education" class="py-24 px-10">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
-            <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center">
-                <div class="flex-1 text-center md:text-left">
-                    <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
-                    <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
-                    <p class="text-sm text-slate-400 leading-loose">
-                        学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。
+            <h2 class="text-3xl font-bold mb-16 gold-text tracking-widest text-center uppercase italic">Education / 教育背景</h2>
+            <div class="glass-card p-16 rounded-[4rem] flex flex-col md:flex-row gap-16 items-center shadow-[0_0_50px_rgba(184,134,11,0.1)]">
+                <div class="flex-[1.5] text-center md:text-left">
+                    <h3 class="text-4xl font-extrabold text-white mb-4 tracking-tight text-shadow">金陵科技学院</h3>
+                    <p class="text-[#b8860b] font-bold mb-8 italic uppercase tracking-[0.3em] text-lg">动物医学 · 本科 (2024 - 2028)</p>
+                    <p class="text-base text-slate-400 leading-loose max-w-2xl">
+                        秉承“需求导向, 能力为本”的理念，本人在这一公办本科平台深耕专业技能。所在的动物医学专业重点锤炼临床诊断、病理分析及实验室严谨作业的核心能力。
                     </p>
                 </div>
-                <div class="w-full md:w-1/3 p-6 bg-black/40 rounded-2xl text-xs text-slate-500 space-y-4">
-                    <p>📍 南京市江宁大学城</p>
-                    <p>🎓 国家级一流本科专业建设点背景</p>
-                    <p>🔬 拥有多个省级实验教学示范中心</p>
+                <div class="flex-1 w-full p-8 bg-black/60 rounded-3xl border border-[#b8860b]/20 text-sm text-slate-500 space-y-5">
+                    <p class="flex items-center"><span class="text-[#b8860b] mr-3">📍</span> 南京市江宁大学城弘景大道</p>
+                    <p class="flex items-center"><span class="text-[#b8860b] mr-3">🎓</span> 国家级一流本科专业建设点背景</p>
+                    <p class="flex items-center"><span class="text-[#b8860b] mr-3">🔬</span> 省级重点实验教学示范中心支持</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer id="contact" class="py-32 px-10 relative">
+    <footer id="contact" class="py-40 px-10 relative">
         <div class="max-w-4xl mx-auto text-center">
-            <h2 class="text-5xl font-black mb-16 gold-text italic tracking-tighter">START A CONVERSATION</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div onclick="copyText('13814632349')" class="cursor-pointer group p-10 rounded-3xl border border-white/5 hover:bg-[#b8860b]/10 transition-all duration-500">
-                    <p class="text-slate-500 text-[10px] tracking-widest mb-2">TELEPHONE</p>
-                    <p class="text-2xl font-bold group-hover:text-[#b8860b] transition-colors">13814632349</p>
-                    <p class="text-[10px] text-slate-600 mt-2 uppercase">(点击即可复制)</p>
+            <h2 class="text-6xl font-black mb-20 gold-text italic tracking-tighter">LET'S BUILD THE FUTURE</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div onclick="copyText('13814632349')" class="cursor-pointer group p-12 rounded-[2rem] border border-white/10 hover:border-[#b8860b] hover:bg-[#b8860b]/10 transition-all duration-700 shadow-xl">
+                    <p class="text-slate-500 text-xs tracking-[0.4em] mb-4">TELEPHONE</p>
+                    <p class="text-3xl font-bold group-hover:text-white transition-colors">13814632349</p>
+                    <p class="text-[10px] text-slate-600 mt-4 uppercase tracking-widest">(点击地址一键复制)</p>
                 </div>
-                <div onclick="copyText('2306367140@qq.com')" class="cursor-pointer group p-10 rounded-3xl border border-white/5 hover:bg-[#b8860b]/10 transition-all duration-500">
-                    <p class="text-slate-500 text-[10px] tracking-widest mb-2">EMAIL</p>
-                    <p class="text-2xl font-bold group-hover:text-[#b8860b] transition-colors">2306367140@qq.com</p>
-                    <p class="text-[10px] text-slate-600 mt-2 uppercase">(点击即可复制)</p>
+                <div onclick="copyText('2306367140@qq.com')" class="cursor-pointer group p-12 rounded-[2rem] border border-white/10 hover:border-[#b8860b] hover:bg-[#b8860b]/10 transition-all duration-700 shadow-xl">
+                    <p class="text-slate-500 text-xs tracking-[0.4em] mb-4">EMAIL ADDRESS</p>
+                    <p class="text-3xl font-bold group-hover:text-white transition-colors">2306367140@qq.com</p>
+                    <p class="text-[10px] text-slate-600 mt-4 uppercase tracking-widest">(点击地址一键复制)</p>
                 </div>
             </div>
-            <p class="mt-20 text-slate-600 text-[10px] tracking-[0.4em] uppercase">© 2026 SHAO KEXIANG · ALL RIGHTS RESERVED</p>
+            <div class="mt-32 space-y-4">
+                <p class="text-slate-600 text-[11px] tracking-[0.6em] uppercase">© 2026 SHAO KEXIANG · ALL RIGHTS RESERVED</p>
+                <div class="w-20 h-[1px] bg-[#b8860b]/40 mx-auto"></div>
+            </div>
         </div>
     </footer>
 
