@@ -15,7 +15,47 @@
             margin: 0;
         }
 
-        /* 核心：重度流金沙背景层 */
+        /* 1. 企业级开屏动画样式 */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 1s ease, visibility 1s;
+        }
+        .loader-logo {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: logoFade 1.5s forwards ease-out;
+        }
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: rgba(212, 175, 55, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .loader-bar::after {
+            content: "";
+            position: absolute;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #d4af37;
+            animation: barLoad 2s infinite ease;
+        }
+        @keyframes logoFade { to { opacity: 1; transform: translateY(0); } }
+        @keyframes barLoad { 0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; } }
+
+        /* 2. 流金沙背景 */
         #sand-background {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
@@ -23,32 +63,29 @@
             background: #000;
             overflow: hidden;
         }
-
-        /* 增强型流沙层：加深色彩浓度与对比度 */
         .sand-flow {
             position: absolute;
             border-radius: 50%;
-            filter: blur(90px);
+            filter: blur(100px);
             pointer-events: none;
             mix-blend-mode: screen;
-            transition: transform 1.5s cubic-bezier(0.1, 0.4, 0.2, 1);
+            transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1);
         }
+        #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
+        #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
 
-        #flow-1 {
-            width: 1200px; height: 900px;
-            background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%);
+        /* 3. 企业级滑动入场动画效果 (Reveal on Scroll) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
         }
-        #flow-2 {
-            width: 900px; height: 1100px;
-            background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%);
-        }
-        #flow-3 {
-            width: 700px; height: 700px;
-            background: radial-gradient(circle, rgba(255, 243, 173, 0.25) 0%, transparent 50%);
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
         .glass-card { 
             background: rgba(5, 5, 5, 0.75); 
             backdrop-filter: blur(25px); 
@@ -57,31 +94,22 @@
             overflow: hidden; 
             transition: all 0.5s ease; 
         }
-        
-        .glass-card::after {
-            content: "";
-            position: absolute;
-            top: 0; left: -150%; width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 243, 173, 0.2), transparent);
-            transform: skewX(-25deg);
-        }
-        .glass-card:hover::after {
-            left: 150%;
-            transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.2); }
-
+        .glass-card:hover { border-color: #d4af37; transform: translateY(-5px); }
         .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
     </style>
 </head>
 <body class="leading-relaxed">
+
+    <div id="loader">
+        <div class="loader-logo gold-text">SHAO.KX</div>
+        <div class="loader-bar"></div>
+    </div>
 
     <div id="toast" class="copy-toast uppercase text-xs tracking-widest">已成功复制</div>
 
     <div id="sand-background">
         <div id="flow-1" class="sand-flow"></div>
         <div id="flow-2" class="sand-flow"></div>
-        <div id="flow-3" class="sand-flow"></div>
     </div>
 
     <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
@@ -98,16 +126,16 @@
         </div>
     </nav>
 
-    <section id="home" class="relative pt-44 pb-32 px-10">
+    <section id="home" class="relative pt-44 pb-32 px-10 reveal">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
             <div class="flex-1 space-y-8 text-center md:text-left">
                 <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
                 <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
-                <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
+                <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。曾任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
             </div>
             <div class="flex-1 relative">
                 <div class="relative w-64 md:w-80 mx-auto group">
-                    <div class="absolute -inset-4 bg-[#d4af37]/20 rounded-[2.5rem] blur-3xl opacity-60 transition group-hover:opacity-100"></div>
+                    <div class="absolute -inset-4 bg-[#d4af37]/20 rounded-[2.5rem] blur-3xl opacity-60"></div>
                     <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#d4af37]/30 shadow-2xl">
                         <img src="https://i.ibb.co/JRGwm7R7/20250312151127.jpg" alt="邵柯翔" class="w-full h-full object-cover">
                     </div>
@@ -116,7 +144,7 @@
         </div>
     </section>
 
-    <section id="work" class="py-24 px-10 relative z-10">
+    <section id="work" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">工作经验 / Work Experience</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -133,7 +161,7 @@
                 <div class="glass-card p-10 rounded-3xl">
                     <span class="text-[#b8860b] text-xs font-mono">2025.02 - 2025.06</span>
                     <h3 class="text-2xl font-bold text-white mt-2 mb-2">北京三块在线科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园送金陵科技学院幕府校区负责人</p>
+                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园负责人</p>
                     <ul class="text-sm text-slate-400 space-y-3">
                         <li>• 负责校区配送团队的组建、培训及日常管理考核</li>
                         <li>• 优化校区物流配送路径，确保日均500+单量高效送达</li>
@@ -144,7 +172,7 @@
         </div>
     </section>
 
-    <section id="projects" class="py-24 px-10 relative z-10">
+    <section id="projects" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto text-center">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest uppercase">项目实战 / Project Experience</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
@@ -172,19 +200,19 @@
         </div>
     </section>
 
-    <section id="skills" class="py-24 px-10 relative z-10">
+    <section id="skills" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">专业技能 / Core Skills</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 backdrop-blur-sm">
+                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
                     <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">医学严谨逻辑</h4>
                     <p class="text-xs text-slate-400">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p>
                 </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 backdrop-blur-sm">
+                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
                     <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">AI 自动化赋能</h4>
                     <p class="text-xs text-slate-400">精通利用AI重构重复性流程，实现核心业务降本增效。</p>
                 </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 backdrop-blur-sm">
+                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
                     <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">团队与财务管理</h4>
                     <p class="text-xs text-slate-400">具备完整的制度搭建、人员培训及年度预算制定经验。</p>
                 </div>
@@ -192,27 +220,27 @@
         </div>
     </section>
 
-    <section id="education" class="py-24 px-10 relative z-10">
+    <section id="education" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
-            <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center">
-                <div class="flex-1 text-center md:text-left">
+            <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center text-center md:text-left">
+                <div class="flex-1">
                     <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
                     <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
                     <p class="text-sm text-slate-400 leading-loose">
                         学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。
                     </p>
                 </div>
-                <div class="w-full md:w-1/3 p-6 bg-black/40 rounded-2xl text-xs text-slate-500 space-y-4">
+                <div class="w-full md:w-1/3 p-6 bg-black/40 rounded-2xl text-xs text-slate-500 space-y-4 text-left">
                     <p>📍 南京市江宁大学城</p>
                     <p>🎓 国家级一流本科专业建设点背景</p>
-                    <p>🔬 拥有多个省级实验教学示范中心</p>
+                    <p>🔬 省级实验教学示范中心支持</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer id="contact" class="py-40 px-10 relative z-10 text-center">
+    <footer id="contact" class="py-40 px-10 relative z-10 text-center reveal">
         <h2 class="text-5xl font-black mb-16 gold-text italic tracking-tighter uppercase">Let's Connect</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <button onclick="copyText('13814632349')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase">
@@ -226,22 +254,35 @@
     </footer>
 
     <script>
-        // 核心脚本：S型重度流金沙随鼠标移动
-        const flows = [
-            document.getElementById('flow-1'),
-            document.getElementById('flow-2'),
-            document.getElementById('flow-3')
-        ];
+        // 1. 开屏加载控制
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => { loader.style.visibility = 'hidden'; }, 1000);
+            }, 1500); // 1.5秒展示时间
+        });
 
+        // 2. 企业级滑动入场动画逻辑 (Intersection Observer)
+        const observerOptions = { threshold: 0.15 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // 3. 增强型流沙背景跟随
+        const flows = [document.getElementById('flow-1'), document.getElementById('flow-2')];
         document.addEventListener('mousemove', (e) => {
             const { clientX, clientY } = e;
             const w = window.innerWidth;
             const h = window.innerHeight;
-
-            // 增强交织感与流动清晰度
             flows[0].style.transform = `translate(${clientX - 600}px, ${clientY - 450}px)`;
             flows[1].style.transform = `translate(${w - clientX - 450}px, ${h - clientY - 550}px)`;
-            flows[2].style.transform = `translate(${clientX - 350}px, ${clientY - 350}px)`;
         });
 
         function copyText(text) {
