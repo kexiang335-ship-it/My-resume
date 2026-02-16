@@ -3,106 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>邵柯翔 | 创业公司CEO & 项目负责人</title>
+    
+    <title>邵柯翔 | 瑞雨山科技执行董事</title>
+    <meta name="description" content="深耕项目管理与AI流程自动化，以严谨医学背景驱动企业降本增效。">
+    <meta property="og:title" content="邵柯翔 | SHAO.KX">
+    <meta property="og:description" content="瑞雨山科技CEO，擅长AI自动化流程重构。">
+    <meta property="og:image" content="https://i.ibb.co/JRGwm7R7/20250312151127.jpg">
+    <meta property="og:type" content="website">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: #000; 
-            color: #d4af37; 
-            overflow-x: hidden;
-            margin: 0;
-        }
-
-        /* 1. 【核心修改】开屏动画：增加金色山峰图标 */
-        #loader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease, visibility 1s;
-        }
+        body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; overflow-x: hidden; margin: 0; }
         
-        /* 山峰图标容器 */
-        .loader-mountain {
-            width: 80px;
-            height: 60px;
-            margin-bottom: 10px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: logoFade 1.2s forwards ease-out;
-        }
-        
-        /* 山峰 SVG 样式：纯金色渐变 */
-        .mountain-svg {
-            fill: url(#mountainGradient);
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
-        }
-
-        .loader-logo { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            margin-bottom: 25px; 
-            opacity: 0; 
-            transform: translateY(20px); 
-            animation: logoFade 1.5s forwards ease-out 0.3s; /* 稍微比山慢一点点出场，有层次感 */
-        }
-        
+        /* 开屏动画 */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: opacity 1s ease, visibility 1s; }
+        .loader-mountain { width: 80px; height: 60px; margin-bottom: 10px; opacity: 0; transform: translateY(20px); animation: logoFade 1.2s forwards ease-out; }
+        .mountain-svg { fill: url(#mtnGrad); filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5)); }
+        .loader-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 4px; margin-bottom: 25px; opacity: 0; transform: translateY(20px); animation: logoFade 1.5s forwards ease-out 0.3s; }
         .loader-bar { width: 180px; height: 2px; background: rgba(212, 175, 55, 0.1); position: relative; overflow: hidden; }
         .loader-bar::after { content: ""; position: absolute; left: -100%; width: 100%; height: 100%; background: #d4af37; animation: barLoad 2s infinite ease; }
-        
         @keyframes logoFade { to { opacity: 1; transform: translateY(0); } }
         @keyframes barLoad { 0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; } }
 
-        /* 2. 流金沙背景 */
-        #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
-        .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
-        #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
-        #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
-
-        /* 3. 企业级滑动入场 */
+        /* 滑动效果 */
         .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* 4. 扫光效果保持不变 */
-        .glass-card { 
-            background: rgba(10, 10, 10, 0.8); 
-            backdrop-filter: blur(25px); 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            position: relative; 
-            overflow: hidden; 
-            transition: all 0.5s ease; 
-        }
-        .glass-card::after {
-            content: "";
-            position: absolute;
-            top: -50%; left: -100%; width: 50%; height: 200%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: rotate(45deg); transition: none; pointer-events: none;
-        }
+        /* 扫光卡片 */
+        .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(212, 175, 55, 0.2); position: relative; overflow: hidden; transition: all 0.5s ease; }
+        .glass-card::after { content: ""; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); transition: none; pointer-events: none; }
         .glass-card:hover::after { left: 150%; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.15); }
-
+        
+        #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
+        .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
+        #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
+        #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
         .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
     </style>
 </head>
-<body class="leading-relaxed">
+<body>
 
     <div id="loader">
         <div class="loader-mountain">
             <svg viewBox="0 0 100 60" class="mountain-svg">
-                <defs>
-                    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#fff3ad;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#8a6d3b;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
+                <defs><linearGradient id="mtnGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#fff3ad"/><stop offset="50%" style="stop-color:#d4af37"/><stop offset="100%" style="stop-color:#8a6d3b"/></linearGradient></defs>
                 <path d="M10 55 L40 10 L60 40 L75 25 L95 55 Z" />
             </svg>
         </div>
@@ -111,22 +59,19 @@
     </div>
 
     <div id="toast" class="copy-toast uppercase text-xs tracking-widest">已成功复制</div>
-
-    <div id="sand-background">
-        <div id="flow-1" class="sand-flow"></div>
-        <div id="flow-2" class="sand-flow"></div>
-    </div>
+    <div id="sand-background"><div id="flow-1" class="sand-flow"></div><div id="flow-2" class="sand-flow"></div></div>
 
     <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-            <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
-            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase">
+            <div class="flex items-center space-x-2">
+                <svg width="30" height="20" viewBox="0 0 100 60" class="mountain-svg inline-block"><path d="M10 55 L40 10 L60 40 L75 25 L95 55 Z" /></svg>
+                <span class="text-xl font-black gold-text italic tracking-widest">SHAO.<span class="text-white">KX</span></span>
+            </div>
+            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase text-white/70">
                 <a href="#home" class="hover:text-white transition">概览</a>
                 <a href="#work" class="hover:text-white transition">工作经验</a>
-                <a href="#projects" class="hover:text-white transition">项目经历</a>
-                <a href="#skills" class="hover:text-white transition">专业技能</a>
-                <a href="#education" class="hover:text-white transition">教育背景</a>
-                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系方式</a>
+                <a href="#projects" class="hover:text-white transition">项目</a>
+                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系</a>
             </div>
         </div>
     </nav>
@@ -166,7 +111,7 @@
                 <div class="glass-card p-10 rounded-3xl">
                     <span class="text-[#b8860b] text-xs font-mono">2025.02 - 2025.06</span>
                     <h3 class="text-2xl font-bold text-white mt-2 mb-2">北京三块在线科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园送金陵科技学院幕府校区负责人</p>
+                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园负责人</p>
                     <ul class="text-sm text-slate-400 space-y-3">
                         <li>• 负责校区配送团队的组建、培训及日常管理考核</li>
                         <li>• 优化校区物流配送路径，确保日均500+单量高效送达</li>
@@ -205,42 +150,13 @@
         </div>
     </section>
 
-    <section id="skills" class="py-24 px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">专业技能 / Core Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">医学严谨逻辑</h4>
-                    <p class="text-xs text-slate-400">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p>
-                </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">AI 自动化赋能</h4>
-                    <p class="text-xs text-slate-400">精通利用AI重构重复性流程，实现核心业务降本增效。</p>
-                </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">团队与财务管理</h4>
-                    <p class="text-xs text-slate-400">具备完整的制度搭建、人员培训及年度预算制定经验。</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <section id="education" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
-            <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center text-center md:text-left">
-                <div class="flex-1">
-                    <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
-                    <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
-                    <p class="text-sm text-slate-400 leading-loose">
-                        学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。
-                    </p>
-                </div>
-                <div class="w-full md:w-1/3 p-6 bg-black/40 rounded-2xl text-xs text-slate-500 space-y-4 text-left">
-                    <p>📍 南京市江宁大学城</p>
-                    <p>🎓 国家级一流本科专业建设点背景</p>
-                    <p>🔬 省级实验教学示范中心支持</p>
-                </div>
+            <div class="glass-card p-12 rounded-[3rem] text-center md:text-left">
+                <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
+                <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
+                <p class="text-sm text-slate-400 leading-loose">学校坚持“需求导向,能力为本”理念，致力于高素质应用型人才培养。</p>
             </div>
         </div>
     </section>
@@ -248,35 +164,25 @@
     <footer id="contact" class="py-40 px-10 relative z-10 text-center reveal">
         <h2 class="text-5xl font-black mb-16 gold-text italic tracking-tighter uppercase">Let's Connect</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <button onclick="copyText('13814632349')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase">
-                13814632349
-            </button>
-            <button onclick="copyText('2306367140@qq.com')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase">
-                2306367140@qq.com
-            </button>
+            <button onclick="copyText('13814632349')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest">13814632349</button>
+            <button onclick="copyText('2306367140@qq.com')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest">2306367140@qq.com</button>
         </div>
     </footer>
 
     <script>
-        // 1. 开屏加载
         window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
             setTimeout(() => {
                 loader.style.opacity = '0';
                 setTimeout(() => { loader.style.visibility = 'hidden'; }, 1000);
-            }, 1800); // 稍微延长一点，展示精美的山峰 Logo
+            }, 1800);
         });
 
-        // 2. 滑动显示 (Intersection Observer)
-        const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('active'); }
-            });
-        }, observerOptions);
+            entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('active'); } });
+        }, { threshold: 0.15 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 3. 流金沙背景跟随
         const flows = [document.getElementById('flow-1'), document.getElementById('flow-2')];
         document.addEventListener('mousemove', (e) => {
             const { clientX, clientY } = e;
