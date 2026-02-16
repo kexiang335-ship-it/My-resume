@@ -3,13 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>邵柯翔 | 创业公司CEO & 项目负责人</title>
-    <meta name="description" content="邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化。">
-    <meta property="og:title" content="邵柯翔 | SHAO.KX">
-    <meta property="og:description" content="瑞雨山科技执行董事，专注高效项目增长与AI自动化赋能。">
-    <meta property="og:image" content="https://i.ibb.co/JRGwm7R7/20250312151127.jpg">
-    <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
@@ -21,7 +15,7 @@
             margin: 0;
         }
 
-        /* 1. 【核心修改】开屏动画：增加金色山峰图标 */
+        /* 1. 开屏动画：增加金色山峰图标 */
         #loader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -31,7 +25,6 @@
             transition: opacity 1s ease, visibility 1s;
         }
         
-        /* 山峰图标容器 */
         .loader-mountain {
             width: 80px;
             height: 60px;
@@ -41,7 +34,6 @@
             animation: logoFade 1.2s forwards ease-out;
         }
         
-        /* 山峰 SVG 样式：纯金色渐变 */
         .mountain-svg {
             fill: url(#mountainGradient);
             filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
@@ -54,7 +46,7 @@
             margin-bottom: 25px; 
             opacity: 0; 
             transform: translateY(20px); 
-            animation: logoFade 1.5s forwards ease-out 0.3s; /* 稍微比山慢一点点出场，有层次感 */
+            animation: logoFade 1.5s forwards ease-out 0.3s;
         }
         
         .loader-bar { width: 180px; height: 2px; background: rgba(212, 175, 55, 0.1); position: relative; overflow: hidden; }
@@ -66,84 +58,4 @@
         /* 2. 流金沙背景 */
         #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
         .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
-        #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
-        #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
-
-        /* 3. 企业级滑动入场 */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
-        .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        /* 4. 扫光效果保持不变 */
-        .glass-card { 
-            background: rgba(10, 10, 10, 0.8); 
-            backdrop-filter: blur(25px); 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            position: relative; 
-            overflow: hidden; 
-            transition: all 0.5s ease; 
-        }
-        .glass-card::after {
-            content: "";
-            position: absolute;
-            top: -50%; left: -100%; width: 50%; height: 200%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: rotate(45deg); transition: none; pointer-events: none;
-        }
-        .glass-card:hover::after { left: 150%; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.15); }
-
-        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
-    </style>
-</head>
-<body class="leading-relaxed">
-
-    <div id="loader">
-        <div class="loader-mountain">
-            <svg viewBox="0 0 100 60" class="mountain-svg">
-                <defs>
-                    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#fff3ad;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#8a6d3b;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <path d="M10 55 L40 10 L60 40 L75 25 L95 55 Z" />
-            </svg>
-        </div>
-        <div class="loader-logo gold-text uppercase">Shao.kx</div>
-        <div class="loader-bar"></div>
-    </div>
-
-    <div id="toast" class="copy-toast uppercase text-xs tracking-widest">已成功复制</div>
-
-    <div id="sand-background">
-        <div id="flow-1" class="sand-flow"></div>
-        <div id="flow-2" class="sand-flow"></div>
-    </div>
-
-    <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-            <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
-            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase">
-                <a href="#home" class="hover:text-white transition">概览</a>
-                <a href="#work" class="hover:text-white transition">工作经验</a>
-                <a href="#projects" class="hover:text-white transition">项目经历</a>
-                <a href="#skills" class="hover:text-white transition">专业技能</a>
-                <a href="#education" class="hover:text-white transition">教育背景</a>
-                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系方式</a>
-            </div>
-        </div>
-    </nav>
-
-    <section id="home" class="relative pt-44 pb-32 px-10 reveal">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
-            <div class="flex-1 space-y-8 text-center md:text-left">
-                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
-                <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
-            </div>
-            <div class="flex-1 relative">
-                <div class="relative w-64 md:w-80 mx-auto group">
-                    <div class="absolute -inset-4 bg-[#d4af37]/
+        #flow-1 { width: 1200px; height: 900px; background: radial
