@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPA 自动化中枢 | SHAO.KX Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; }
+        .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .terminal-box { background: #0a0a0a; border: 1px solid rgba(212, 175, 55, 0.3); font-family: 'Courier New', monospace; }
+        .progress-bar { height: 2px; background: #d4af37; width: 0%; transition: width 0.5s; }
+    </style>
+</head>
+<body class="p-8 md:p-16 min-h-screen">
+    <nav class="mb-8"><a href="portfolio.html" class="text-xs uppercase tracking-widest border border-[#d4af37]/30 px-4 py-2 rounded-full hover:bg-[#d4af37] hover:text-black transition">← 返回仓库</a></nav>
+    
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-12">
+            <h1 class="text-3xl font-black gold-text uppercase">RPA 跨境电商自动化重构</h1>
+            <p class="text-slate-500 text-xs tracking-widest mt-2 uppercase">E-commerce Automation Framework v2.1</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="p-6 border border-white/5 bg-white/5 rounded-2xl text-center">
+                <div class="text-2xl mb-2">⏱️</div>
+                <div class="text-white font-bold text-xl italic">75%</div>
+                <div class="text-[10px] text-slate-500 uppercase mt-1">耗时缩减</div>
+            </div>
+            <div class="p-6 border border-white/5 bg-white/5 rounded-2xl text-center">
+                <div class="text-2xl mb-2">⚙️</div>
+                <div class="text-white font-bold text-xl italic">Zero</div>
+                <div class="text-[10px] text-slate-500 uppercase mt-1">人工干预</div>
+            </div>
+            <div class="p-6 border border-white/5 bg-white/5 rounded-2xl text-center">
+                <div class="text-2xl mb-2">🚀</div>
+                <div class="text-white font-bold text-xl italic">4x</div>
+                <div class="text-[10px] text-slate-500 uppercase mt-1">上架效率</div>
+            </div>
+        </div>
+
+        <div class="terminal-box rounded-2xl p-6 shadow-2xl">
+            <div class="flex items-center gap-2 mb-4 border-b border-white/10 pb-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                <span class="text-[10px] text-slate-500 ml-2 italic underline">task_manager_v2.py</span>
+            </div>
+            <div id="console" class="text-xs space-y-2 h-64 overflow-y-auto text-green-500/80">
+                <p>> System ready. Awaiting trigger...</p>
+            </div>
+            <div class="mt-6">
+                <div class="progress-bar mb-4" id="p-bar"></div>
+                <button onclick="runRPA()" id="runBtn" class="w-full py-3 border border-[#d4af37] text-[#d4af37] font-bold uppercase tracking-widest text-xs hover:bg-[#d4af37] hover:text-black transition">执行自动化流程测试</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function runRPA() {
+            const console = document.getElementById('console');
+            const bar = document.getElementById('p-bar');
+            const btn = document.getElementById('runBtn');
+            btn.disabled = true; btn.innerText = "RUNNING...";
+            
+            const logs = [
+                "> 初始化代理池与指纹浏览器...",
+                "> 正在连接跨境平台后端接口...",
+                "> 识别商品图片: 发现 15 张原图",
+                "> AI 自动裁切并移除背景 (去除重复率)...",
+                "> 智能生成 SEO 标题与描述 (GPT-4 API)...",
+                "> 成功上架至 Shopify / Amazon 预览库",
+                "> 流程完成。总计节省人工工时：4.5小时。"
+            ];
+
+            let i = 0;
+            const timer = setInterval(() => {
+                const p = document.createElement('p');
+                p.innerText = logs[i];
+                console.appendChild(p);
+                console.scrollTop = console.scrollHeight;
+                bar.style.width = ((i+1)/logs.length)*100 + "%";
+                i++;
+                if(i >= logs.length) {
+                    clearInterval(timer);
+                    btn.innerText = "PROCESS COMPLETE";
+                    btn.style.borderColor = "#fff";
+                    btn.style.color = "#fff";
+                }
+            }, 800);
+        }
+    </script>
+</body>
+</html>
