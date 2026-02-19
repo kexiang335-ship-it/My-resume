@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 外贸谈判模拟系统 | SHAO.KX Tech</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; }
+        .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass-card { background: rgba(15, 15, 15, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.2); }
+        .ai-glow { box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+        input, textarea, select { background: rgba(0,0,0,0.5) !important; color: white !important; border: 1px solid rgba(212, 175, 55, 0.3) !important; }
+        input:focus { border-color: #d4af37 !important; outline: none; }
+    </style>
+</head>
+<body class="min-h-screen p-6 md:p-12">
+
+    <nav class="mb-12">
+        <a href="portfolio.html" class="text-xs font-bold uppercase tracking-widest border border-[#d4af37]/30 px-4 py-2 rounded-full hover:bg-[#d4af37] hover:text-black transition">← 返回仓库 Portfolio</a>
+    </nav>
+
+    <div class="max-w-5xl mx-auto">
+        <div class="mb-12 text-center">
+            <h1 class="text-4xl font-black gold-text uppercase mb-2">AI 外贸谈判模拟系统</h1>
+            <p class="text-slate-500 text-[10px] tracking-[0.4em] uppercase">Global Trade AI Negotiation Simulator v1.0</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div class="glass-card p-8 rounded-[2.5rem] ai-glow">
+                <h2 class="text-white font-bold mb-6 flex items-center">
+                    <span class="mr-2">🛠️</span> 模拟参数设置
+                </h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">目标市场 / Market</label>
+                        <select id="market" class="w-full p-3 rounded-xl text-sm">
+                            <option value="me">中东市场 (Middle East) - 注重关系与长期议价</option>
+                            <option value="eu">欧洲市场 (Europe) - 注重环保标准与合规</option>
+                            <option value="us">北美市场 (North America) - 注重效率与快节奏交付</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">产品描述 / Product Info</label>
+                        <textarea id="p-info" placeholder="请输入产品名称、规格、起订量..." class="w-full h-32 p-3 rounded-xl text-sm"></textarea>
+                    </div>
+
+                    <button onclick="startSim()" class="w-full py-4 bg-[#d4af37] text-black font-black uppercase tracking-widest rounded-xl hover:scale-[1.02] transition-transform">
+                        生成 AI 谈判策略
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-6">
+                <div id="output" class="glass-card p-8 rounded-[2.5rem] flex-1 min-h-[400px]">
+                    <div id="placeholder" class="h-full flex flex-col items-center justify-center text-slate-600">
+                        <div class="text-4xl mb-4">🤖</div>
+                        <p class="text-xs italic">等待参数输入以激活 AI 逻辑...</p>
+                    </div>
+                    <div id="content" class="hidden space-y-6">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startSim() {
+            const market = document.getElementById('market').value;
+            const info = document.getElementById('p-info').value;
+            const content = document.getElementById('content');
+            const placeholder = document.getElementById('placeholder');
+
+            if(!info) { alert('请输入产品信息'); return; }
+
+            placeholder.classList.add('hidden');
+            content.classList.remove('hidden');
+            content.innerHTML = '<p class="text-[#d4af37] animate-pulse">正在解析全球贸易库数据...</p>';
+
+            setTimeout(() => {
+                let report = "";
+                if(market === 'me') {
+                    report = `
+                        <div class="space-y-4">
+                            <div class="border-l-2 border-[#d4af37] pl-4">
+                                <h4 class="text-white font-bold text-sm uppercase">市场深度分析</h4>
+                                <p class="text-xs text-slate-400 mt-1">中东客户偏好建立在个人信任上的贸易。建议首封邮件加入对斋月或对方家族企业的问候。</p>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl">
+                                <h4 class="text-[#d4af37] font-bold text-xs mb-2">AI 自动报价建议</h4>
+                                <p class="text-white font-mono text-sm">FOB Shenzhen: $12.50/unit<br><span class="text-[10px] text-slate-500">注：已预留 15% 议价空间，符合当地“反复拉锯”谈判习惯。</span></p>
+                            </div>
+                            <div class="text-xs text-slate-400 leading-relaxed">
+                                <b class="text-white">避雷提示：</b> 严禁在合同中直接使用过于激进的最后通牒式条款。
+                            </div>
+                        </div>`;
+                } else {
+                    report = `
+                        <div class="space-y-4">
+                            <div class="border-l-2 border-[#d4af37] pl-4">
+                                <h4 class="text-white font-bold text-sm uppercase">效率型市场策略</h4>
+                                <p class="text-xs text-slate-400 mt-1">该市场追求极简沟通。AI 建议直接将 CE/RoHS 证书作为邮件附件，并明确交期。</p>
+                            </div>
+                            <div class="bg-white/5 p-4 rounded-xl">
+                                <h4 class="text-[#d4af37] font-bold text-xs mb-2">AI 极致报价建议</h4>
+                                <p class="text-white font-mono text-sm">EXW Price: $10.20/unit<br><span class="text-[10px] text-slate-500">策略：阶梯定价方案。1000pcs+ 享受 5% 自动折扣。</span></p>
+                            </div>
+                        </div>`;
+                }
+                content.innerHTML = report;
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
