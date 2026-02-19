@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字宠物医疗库 | SHAO.KX Med</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; }
+        .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .med-card { background: rgba(20, 20, 20, 0.8); border: 1px solid rgba(212, 175, 55, 0.1); transition: 0.3s; }
+        .med-card:hover { border-color: #d4af37; background: rgba(255, 255, 255, 0.05); }
+    </style>
+</head>
+<body class="p-8 min-h-screen">
+    <nav class="mb-8"><a href="portfolio.html" class="text-xs uppercase tracking-widest border border-[#d4af37]/30 px-4 py-2 rounded-full hover:bg-[#d4af37] hover:text-black transition">← 返回仓库</a></nav>
+
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-12 border-b border-white/5 pb-8">
+            <h1 class="text-3xl font-black gold-text uppercase">数字宠物医疗知识索引</h1>
+            <p class="text-slate-500 text-xs tracking-widest mt-2 uppercase">Veterinary Digital Database v1.0</p>
+        </header>
+
+        <div class="mb-10 flex gap-4 overflow-x-auto pb-4">
+            <button onclick="filter('all')" class="px-6 py-2 bg-[#d4af37] text-black rounded-full text-xs font-bold whitespace-nowrap">全部科目</button>
+            <button onclick="filter('inner')" class="px-6 py-2 border border-white/20 text-white rounded-full text-xs font-bold whitespace-nowrap hover:border-[#d4af37]">内科诊疗</button>
+            <button onclick="filter('skin')" class="px-6 py-2 border border-white/20 text-white rounded-full text-xs font-bold whitespace-nowrap hover:border-[#d4af37]">皮肤科</button>
+            <button onclick="filter('drug')" class="px-6 py-2 border border-white/20 text-white rounded-full text-xs font-bold whitespace-nowrap hover:border-[#d4af37]">处方药典</button>
+        </div>
+
+        <div id="med-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+    </div>
+
+    <script>
+        const data = [
+            { cat: 'inner', title: '犬细小病毒诊疗', desc: '基于临床病例总结的补液方案与干扰素使用规范。' },
+            { cat: 'skin', title: '真菌性皮肤病识别', desc: '伍德氏灯下的显色特征与伊曲康唑剂量模型。' },
+            { cat: 'drug', title: '危急重症用药手册', desc: '包含阿托品、肾上腺素等急救药物的公斤体重换算表。' },
+            { cat: 'inner', title: '猫泌尿系统综合征', desc: '饮食结构调整与导尿术后的标准化护理路径。' }
+        ];
+
+        function filter(tag) {
+            const grid = document.getElementById('med-grid');
+            grid.innerHTML = '';
+            const filtered = tag === 'all' ? data : data.filter(i => i.cat === tag);
+            
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <div class="med-card p-6 rounded-3xl animate-fade-in">
+                        <div class="text-[10px] text-[#d4af37] uppercase font-bold mb-2 tracking-widest">Category: ${item.cat}</div>
+                        <h3 class="text-white font-bold text-lg mb-3 italic underline decoration-[#d4af37]/30">${item.title}</h3>
+                        <p class="text-xs text-slate-500 leading-relaxed">${item.desc}</p>
+                    </div>
+                `;
+            });
+        }
+        filter('all'); // 初始化加载
+    </script>
+</body>
+</html>
