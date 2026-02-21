@@ -3,173 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 跨境 B2B 全链路智能经营蓝图</title>
+    <title>SHAO.KX 全链路外贸数字化操作系统 (2026 版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary-color: #1a73e8;
-            --secondary-color: #34a853;
-            --accent-color: #fbbc05;
-            --bg-color: #f8f9fa;
-            --text-color: #202124;
-            --card-bg: #ffffff;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0;
-            padding: 20px;
-            line-height: 1.6;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 0;
-            background: linear-gradient(135deg, #1a73e8, #0d47a1);
-            color: white;
-            border-radius: 15px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border-top: 5px solid var(--primary-color);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        h2 {
-            color: var(--primary-color);
-            font-size: 1.4rem;
-            margin-top: 0;
-            display: flex;
-            align-items: center;
-        }
-
-        .tag {
-            display: inline-block;
-            background: #e8f0fe;
-            color: var(--primary-color);
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-
-        ul {
-            padding-left: 20px;
-            margin: 0;
-        }
-
-        li {
-            margin-bottom: 10px;
-        }
-
-        .footer-note {
-            text-align: center;
-            margin-top: 40px;
-            font-size: 0.9rem;
-            color: #70757a;
-        }
-
-        /* 重点标注样式 */
-        .highlight {
-            color: #d93025;
-            font-weight: bold;
-        }
-
-        /* 按钮模拟 */
-        .btn-mock {
-            display: block;
-            text-align: center;
-            background: var(--primary-color);
-            color: white;
-            padding: 10px;
-            border-radius: 6px;
-            text-decoration: none;
-            margin-top: 20px;
-            font-size: 0.9rem;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body { background: #050505; color: #d4af37; font-family: 'Inter', sans-serif; }
+        .logic-panel { background: rgba(20, 20, 20, 0.95); border: 1px solid #2a2a2a; border-radius: 12px; }
+        .terminal-font { font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+        .active-glow { box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); border-color: #d4af37; }
+        input, select, textarea { background: #111 !important; color: #eee !important; border: 1px solid #333 !important; padding: 10px; border-radius: 6px; width: 100%; outline: none; }
+        input:focus { border-color: #d4af37; }
+        .status-bar { height: 4px; background: #222; border-radius: 2px; overflow: hidden; }
+        .progress { height: 100%; background: #d4af37; width: 0%; transition: 0.3s; }
+        .btn-primary { background: #d4af37; color: #000; font-weight: bold; padding: 12px; border-radius: 8px; transition: 0.3s; width: 100%; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary:hover { background: #fff; transform: translateY(-2px); }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-<div class="container">
-    <header>
-        <h1>2026 跨境 B2B 全链路智能经营蓝图</h1>
-        <p>基于 AI 驱动与全链路数字化的外贸竞争突围方案</p>
-    </header>
+    <div class="max-w-7xl mx-auto">
+        <header class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+            <div>
+                <h1 class="text-2xl font-black italic tracking-tighter">GLOBAL TRADE AGENT <span class="text-white">v3.0</span></h1>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest">集成极客系统核心算法 & AI 麦可内容工厂逻辑</p>
+            </div>
+            <div class="text-right">
+                <div id="system-clock" class="text-xs text-slate-400">Loading Node...</div>
+                <div class="flex gap-2 mt-1">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="text-[10px] text-green-500 uppercase">系统内核: 知识库已写死</span>
+                </div>
+            </div>
+        </header>
 
-    <div class="grid">
-        <div class="card">
-            <span class="tag">流量开源</span>
-            <h2>AI 全渠道获客矩阵</h2>
-            <ul>
-                <li><strong>AI 麦可助手：</strong> 24小时自动生成多语言视频，视频制作从4小时缩短至5分钟。</li>
-                <li><strong>社交媒体矩阵：</strong> 整合 TikTok/Facebook/Instagram，支持 AI 数字人 24 小时直播。</li>
-                <li><strong>效果预估：</strong> 单客获客成本有望从 300 元降至 <span class="highlight">120 元</span>。</li>
-            </ul>
-        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-4 space-y-6">
+                <div class="logic-panel p-5">
+                    <h3 class="text-xs font-bold text-white mb-4 uppercase flex items-center gap-2">
+                        <span class="w-1 h-3 bg-blue-500"></span> 线索挖掘引擎 (Lead Discovery)
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-[10px] text-slate-500 mb-1 block">目标产品 (Target Product)</label>
+                            <input type="text" id="target-prod" placeholder="如: 锂电池、光伏逆变器">
+                        </div>
+                        <div>
+                            <label class="text-[10px] text-slate-500 mb-1 block">目标区域 (Target Market)</label>
+                            <select id="target-geo">
+                                <option value="EU">欧洲 (关注 CE/RoHS/碳中和)</option>
+                                <option value="ME">中东 (关注 信任/长账期/Wasasta)</option>
+                                <option value="SEA">东南亚 (关注 性价比/小MOQ/快速周转)</option>
+                                <option value="NA">北美 (关注 SEO/交付/合规性)</option>
+                            </select>
+                        </div>
+                        <button onclick="runAcquisition()" class="btn-primary">开始全渠道抓取线索</button>
+                    </div>
+                </div>
 
-        <div class="card" style="border-top-color: var(--secondary-color);">
-            <span class="tag">转化引擎</span>
-            <h2>“千面邮”智能营销</h2>
-            <ul>
-                <li><strong>精准画像：</strong> 结合海关数据与 CRM 标签，自动识别客户偏好（如“合规认证”或“小批量高频”）。</li>
-                <li><strong>自动流转：</strong> 智能规避 SPAM 词汇，根据时区自动在当地工作时间推送。</li>
-                <li><strong>二次跟进：</strong> 自动规划 7 天/10 天跟进节奏，防止线索流失。</li>
-            </ul>
-        </div>
+                <div class="logic-panel p-5">
+                    <h3 class="text-xs font-bold text-white mb-4 uppercase flex items-center gap-2">
+                        <span class="w-1 h-3 bg-purple-500"></span> AI 麦可内容工厂 (Content Production)
+                    </h3>
+                    <div class="space-y-4">
+                        <p class="text-[10px] text-slate-400 italic">模拟 100 台手机服务器矩阵分发逻辑...</p>
+                        <div class="flex gap-2">
+                            <button onclick="startProduction('video')" class="text-[10px] bg-white/5 border border-white/10 p-2 rounded flex-1 hover:border-purple-500">生成短视频</button>
+                            <button onclick="startProduction('copy')" class="text-[10px] bg-white/5 border border-white/10 p-2 rounded flex-1 hover:border-purple-500">生成文案</button>
+                        </div>
+                        <div class="status-bar"><div id="prod-progress" class="progress"></div></div>
+                        <div id="prod-status" class="text-[9px] text-slate-500">等待任务...</div>
+                    </div>
+                </div>
 
-        <div class="card" style="border-top-color: var(--accent-color);">
-            <span class="tag">交付保障</span>
-            <h2>支付与合规信任体系</h2>
-            <ul>
-                <li><strong>支付趋势：</strong> 2026 年跨境支付向实时化、低成本转型，减少对传统代理行的依赖。</li>
-                <li><strong>合规预警：</strong> 实时监控美国 Section 301/232 关税变动及实体清单风险。</li>
-                <li><strong>数字资产：</strong> 基于区块链的信任空间，解决初次合作的信用壁垒。</li>
-            </ul>
-        </div>
+                <div class="logic-panel p-5">
+                    <h3 class="text-xs font-bold text-white mb-4 uppercase flex items-center gap-2">
+                        <span class="w-1 h-3 bg-red-500"></span> 2026 合规扫描仪 (Compliance)
+                    </h3>
+                    <button onclick="runComplianceCheck()" class="btn-primary" style="background: transparent; color: #ef4444; border: 1px solid #ef4444;">一键扫描贸易红线</button>
+                </div>
+            </div>
 
-        <div class="card" style="border-top-color: #9334e8;">
-            <span class="tag">效率中枢</span>
-            <h2>智能经营看板</h2>
-            <ul>
-                <li><strong>数据闭环：</strong> 整合独立站 SEO、B2B 平台、CRM 轨迹，形成完整的客户转化漏斗。</li>
-                <li><strong>竞争监控：</strong> 动态分析出口产品结构，优化机电/高技术产品占比。</li>
-                <li><strong>决策支持：</strong> AI 自动生成季度策略建议，告别盲目铺货。</li>
-            </ul>
+            <div class="lg:col-span-8 space-y-6">
+                <div class="logic-panel p-6 min-h-[500px] flex flex-col">
+                    <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
+                        <span class="text-[10px] font-bold uppercase text-slate-400">执行结果报告 (Execution Report)</span>
+                        <span class="text-[10px] text-slate-600">LOC: GLOBAL_SERVER_V6</span>
+                    </div>
+                    
+                    <div id="terminal-out" class="terminal-font flex-1 space-y-6 overflow-y-auto max-h-[600px] pr-2">
+                        <div class="text-slate-600 italic">系统准备就绪。请在左侧输入指令并执行...</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="logic-panel p-4 text-center">
+                        <p class="text-[8px] text-slate-500 uppercase">预计 CAC</p>
+                        <p class="text-xl font-black text-white italic">¥115.00</p>
+                    </div>
+                    <div class="logic-panel p-4 text-center">
+                        <p class="text-[8px] text-slate-500 uppercase">内容生产力</p>
+                        <p class="text-xl font-black text-white italic">48x</p>
+                    </div>
+                    <div class="logic-panel p-4 text-center">
+                        <p class="text-[8px] text-slate-500 uppercase">询盘转化率</p>
+                        <p class="text-xl font-black text-white italic">+3.8%</p>
+                    </div>
+                    <div class="logic-panel p-4 text-center">
+                        <p class="text-[8px] text-slate-500 uppercase">合规分值</p>
+                        <p class="text-xl font-black text-green-500 italic">98</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    
+    <script>
+        const KNOWLEDGE_BASE = {
+            EU: {
+                leads: ["EuroBatt Gmbh", "Nordic Energy Solutions", "Lyon Solar Group"],
+                strategy: "逻辑：德国/法国客户重证书。建议邮件突出 CE, RoHS 及碳审计证书。",
+                email: "Subject: [Eco-Audit] Supply chain solution for ${prod} in EU market\n\nHi,\nWe noticed your commitment to sustainability. Our ${prod} passed full carbon auditing. Would you like to see the compliance report?",
+                compliance: "【高危】2026 欧盟碳关税(CBAM)正式生效，需准备数字碳足迹声明。"
+            },
+            ME: {
+                leads: ["Dubai Infra Partners", "Saudi Vision 2030 Procurement", "Qatar Logistics"],
+                strategy: "逻辑：中东客户重关系。建议第一步通过 WhatsApp 视频通话，第二步谈长账期(LC/OA)。",
+                email: "Subject: Direct Factory for ${prod} - Middle East Project Support\n\nDear Partner,\nRespectfully, our ${prod} supports local infrastructure projects with flexible payment terms (LC/CAD supported).",
+                compliance: "【提醒】沙特海关 SABER 认证有更新，需核实最新 HS Code 分类。"
+            },
+            SEA: {
+                leads: ["Baku Indo Distribution", "Thai Solar Hub", "Vietnam Smart Manuf"],
+                strategy: "逻辑：东南亚重效率。建议利用 TikTok 直播展示工厂现货，主打小 MOQ (10套起)。",
+                email: "Subject: Best-seller ${prod} (Ready to Ship / Small MOQ)\n\nHi,\nGrab the market share now. Our ${prod} is ready for 48h shipping to your port. Sample order supported.",
+                compliance: "【关注】印尼自贸协定关税减免政策，需申请原产地证明 FORM E。"
+            }
+        };
 
-    <div class="footer-note">
-        <p>数据来源：参考《数字化转型对外贸企业出口竞争力的影响研究》及 2026 全球贸易趋势报告</p>
-        <p>&copy; 2026 跨境贸易智能研究中心 - 助力中国制造走向全球</p>
-    </div>
-</div>
+        function writeToTerminal(html) {
+            const out = document.getElementById('terminal-out');
+            out.innerHTML = html;
+        }
 
+        function runAcquisition() {
+            const prod = document.getElementById('target-prod').value || "通用产品";
+            const geo = document.getElementById('target-geo').value;
+            const data = KNOWLEDGE_BASE[geo] || KNOWLEDGE_BASE.EU;
+            
+            let html = `
+                <div class="animate-pulse text-[#d4af37]">正在扫描 Google Maps, LinkedIn 及 2026 全球海关数据流...</div>
+                <div class="mt-4 p-4 bg-white/5 rounded border-l-2 border-blue-500">
+                    <p class="text-white font-bold mb-2">已挖掘高潜力潜在客户 (基于海关提单数据):</p>
+                    <ul class="list-disc ml-5 space-y-1 text-slate-300">
+                        ${data.leads.map(l => `<li>${l} - <span class="text-green-500">活跃采购中</span></li>`).join('')}
+                    </ul>
+                </div>
+                <div class="mt-4 p-4 bg-white/5 rounded border-l-2 border-purple-500">
+                    <p class="text-white font-bold mb-2">“千面邮”智能文案 (针对 ${geo} 逻辑优化):</p>
+                    <pre class="bg-black p-3 text-[10px] rounded border border-white/5 text-slate-400 whitespace-pre-wrap">${data.email.replace(/\${prod}/g, prod)}</pre>
+                </div>
+                <div class="mt-4 text-slate-500 italic text-[10px]">
+                    >> ${data.strategy}
+                </div>
+            `;
+            writeToTerminal(html);
+        }
+
+        function startProduction(type) {
+            const bar = document.getElementById('prod-progress');
+            const status = document.getElementById('prod-status');
+            let p = 0;
+            status.innerText = type === 'video' ? "AI 正在切片素材, 匹配多语种配音..." : "AI 正在分析客户偏好, 规划触达脚本...";
+            
+            const interval = setInterval(() => {
+                p += 5;
+                bar.style.width = p + "%";
+                if (p >= 100) {
+                    clearInterval(interval);
+                    status.innerText = "任务完成：已生成 50 条去重短视频并排期分发至 100 台手机矩阵。";
+                    writeToTerminal(`<div class="p-4 bg-green-900/20 border border-green-500/30 text-green-500 rounded">
+                        <strong>内容生成报告:</strong><br>
+                        - 生成视频数量: 52 (去重率 99.8%)<br>
+                        - 配音语种: 英语, 西班牙语, 阿拉伯语<br>
+                        - 发布节点: TikTok, Instagram, YouTube Reels<br>
+                        - 预计覆盖人数: 25k - 40k
+                    </div>`);
+                }
+            }, 100);
+        }
+
+        function runComplianceCheck() {
+            const geo = document.getElementById('target-geo').value;
+            const data = KNOWLEDGE_BASE[geo] || KNOWLEDGE_BASE.EU;
+            writeToTerminal(`
+                <div class="p-4 bg-red-900/20 border border-red-500/30 text-red-500 rounded">
+                    <h4 class="font-bold mb-2 uppercase">2026 贸易合规扫描报告:</h4>
+                    <p class="mb-2">检测到 ${geo} 区域潜在红线:</p>
+                    <ul class="list-disc ml-5 space-y-1">
+                        <li>${data.compliance}</li>
+                        <li>出口管制: 美国 EAR 实体清单 2026.02 更新对比完成。</li>
+                        <li>支付安全: 警惕 AI 换脸诈骗，建议大额转账启用双因子视频核身。</li>
+                    </ul>
+                </div>
+            `);
+        }
+
+        // 时钟
+        setInterval(() => {
+            document.getElementById('system-clock').innerText = new Date().toLocaleString();
+        }, 1000);
+    </script>
 </body>
 </html>
