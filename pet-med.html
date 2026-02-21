@@ -3,134 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAO.KX | 数字宠物医疗控制台</title>
+    <title>SHAO.KX | 宠物医疗数字化矩阵</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { background: #050505; color: #d4af37; font-family: 'Inter', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap');
+        body { background: #000; color: #d4af37; font-family: 'JetBrains Mono', monospace; overflow-x: hidden; }
         
-        /* 经典四栏布局容器 */
-        .system-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 15px; 
-            margin-bottom: 20px;
+        /* 原始版本的网格背景 */
+        .bg-grid {
+            background-image: linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
         }
 
-        /* 手机端自动转为两列 */
-        @media (max-width: 768px) {
-            .system-grid { grid-template-columns: repeat(2, 1fr); }
-        }
-
-        .nav-box {
-            background: rgba(20, 20, 20, 0.9);
+        /* 核心四个大框的原始样式 */
+        .feature-card {
+            background: rgba(10, 10, 10, 0.9);
             border: 1px solid #222;
-            padding: 20px 15px;
-            border-radius: 12px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-decoration: none;
-            display: block;
-        }
-
-        .nav-box:hover {
-            border-color: #d4af37;
-            background: rgba(212, 175, 55, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .nav-box h3 { color: #fff; font-size: 14px; font-weight: 700; margin-top: 8px; }
-        .nav-box span { color: #555; font-size: 10px; font-weight: 900; text-transform: uppercase; }
-
-        /* 下方展示区预览 */
-        .preview-area {
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            border-radius: 20px;
-            padding: 40px;
-            min-height: 400px;
+            padding: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            overflow: hidden;
+            display: block; /* 设为块级元素以便跳转 */
+            text-decoration: none;
         }
 
-        .status-bar { border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
-        .dot { height: 8px; width: 8px; background: #d4af37; border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 10px #d4af37; }
+        .feature-card:hover {
+            border-color: #d4af37;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+            transform: scale(1.02);
+        }
+
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: #d4af37;
+            transform: scaleY(0);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(212, 175, 55, 0.2);
+            top: 0;
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
     </style>
 </head>
-<body class="p-4 md:p-10">
+<body class="bg-grid min-h-screen">
 
-    <div class="max-w-7xl mx-auto">
-        <header class="mb-10">
-            <div class="flex justify-between items-end">
-                <div>
-                    <h1 class="text-3xl font-black text-white italic tracking-tighter">VETERINARY SYSTEM V1.0</h1>
-                    <p class="text-[10px] text-slate-500 font-bold tracking-[0.2em]">数字宠物医疗 / 逻辑架构控制台</p>
+    <div class="max-w-7xl mx-auto p-6 md:p-12">
+        <header class="flex justify-between items-start mb-16 border-b border-[#d4af37]/20 pb-8">
+            <div>
+                <div class="flex items-center gap-3">
+                    <div class="w-3 h-3 bg-[#d4af37] animate-pulse"></div>
+                    <h1 class="text-3xl font-black italic tracking-tighter text-white">PET_CORE_LOGIC v1.0</h1>
                 </div>
-                <a href="index.html" class="text-[10px] border border-slate-700 px-3 py-1 rounded text-slate-500 hover:text-white">CLOSE SYSTEM</a>
+                <p class="text-[10px] text-slate-500 mt-2 uppercase tracking-[0.3em]">数字化医疗诊疗作品库 / 第三期</p>
+            </div>
+            <div class="text-right hidden md:block text-[10px] text-slate-500">
+                <p>LATENCY: 14ms</p>
+                <p>ENCRYPTION: AES-256</p>
+                <p>USER: SHAO.KX_ADMIN</p>
             </div>
         </header>
 
-        <nav class="system-grid">
-            <a href="pet_inner.html" class="nav-box">
-                <span>Phase 01</span>
-                <h3>内科诊疗</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <a href="pet_inner.html" class="feature-card group">
+                <div class="scan-line"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20 transition-colors">01</span>
+                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">INTERNAL</span>
+                </div>
+                <h2 class="text-2xl font-bold text-white mb-4">内科诊疗数据库</h2>
+                <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                    集成犬细小病毒 (CPV)、犬瘟热 (CDV) 等核心病毒学诊疗路径。
+                    包含补液模型与干扰素动力学分析。
+                </p>
+                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
             </a>
-            <a href="pet_skin.html" class="nav-box">
-                <span>Phase 02</span>
-                <h3>皮肤科</h3>
-            </a>
-            <a href="pet_drug.html" class="nav-box">
-                <span>Phase 03</span>
-                <h3>处方药典</h3>
-            </a>
-            <a href="pet_feline.html" class="nav-box">
-                <span>Phase 04</span>
-                <h3>猫科专题</h3>
-            </a>
-        </nav>
 
-        <div class="preview-area">
-            <div class="status-bar">
-                <div class="flex items-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    <span class="dot"></span> 系统就绪 / System Ready
+            <a href="pet_skin.html" class="feature-card group">
+                <div class="scan-line"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20">02</span>
+                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">SKIN</span>
                 </div>
-                <div class="text-[10px] text-slate-600 font-mono">ENCRYPTED CONNECTION : SHAO.KX_ALPHA</div>
-            </div>
+                <h2 class="text-2xl font-bold text-white mb-4">皮肤病理索引</h2>
+                <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                    涵盖真菌、蠕形螨、过敏性皮炎等常见病例识别。
+                    伍德氏灯荧光特征库及用药周期监控。
+                </p>
+                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
+            </a>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                <div class="space-y-6">
-                    <h2 class="text-2xl font-bold text-white italic">临床逻辑自动化流转</h2>
-                    <p class="text-sm text-slate-500 leading-relaxed">
-                        当前控制台已成功嫁接四个核心医疗模块。通过上方导航栏可进入深度的病理分析页面。系统支持一键生成 PDF 报告与诊疗数据的云端同步。
-                    </p>
-                    <div class="flex gap-4">
-                        <div class="bg-white/5 p-4 rounded-lg flex-1 border border-white/5">
-                            <p class="text-[10px] text-slate-500 mb-1">活跃模块</p>
-                            <p class="text-xl font-bold text-white">04</p>
-                        </div>
-                        <div class="bg-white/5 p-4 rounded-lg flex-1 border border-white/5">
-                            <p class="text-[10px] text-slate-500 mb-1">诊疗方案</p>
-                            <p class="text-xl font-bold text-white">READY</p>
-                        </div>
-                    </div>
+            <a href="pet_drug.html" class="feature-card group">
+                <div class="scan-line"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20">03</span>
+                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">DRUGS</span>
                 </div>
-                
-                <div class="bg-black/50 border border-white/5 rounded-2xl p-6 font-mono text-[11px] text-slate-600">
-                    <p>> STARTING VETERINARY_ENGINE...</p>
-                    <p>> LOADING INTERNAL_MEDICINE_DB... DONE</p>
-                    <p>> LINKING SKIN_PATHOLOGY_LOGS... DONE</p>
-                    <p>> CALIBRATING DRUG_DOSAGE_CALCULATOR... DONE</p>
-                    <p>> SHAO.KX SYSTEM STATUS: <span class="text-[#d4af37]">OPTIMIZED</span></p>
-                    <div class="mt-4 h-1 bg-slate-900 w-full rounded-full overflow-hidden">
-                        <div class="bg-[#d4af37] h-full w-[85%]"></div>
-                    </div>
+                <h2 class="text-2xl font-bold text-white mb-4">危急重症药典</h2>
+                <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                    实时公斤体重换算算法。包含阿托品、肾上腺素、利多卡因等
+                    ICU 级别急救药物使用规范。
+                </p>
+                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
+            </a>
+
+            <a href="pet_feline.html" class="feature-card group">
+                <div class="scan-line"></div>
+                <div class="flex justify-between items-start mb-6">
+                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20">04</span>
+                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">FELINE</span>
                 </div>
-            </div>
+                <h2 class="text-2xl font-bold text-white mb-4">猫科全链路专题</h2>
+                <p class="text-sm text-slate-400 leading-relaxed mb-6">
+                    猫泌尿系统综合征 (FIC/FLUTD) 专项管理。
+                    包含环境减压 (MEMO) 与长期饮食干预路径。
+                </p>
+                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
+            </a>
+
         </div>
 
-        <footer class="mt-8 flex justify-between items-center text-[9px] text-slate-700 font-bold uppercase tracking-widest">
-            <p>Built by Shao.KX for Digital Veterinary Practice</p>
-            <p>© 2026 ALL RIGHTS RESERVED</p>
+        <footer class="mt-16 pt-8 border-t border-[#d4af37]/10 flex flex-col md:flex-row justify-between text-[10px] text-slate-600 font-bold uppercase tracking-widest">
+            <p>Shao.KX / Digital Medicine Archive</p>
+            <p class="mt-2 md:mt-0 text-[#d4af37]/40">System ready. Links established to sub-modules.</p>
         </footer>
     </div>
 
