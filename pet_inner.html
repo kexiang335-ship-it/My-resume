@@ -2,29 +2,58 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>内科诊疗详情</title>
+    <title>SHAO.KX | CPV 内科诊疗逻辑</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #080808; color: #d4af37; padding: 40px; }
-        .content-box { border: 1px solid #333; padding: 30px; border-radius: 20px; background: #0f0f0f; max-width: 800px; margin: auto; position: relative; }
-        .tool-btn { border: 1px solid #d4af37; padding: 5px 15px; border-radius: 5px; font-size: 12px; cursor: pointer; color: #d4af37; background: transparent; }
-        @media print { .no-print { display: none; } body { background: white; color: black; } .content-box { border: none; } }
+        body { background: #080808; color: #d4af37; font-family: 'Inter', sans-serif; padding: 20px; }
+        .logic-border { border: 1px solid #333; background: rgba(20,20,20,0.8); border-radius: 24px; padding: 40px; max-width: 900px; margin: auto; box-shadow: 0 0 30px rgba(0,0,0,0.5); }
+        .data-card { background: rgba(212, 175, 55, 0.05); border-left: 4px solid #d4af37; padding: 20px; margin: 20px 0; }
+        @media print { .no-print { display: none; } body { background: white; color: black; } }
     </style>
 </head>
 <body>
-    <div class="no-print mb-8 max-w-[800px] mx-auto flex justify-between">
-        <button onclick="window.history.back()" class="text-slate-500 underline text-sm">返回上一页</button>
-        <button onclick="window.print()" class="tool-btn">导出 PDF 报告</button>
+    <div class="no-print max-w-[900px] mx-auto mb-6 flex justify-between items-center">
+        <a href="pet-med.html" class="text-sm text-slate-500 hover:text-[#d4af37]">← 返回控制台</a>
+        <button onclick="window.print()" class="border border-[#d4af37] px-4 py-1 rounded-full text-xs hover:bg-[#d4af37] hover:text-black transition">导出 AI 诊疗报告</button>
     </div>
-    <div class="content-box">
-        <h1 class="text-3xl font-bold mb-6 italic text-white border-b border-[#d4af37] pb-4">犬细小病毒 (CPV) 临床方案</h1>
-        <div class="space-y-6 text-slate-300">
-            <p class="text-sm">基于临床病例总结的补液方案与干扰素使用规范。</p>
-            <div class="bg-white/5 p-4 rounded-lg border border-white/10">
-                <h3 class="font-bold text-[#d4af37] mb-2">补液系数参考：</h3>
-                <p class="text-sm">轻度脱水：50ml/kg | 中度：80ml/kg | 重度：120ml/kg</p>
+
+    <div class="logic-border">
+        <header class="border-b border-white/10 pb-6 mb-8">
+            <h1 class="text-4xl font-black italic text-white uppercase tracking-tighter">CPV 核心诊疗逻辑 <span class="text-[#d4af37]">v4.0</span></h1>
+            <p class="text-[10px] text-slate-500 mt-2">基于 2026 临床大数据：补液模型与单抗滴定</p>
+        </header>
+
+        <section class="space-y-8">
+            <div>
+                <h3 class="text-lg font-bold text-white mb-4">01. 累计丢失量换算 (Dehydration Math)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-black/40 p-4 border border-white/5 rounded-xl">
+                        <p class="text-slate-500 mb-1">轻度 (5%)</p>
+                        <p class="text-xl font-bold">50ml/kg</p>
+                    </div>
+                    <div class="bg-black/40 p-4 border border-white/5 rounded-xl">
+                        <p class="text-slate-500 mb-1">中度 (8%)</p>
+                        <p class="text-xl font-bold">80ml/kg</p>
+                    </div>
+                    <div class="bg-black/40 p-4 border border-white/5 rounded-xl">
+                        <p class="text-slate-500 mb-1">重度 (12%)</p>
+                        <p class="text-xl font-bold text-red-500">120ml/kg</p>
+                    </div>
+                </div>
             </div>
-        </div>
+
+            <div class="data-card">
+                <h3 class="font-bold text-white mb-2 underline">专家干预指令：</h3>
+                <p class="text-sm leading-relaxed text-slate-300">
+                    针对 CPV 引起的重度呕吐，首选 **Maropitant (赛瑞宁)** 1mg/kg SC SID。
+                    若白细胞低于 2.0，必须在 2 小时内启动 **G-CSF (升白针)** 5-10ug/kg。
+                </p>
+            </div>
+
+            <footer class="pt-8 border-t border-white/5">
+                <p class="text-[10px] text-slate-600">SHAO.KX AGENT SYSTEM - MEDICAL LOGS</p>
+            </footer>
+        </section>
     </div>
 </body>
 </html>
