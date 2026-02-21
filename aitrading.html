@@ -3,20 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAO.KX | 全链路外贸数字化 AI 经营 Agent</title>
+    <title>SHAO.KX | 全链路外贸数字化操作系统 v5.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
         body { background: #080808; color: #d4af37; font-family: 'Inter', sans-serif; }
-        .logic-panel { background: rgba(15, 15, 15, 0.98); border: 1px solid #333; border-radius: 16px; transition: 0.3s; }
-        .logic-panel:hover { border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+        .logic-panel { background: rgba(15, 15, 15, 0.98); border: 1px solid #333; border-radius: 16px; }
         .terminal-font { font-family: 'JetBrains Mono', monospace; }
-        input, select, textarea { background: #000 !important; color: #fff !important; border: 1px solid #444 !important; padding: 12px; border-radius: 8px; width: 100%; outline: none; font-size: 14px; }
-        input:focus { border-color: #d4af37; box-shadow: 0 0 8px rgba(212, 175, 55, 0.3); }
-        .btn-gold { background: #d4af37; color: #000; font-weight: 800; padding: 14px; border-radius: 10px; transition: 0.3s; width: 100%; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        input, select { background: #000 !important; color: #fff !important; border: 1px solid #444 !important; padding: 12px; border-radius: 8px; width: 100%; outline: none; }
+        .btn-gold { background: #d4af37; color: #000; font-weight: 800; padding: 14px; border-radius: 10px; transition: 0.3s; width: 100%; cursor: pointer; }
         .btn-gold:hover { background: #fff; transform: scale(1.02); }
-        .guide-step { background: rgba(212, 175, 55, 0.05); border: 1px dashed rgba(212, 175, 55, 0.3); padding: 10px; border-radius: 8px; font-size: 11px; }
-        .badge { background: #1a1a1a; border: 1px solid #333; padding: 2px 8px; border-radius: 4px; font-size: 10px; color: #888; }
+        .tool-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 6px; font-size: 10px; color: #888; transition: 0.2s; }
+        .tool-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; }
+        
+        /* 导出 PDF 时的样式优化 */
+        @media print {
+            body { background: white; color: black; }
+            .lg\:col-span-4, .guide-step, header, .tool-btn { display: none !important; }
+            .lg\:col-span-8 { width: 100% !important; }
+            .logic-panel { border: none !important; background: white !important; }
+            #terminal-screen { color: black !important; }
+            .text-slate-300, .text-slate-500 { color: #333 !important; }
+            .bg-white\/5, .bg-black { background: #f5f5f5 !important; border: 1px solid #ccc !important; }
+        }
     </style>
 </head>
 <body class="p-4 md:p-10">
@@ -25,103 +34,52 @@
         <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-6">
             <div>
                 <h1 class="text-4xl font-black italic tracking-tighter text-white">SHAO.KX <span class="text-[#d4af37]">AGENT</span></h1>
-                <p class="text-xs text-slate-500 mt-2 uppercase tracking-[0.3em]">全链路外贸经营数字化操作系统 v4.0 (2026 专家版)</p>
-            </div>
-            <div class="mt-4 md:mt-0 bg-white/5 p-3 rounded-xl border border-white/10">
-                <p class="text-[10px] text-slate-400 mb-1 font-bold uppercase">系统说明书 (System Manual)</p>
-                <p class="text-[11px] text-slate-500 leading-relaxed">本系统内置 6.5 万字外贸实战逻辑库，专门解决：<br>1. 找不到精准人 2. 没内容分发流量 3. 跨国合规风险</p>
+                <p class="text-xs text-slate-500 mt-2 uppercase tracking-[0.3em]">全链路外贸数字化操作系统 v5.0 (2026 增强版)</p>
             </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="guide-step">
-                <p class="text-[#d4af37] font-bold mb-1">STEP 01: 设定画像</p>
-                <p class="text-slate-400">输入你的产品（如：逆变器）并选择目标市场，系统会自动调取该地区的采购逻辑。</p>
-            </div>
-            <div class="guide-step">
-                <p class="text-[#d4af37] font-bold mb-1">STEP 02: 启动引擎</p>
-                <p class="text-slate-400">点击“执行”，AI 会模拟极客系统的 100 台手机矩阵逻辑，生成分发脚本与文案。</p>
-            </div>
-            <div class="guide-step">
-                <p class="text-[#d4af37] font-bold mb-1">STEP 03: 风险扫描</p>
-                <p class="text-slate-400">利用写死的 2026 合规库，自动检查当前贸易链路的关税红线与政策陷阱。</p>
-            </div>
-        </div>
-
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
             <div class="lg:col-span-4 space-y-6">
                 <div class="logic-panel p-6">
-                    <h3 class="text-xs font-black text-white mb-6 uppercase flex items-center gap-2">
-                        <span class="w-1.5 h-1.5 bg-[#d4af37] rounded-full"></span> 经营参数配置
-                    </h3>
-                    
+                    <h3 class="text-xs font-black text-white mb-6 uppercase flex items-center gap-2">配置经营参数</h3>
                     <div class="space-y-6">
                         <div>
-                            <label class="text-[10px] text-slate-500 mb-2 block uppercase font-bold">1. 核心产品线 (Core Product)</label>
-                            <input type="text" id="prod-input" placeholder="例如: 储能电池, 工业模具, 医疗耗材">
+                            <label class="text-[10px] text-slate-500 mb-2 block font-bold">1. 核心产品 (Product)</label>
+                            <input type="text" id="prod-input" placeholder="例如: 储能电池, 工业模具">
                         </div>
-                        
                         <div>
-                            <label class="text-[10px] text-slate-500 mb-2 block uppercase font-bold">2. 战略目标区域 (Region)</label>
+                            <label class="text-[10px] text-slate-500 mb-2 block font-bold">2. 战略目标区域 (Region)</label>
                             <select id="region-input">
-                                <option value="DE">德国/欧洲 (重合规/碳足迹/CE)</option>
-                                <option value="SA">沙特/中东 (重关系/Wasasta/长账期)</option>
-                                <option value="US">美国/北美 (重效率/品牌/本土化服务)</option>
-                                <option value="VN">越南/东南亚 (重性价比/小MOQ/分销)</option>
+                                <option value="DE">德国/欧洲 (重合规/碳足迹)</option>
+                                <option value="SA">沙特/中东 (重关系/长账期)</option>
+                                <option value="US">美国/北美 (重品牌/SEO)</option>
+                                <option value="VN">越南/东南亚 (重周转/MOQ)</option>
                             </select>
                         </div>
-
-                        <div>
-                            <label class="text-[10px] text-slate-500 mb-2 block uppercase font-bold">3. 执行优先级 (Focus)</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <label class="flex items-center gap-2 p-2 bg-white/5 rounded text-[10px] cursor-pointer hover:bg-white/10">
-                                    <input type="radio" name="focus" value="leads" checked class="w-3 h-3"> 快速获客
-                                </label>
-                                <label class="flex items-center gap-2 p-2 bg-white/5 rounded text-[10px] cursor-pointer hover:bg-white/10">
-                                    <input type="radio" name="focus" value="content" class="w-3 h-3"> 内容霸屏
-                                </label>
-                            </div>
-                        </div>
-
-                        <button onclick="executeAgent()" class="btn-gold">执行 Agent 增长链条</button>
+                        <button onclick="executeAgent()" class="btn-gold">生成数字化增长方案</button>
                     </div>
                 </div>
-
-                <div class="logic-panel p-5 bg-[#d4af37]/5 border-[#d4af37]/20">
-                    <p class="text-[10px] text-[#d4af37] font-bold uppercase mb-3">快捷工具箱 (Toolkit)</p>
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
-                            <span>AI 麦可内容工厂</span>
-                            <span class="text-green-500 font-bold">READY</span>
-                        </div>
-                        <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
-                            <span>极客系统矩阵节点</span>
-                            <span class="text-green-500 font-bold">ONLINE</span>
-                        </div>
-                        <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
-                            <span>2026 合规知识库</span>
-                            <span class="text-green-500 font-bold">LOADED</span>
-                        </div>
-                    </div>
+                
+                <div class="p-4 rounded-xl border border-dashed border-[#d4af37]/30 text-[11px] text-slate-500">
+                    <p class="text-[#d4af37] font-bold mb-1">💡 操作说明：</p>
+                    <p>填写产品和市场后点击执行。右侧报告生成后，可使用右上角按钮进行“内容复制”或“导出PDF打印”。</p>
                 </div>
             </div>
 
             <div class="lg:col-span-8">
-                <div class="logic-panel h-full flex flex-col overflow-hidden">
-                    <div class="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
-                        <div class="flex gap-2">
-                            <span class="w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"></span>
-                            <span class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></span>
-                            <span class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></span>
-                        </div>
-                        <span class="text-[10px] terminal-font text-slate-500">EXPERT_LOG_SYSTEM_V4.0.1</span>
+                <div class="logic-panel h-full flex flex-col overflow-hidden relative">
+                    <div class="absolute top-4 right-4 z-10 flex gap-2">
+                        <button onclick="copyTerminal()" class="tool-btn">一键复制文本</button>
+                        <button onclick="exportToPDF()" class="tool-btn">导出报告 PDF</button>
+                    </div>
+
+                    <div class="p-4 border-b border-white/5 bg-white/5">
+                        <span class="text-[10px] terminal-font text-slate-500 uppercase">OUTPUT_TERMINAL_V5.0</span>
                     </div>
                     
                     <div id="terminal-screen" class="p-8 flex-1 overflow-y-auto terminal-font text-sm leading-relaxed text-slate-300">
-                        <div id="init-screen" class="h-full flex flex-col items-center justify-center space-y-4 opacity-30">
-                            <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
-                            <p class="uppercase tracking-[0.4em] text-[10px]">等待输入经营指令...</p>
+                        <div id="init-screen" class="h-full flex flex-col items-center justify-center opacity-30">
+                            <p class="uppercase tracking-[0.4em] text-[10px]">等待指令输入...</p>
                         </div>
                         <div id="output-content" class="hidden space-y-8"></div>
                     </div>
@@ -133,33 +91,20 @@
     <script>
         const KNOWLEDGE_BASE = {
             DE: {
-                title: "德国及欧陆市场 (Precision Engineering Focus)",
-                logic: "该地区采购决策极其慎重。必须通过‘数字信任体系’破冰。建议：在独立站显著位置展示碳足迹证书（CBAM）及 ERP 流程视频。",
-                leads: ["Siemens Energy AG (采购部)", "Lidl International Supply", "BayWa RE", "EuroPower Gmbh"],
-                strategy: "极客系统分发：在 LinkedIn 针对 German-speaking 区域定向投放 50 条关于‘工厂自动化与合规’的视频。不要谈价格，谈‘Total Cost of Ownership (TCO)’。",
-                email: "Subject: [Audit Ready] Certified ${prod} for EU Industrial Standards\n\nHi,\nWe noticed your requirements for high-spec ${prod}. Our supply chain is fully CE/RoHS compliant with 2026 digital carbon tracking..."
+                title: "德国及欧陆市场 (Digital Trust Architecture)",
+                logic: "德国采购偏好理性。重点：展示 CBAM 碳足迹合规及 2026 TUV 数字化工厂认证。",
+                leads: ["Siemens Energy", "Lidl Sourcing", "BayWa RE"],
+                email: "Subject: [Compliance] Digital Carbon-Track for ${prod}\n\nOur ${prod} supports 2026 EU standards...",
+                risk: "CBAM 碳关税申报进入高压期，需准备电子原产地证明。"
             },
             SA: {
-                title: "沙特及中东市场 (Relationship & Vision 2030 Focus)",
-                logic: "中东大额订单极其看重线下信任。AI 麦可的任务是模拟‘高管拜访’的视觉感。建议：使用阿拉伯语数字人进行 24 小时产品答疑。",
-                leads: ["NEOM Project Procurement", "Saudi Aramco Logistics", "Al-Futtaim Group", "Dubai Municipality"],
-                strategy: "极客系统分发：模拟 100 台手机在迪拜/利雅得坐标点进行 TikTok 实时地理位置分发。突出‘沙特 2030 愿景’匹配性。",
-                email: "Subject: Direct Factory Support for Middle East Projects (${prod})\n\nDear Partner,\nAs a specialist in ${prod}, we provide direct factory pricing with local SABER certification support..."
-            },
-            VN: {
-                title: "越南及东南亚市场 (Agility & Distribution Focus)",
-                logic: "典型的小单快反、分销驱动市场。重点在于性价比和极速交付。建议：利用 WhatsApp 自动化机器人进行快速报价回复。",
-                leads: ["Vinhomes Procurement", "Thai Binh Distribution", "Singapore Solar Hub", "Jakarta Tech Imp"],
-                strategy: "极客系统分发：利用 TikTok 直播间进行‘现货直发’模拟。强调低 MOQ 和 7 天到港的物流优势。",
-                email: "Subject: Trending ${prod} for Local Distributors (Low MOQ)\n\nHi,\nMaximize your profit with our stock-ready ${prod}. Support 10pcs sample order with 48h shipping..."
-            },
-            US: {
-                title: "北美市场 (Efficiency & Brand Logic Focus)",
-                logic: "极其关注 SEO 排名和售后本土化。如果搜不到你的官网，你就不存在。建议：全网聚合 SEO 霸屏。",
-                leads: ["Home Depot Global Sourcing", "Amazon FBA Top Sellers", "Grainger Industrial", "Costco Supply"],
-                strategy: "极客系统分发：在 Google Shopping 及 YouTube 铺设大量‘评测类’AI 视频，规避反倾销敏感词，主打品牌背书。",
-                email: "Subject: Optimized Supply for ${prod} - US Warehouse Options\n\nHi,\nCheck out our latest ${prod} specs. Optimized for North American retailers with full liability insurance coverage..."
+                title: "沙特/中东 (Vision 2030 Relationship)",
+                logic: "重人际与长期信用。建议利用 AI 数字人进行阿拉伯语实时讲解。",
+                leads: ["NEOM Procurement", "Saudi Aramco", "Al-Futtaim"],
+                email: "Subject: Direct Factory for Vision 2030 - ${prod}\n\nFlexible payment terms (LC/OA) supported...",
+                risk: "SABER 认证系统更新，请核实最新 HS Code 匹配度。"
             }
+            // ... 可根据需要继续扩展
         };
 
         function executeAgent() {
@@ -167,59 +112,56 @@
             const region = document.getElementById('region-input').value;
             const output = document.getElementById('output-content');
             const init = document.getElementById('init-screen');
-            const data = KNOWLEDGE_BASE[region];
+            const data = KNOWLEDGE_BASE[region] || KNOWLEDGE_BASE.DE;
 
             init.classList.add('hidden');
             output.classList.remove('hidden');
-            output.innerHTML = `<p class="text-[#d4af37] animate-pulse">正在从 6.5万字 知识库检索 ${prod} 相关逻辑... 正在调用 2026 贸易合规节点...</p>`;
+            output.innerHTML = `<div class="animate-pulse">DECRYPTING KNOWLEDGE BASE FOR ${prod}...</div>`;
 
             setTimeout(() => {
                 output.innerHTML = `
-                    <div class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                    <div id="export-area" class="space-y-8">
                         <section>
-                            <h4 class="text-white font-black text-lg underline decoration-[#d4af37] decoration-2 underline-offset-8 mb-4">${data.title}</h4>
-                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                                <p class="text-[10px] text-slate-500 uppercase mb-2">底层经营逻辑 (Core Logic)</p>
-                                <p class="text-sm">${data.logic.replace(/\${prod}/g, prod)}</p>
+                            <h4 class="text-white font-black text-lg border-b border-[#d4af37] pb-2">${data.title}</h4>
+                            <p class="mt-4 text-sm">${data.logic.replace(/\${prod}/g, prod)}</p>
+                        </section>
+                        <section class="grid grid-cols-2 gap-4">
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                <p class="text-[10px] text-blue-400 font-bold mb-2">挖掘客户线索</p>
+                                <ul class="text-[11px] space-y-1">${data.leads.map(l => `<li>🎯 ${l}</li>`).join('')}</ul>
+                            </div>
+                            <div class="p-4 bg-white/5 rounded-xl border border-white/10">
+                                <p class="text-[10px] text-purple-400 font-bold mb-2">风险预警</p>
+                                <p class="text-[11px]">${data.risk}</p>
                             </div>
                         </section>
-
-                        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
-                                <p class="text-[10px] text-blue-400 font-bold uppercase mb-2">极客系统挖掘: 精准客户池</p>
-                                <ul class="text-[11px] space-y-1">
-                                    ${data.leads.map(l => `<li>🎯 ${l}</li>`).join('')}
-                                </ul>
-                            </div>
-                            <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
-                                <p class="text-[10px] text-purple-400 font-bold uppercase mb-2">AI 麦可分发逻辑</p>
-                                <p class="text-[11px] leading-relaxed">${data.strategy.replace(/\${prod}/g, prod)}</p>
-                            </div>
-                        </section>
-
                         <section>
-                            <p class="text-[10px] text-slate-500 uppercase mb-2 font-bold">“千面邮”专家模板 (Smart Email Hook)</p>
-                            <div class="bg-black p-5 rounded-xl border border-white/10 relative overflow-hidden">
-                                <div class="absolute top-0 right-0 p-2 bg-white/5 text-[8px]">REDACTED</div>
-                                <pre class="text-[12px] text-slate-300 whitespace-pre-wrap">${data.email.replace(/\${prod}/g, prod)}</pre>
+                            <p class="text-[10px] text-slate-500 mb-2">“千面邮”智能文案</p>
+                            <div class="bg-black p-4 rounded-xl border border-white/10">
+                                <pre id="email-text" class="text-[12px] text-slate-300 whitespace-pre-wrap">${data.email.replace(/\${prod}/g, prod)}</pre>
                             </div>
                         </section>
-
-                        <section class="bg-red-500/5 p-4 rounded-xl border border-red-500/20">
-                            <h5 class="text-red-500 text-[10px] font-bold uppercase mb-2 tracking-widest">⚠️ 2026 专家级风控提醒 (Critical Risk Alert)</h5>
-                            <div class="text-[11px] text-slate-400 space-y-1">
-                                <p>● 关税预警：针对 ${prod}，${region} 区域最新关税波动指数为 +4.2%，建议贸易术语使用 DDP。</p>
-                                <p>● 诈骗防范：检测到该区域高频出现 AI 换脸冒充财务转账，请必须通过非网络渠道核实账号。</p>
-                                <p>● 合规壁垒：该区域 2026.04 将执行新的碳足迹追溯，请确保供应链数据已上链。</p>
-                            </div>
-                        </section>
-
-                        <div class="text-center pt-4">
-                            <button onclick="window.print()" class="text-[10px] border border-white/20 px-4 py-1 rounded text-slate-500 hover:text-white transition">导出经营报告 (Print Report)</button>
-                        </div>
                     </div>
                 `;
-            }, 1200);
+            }, 800);
+        }
+
+        // 一键复制功能
+        function copyTerminal() {
+            const content = document.getElementById('output-content').innerText;
+            if(!content || content.includes("DECRYPTING")) return;
+            navigator.clipboard.writeText(content).then(() => {
+                alert("方案内容已复制到剪贴板！");
+            });
+        }
+
+        // 导出 PDF 功能（利用浏览器打印模拟）
+        function exportToPDF() {
+            if(document.getElementById('output-content').classList.contains('hidden')) {
+                alert("请先生成方案再导出。");
+                return;
+            }
+            window.print();
         }
     </script>
 </body>
