@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>内科诊疗详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #080808; color: #d4af37; padding: 40px; }
+        .content-box { border: 1px solid #333; padding: 30px; border-radius: 20px; background: #0f0f0f; max-width: 800px; margin: auto; position: relative; }
+        .tool-btn { border: 1px solid #d4af37; padding: 5px 15px; border-radius: 5px; font-size: 12px; cursor: pointer; color: #d4af37; background: transparent; }
+        @media print { .no-print { display: none; } body { background: white; color: black; } .content-box { border: none; } }
+    </style>
+</head>
+<body>
+    <div class="no-print mb-8 max-w-[800px] mx-auto flex justify-between">
+        <button onclick="window.history.back()" class="text-slate-500 underline text-sm">返回上一页</button>
+        <button onclick="window.print()" class="tool-btn">导出 PDF 报告</button>
+    </div>
+    <div class="content-box">
+        <h1 class="text-3xl font-bold mb-6 italic text-white border-b border-[#d4af37] pb-4">犬细小病毒 (CPV) 临床方案</h1>
+        <div class="space-y-6 text-slate-300">
+            <p class="text-sm">基于临床病例总结的补液方案与干扰素使用规范。</p>
+            <div class="bg-white/5 p-4 rounded-lg border border-white/10">
+                <h3 class="font-bold text-[#d4af37] mb-2">补液系数参考：</h3>
+                <p class="text-sm">轻度脱水：50ml/kg | 中度：80ml/kg | 重度：120ml/kg</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
