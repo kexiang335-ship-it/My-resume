@@ -5,28 +5,33 @@
     <title>SHAO.KX | 急救处方药典</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #080808; color: #d4af37; padding: 20px; }
-        .table-container { border: 1px solid #333; background: #000; border-radius: 20px; overflow: hidden; max-width: 900px; margin: auto; }
-        th { background: #1a1a1a; color: #d4af37; text-transform: uppercase; font-size: 10px; padding: 15px; }
-        td { border-bottom: 1px solid #111; padding: 15px; font-size: 13px; color: #ccc; }
+        body { background: #080808; color: #d4af37; font-family: sans-serif; padding: 20px; }
+        .logic-border { border: 1px solid #333; background: #000; border-radius: 24px; padding: 40px; max-width: 900px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th { border-bottom: 2px solid #d4af37; padding: 12px; text-align: left; color: #fff; font-size: 12px; }
+        td { border-bottom: 1px solid #222; padding: 12px; color: #ccc; font-size: 13px; }
+        .tool-btn { border: 1px solid #d4af37; padding: 5px 15px; border-radius: 5px; font-size: 12px; cursor: pointer; color: #d4af37; }
+        @media print { .no-print { display: none; } body { background: white; color: black; } }
     </style>
 </head>
 <body>
-    <div class="max-w-[900px] mx-auto mb-10">
-        <h1 class="text-4xl font-black text-white italic tracking-widest">CRITICAL CARE <span class="text-[#d4af37]">DRUGS</span></h1>
-        <p class="text-[10px] text-slate-500 mt-2">危急重症急救用药公斤体重极速换算</p>
+    <div class="no-print max-w-[900px] mx-auto mb-6 flex justify-between items-center">
+        <button onclick="window.history.back()" class="text-slate-500 underline text-sm">← 返回控制台</button>
+        <button onclick="window.print()" class="tool-btn">导出 PDF 药典</button>
     </div>
 
-    <div class="table-container text-center">
-        <table class="w-full">
+    <div class="logic-border">
+        <h1 class="text-3xl font-black text-white italic mb-4">危急重症用药手册</h1>
+        <p class="text-xs text-slate-500 mb-6 uppercase tracking-widest">Emergency Medication Protocol</p>
+        <table>
             <thead>
-                <tr><th>药物名称</th><th>标准剂量 (per kg)</th><th>主要适应症</th><th>给药途径</th></tr>
+                <tr><th>药物名称</th><th>标准剂量 (kg)</th><th>给药途径</th></tr>
             </thead>
             <tbody>
-                <tr><td class="text-white font-bold">阿托品 Atropine</td><td>0.02 - 0.04 mg</td><td>心动过缓/有机磷中毒</td><td>IV / IM / SC</td></tr>
-                <tr><td class="text-white font-bold">肾上腺素 Epinephrine</td><td>0.01 - 0.02 mg</td><td>心跳骤停/过敏休克</td><td>IV / IT</td></tr>
-                <tr><td class="text-white font-bold">地塞米松 Dexamethasone</td><td>0.5 - 2.0 mg</td><td>重症抗炎/抗休克</td><td>IV / IM</td></tr>
-                <tr><td class="text-white font-bold">利多卡因 Lidocaine</td><td>2.0 - 4.0 mg</td><td>室性心律失常</td><td>IV Slow</td></tr>
+                <tr><td>阿托品 Atropine</td><td>0.02 - 0.04 mg</td><td>IV / IM / SC</td></tr>
+                <tr><td>肾上腺素 Epinephrine</td><td>0.01 - 0.02 mg</td><td>IV / IT</td></tr>
+                <tr><td>利多卡因 Lidocaine</td><td>2.0 - 4.0 mg</td><td>IV (Slow)</td></tr>
+                <tr><td>速尿 Furosemide</td><td>2.0 - 4.0 mg</td><td>IV / IM</td></tr>
             </tbody>
         </table>
     </div>
