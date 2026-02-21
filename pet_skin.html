@@ -5,36 +5,31 @@
     <title>SHAO.KX | 皮肤科病理索引</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background: #080808; color: #d4af37; padding: 20px; }
-        .skin-panel { background: #0f0f0f; border: 1px solid #d4af37; border-radius: 24px; padding: 40px; max-width: 900px; margin: auto; border-style: dashed; }
-        .fluorescence-glow { color: #ccff00; text-shadow: 0 0 10px rgba(204, 255, 0, 0.4); }
+        body { background: #080808; color: #d4af37; font-family: sans-serif; padding: 20px; }
+        .logic-border { border: 1px solid #333; background: #0f0f0f; border-radius: 24px; padding: 40px; max-width: 900px; margin: auto; }
+        .tool-btn { border: 1px solid #d4af37; padding: 5px 15px; border-radius: 5px; font-size: 12px; cursor: pointer; color: #d4af37; background: transparent; }
+        @media print { .no-print { display: none; } body { background: white; color: black; } }
     </style>
 </head>
 <body>
-    <div class="skin-panel">
-        <h1 class="text-3xl font-black text-white italic mb-8 border-l-4 border-[#d4af37] pl-4">真菌性皮肤病 (Dermatophytosis)</h1>
-        
-        <div class="space-y-10">
-            <div class="bg-black p-6 rounded-2xl">
-                <h4 class="text-xs text-slate-500 uppercase mb-4">临床识别特征 (Fluorescence)</h4>
-                <p class="text-sm text-slate-300 italic">
-                    使用 365nm Wood's Lamp。犬小孢子菌感染部位应呈现 <span class="fluorescence-glow font-bold">“苹果绿”</span> 荧光。
-                    注意区别：药膏残留通常呈现黄色或紫白色。
-                </p>
-            </div>
+    <div class="no-print max-w-[900px] mx-auto mb-6 flex justify-between items-center">
+        <button onclick="window.history.back()" class="text-slate-500 underline text-sm">← 返回控制台</button>
+        <button onclick="window.print()" class="tool-btn">导出 PDF 报告</button>
+    </div>
 
+    <div class="logic-border">
+        <h1 class="text-3xl font-black text-white italic mb-6 border-b border-[#d4af37] pb-4">真菌性皮肤病识别指南</h1>
+        <div class="space-y-6 text-slate-300">
             <section>
-                <h3 class="text-lg font-bold text-white mb-4">联合治疗方案 (Combined Therapy)</h3>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="p-4 bg-white/5 rounded-xl border border-white/10">
-                        <p class="text-[#d4af37] text-xs font-bold mb-2">内服方案</p>
-                        <p class="text-sm">伊曲康唑: 5mg/kg PO SID<br>连服 7 天，停 7 天</p>
-                    </div>
-                    <div class="p-4 bg-white/5 rounded-xl border border-white/10">
-                        <p class="text-[#d4af37] text-xs font-bold mb-2">外用药浴</p>
-                        <p class="text-sm">石硫合剂 1:16 稀释<br>每周 2 次全身浸泡</p>
-                    </div>
-                </div>
+                <h3 class="text-[#d4af37] font-bold text-lg mb-2">一、伍德氏灯 (Wood's Lamp) 诊断</h3>
+                <p class="text-sm leading-relaxed">在暗室环境下使用 365nm 波长。**犬小孢子菌**感染的毛干应呈现明显的“苹果绿”荧光。需注意区分皮屑、药膏或凡士林产生的假阳性干扰。</p>
+            </section>
+            <section class="bg-white/5 p-4 rounded-xl border border-white/10">
+                <h3 class="text-[#d4af37] font-bold mb-2">二、药物剂量模型</h3>
+                <ul class="list-disc ml-5 text-sm space-y-2">
+                    <li><strong>伊曲康唑 (Itraconazole):</strong> 5-10mg/kg PO SID，建议采用“服七停七”周期疗法。</li>
+                    <li><strong>特比萘芬 (Terbinafine):</strong> 30mg/kg PO SID。</li>
+                </ul>
             </section>
         </div>
     </div>
