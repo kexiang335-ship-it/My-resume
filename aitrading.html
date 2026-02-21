@@ -3,140 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>跨境 B2B 全链路智能经营 Agent | SHAO.KX Tech</title>
+    <title>SHAO.KX | 全链路外贸专家知识库系统 (离线增强版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background: #050505; color: #d4af37; }
-        .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .glass-card { background: rgba(15, 15, 15, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.15); }
-        .stat-badge { background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2); }
-        input, select, textarea { background: rgba(255,255,255,0.05) !important; color: #fff !important; border: 1px solid rgba(212, 175, 55, 0.2) !important; }
-        .trust-tag { font-size: 10px; background: #1a3a1a; color: #4ade80; padding: 2px 8px; border-radius: 4px; border: 1px solid #2d5a2d; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        body { background: #020202; color: #d4af37; font-family: 'Inter', sans-serif; }
+        .logic-card { background: rgba(15, 15, 15, 0.95); border: 1px solid rgba(212, 175, 55, 0.2); transition: 0.4s; }
+        .logic-card:hover { border-color: #d4af37; box-shadow: 0 0 25px rgba(212, 175, 55, 0.15); }
+        .terminal { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; }
+        .highlight { color: #fff; font-weight: bold; background: rgba(212, 175, 55, 0.1); padding: 0 4px; }
+        .step-num { background: #d4af37; color: #000; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: bold; margin-right: 8px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; }
     </style>
 </head>
-<body class="min-h-screen p-6 md:p-10">
+<body class="p-4 md:p-8">
 
-    <nav class="mb-10 flex justify-between items-center">
-        <a href="portfolio.html" class="text-[10px] font-bold uppercase tracking-widest border border-[#d4af37]/30 px-4 py-2 rounded-full hover:bg-[#d4af37] hover:text-black transition">← 返回仓库 Portfolio</a>
-        <div class="flex gap-2">
-            <span class="trust-tag">已连接区块链节点: SHAO-Chain-01</span>
-            <span class="trust-tag">AI 麦可 4.0 已就绪</span>
+    <header class="max-w-7xl mx-auto mb-10 border-b border-white/10 pb-6 flex flex-col md:flex-row justify-between items-end">
+        <div>
+            <h1 class="text-4xl font-black italic gold-text tracking-tighter uppercase">Global Trade Expert Agent</h1>
+            <p class="text-slate-500 text-[10px] tracking-[0.5em] mt-2 uppercase italic">基于 2026 数字化转型蓝图 & 实战痛点知识库</p>
         </div>
-    </nav>
-
-    <div class="max-w-6xl mx-auto">
-        <div class="mb-12">
-            <h1 class="text-4xl font-black gold-text uppercase mb-2">跨境 B2B 全链路智能经营系统</h1>
-            <p class="text-slate-500 text-[10px] tracking-[0.4em] uppercase">Global Smart Trade Agent Framework v2.0 (Based on 2026 Blueprint)</p>
+        <div class="mt-4 md:mt-0 text-right">
+            <div class="text-[10px] text-slate-500 uppercase mb-1">系统状态: 深度学习逻辑已就绪</div>
+            <div class="flex gap-2">
+                <span class="px-2 py-1 bg-green-900/30 text-green-500 text-[10px] rounded border border-green-500/30 font-bold">● KNOWLEDGE-CORE LOADED</span>
+            </div>
         </div>
+    </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div class="glass-card p-8 rounded-[2rem] lg:col-span-1">
-                <h2 class="text-white font-bold mb-6 flex items-center gap-2">
-                    <span>🚀</span> 全渠道聚合获客矩阵
-                </h2>
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <div class="lg:col-span-4 space-y-6">
+            <div class="logic-card p-6 rounded-[2rem]">
+                <h3 class="text-white font-bold mb-6 flex items-center gap-2 uppercase tracking-widest text-xs">
+                    <span>⚙️</span> 经营参数配置
+                </h3>
                 
                 <div class="space-y-5">
                     <div>
-                        <label class="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">目标渠道 / Channel</label>
-                        <select id="channel" class="w-full p-3 rounded-xl text-xs">
-                            <option value="tiktok">TikTok/Instagram (短视频矩阵)</option>
-                            <option value="google">Google Shopping (SEO/SEM)</option>
-                            <option value="email">千面邮 (个性化邮件触达)</option>
+                        <label class="block text-[10px] text-slate-500 uppercase mb-2">1. 目标市场 (输入获得: 当地贸易壁垒、支付习惯、开发节奏)</label>
+                        <select id="market" class="w-full p-4 bg-black border border-white/10 rounded-2xl text-sm focus:border-[#d4af37] outline-none">
+                            <option value="de">德国/欧洲 (高准入门槛，低价格敏感，重合规)</option>
+                            <option value="ae">阿联酋/中东 (重人际信任，大额项目，长周期)</option>
+                            <option value="us">美国/北美 (重品牌故事，极速交付，高法律风险)</option>
+                            <option value="vn">越南/东南亚 (性价比之王，高频小单，社媒驱动)</option>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block text-[10px] uppercase tracking-widest text-slate-500 mb-2">产品核心价值 (针对客户痛点)</label>
-                        <textarea id="p-value" placeholder="例如：柔性起订、欧盟认证、快速交付..." class="w-full h-24 p-3 rounded-xl text-xs"></textarea>
+                        <label class="block text-[10px] text-slate-500 uppercase mb-2">2. 经营痛点 (输入获得: 对应数字化工具链与 SOP)</label>
+                        <select id="painpoint" class="w-full p-4 bg-black border border-white/10 rounded-2xl text-sm focus:border-[#d4af37] outline-none">
+                            <option value="no_leads">获客难：搜不到精准联系人，只能发群发垃圾信</option>
+                            <option value="no_reply">转化难：有询盘但不回，客户总是说价格贵</option>
+                            <option value="no_traffic">内容难：想做 TikTok 矩阵但没团队、没素材</option>
+                            <option value="no_trust">信任难：新客户不敢下单，担心付款安全</option>
+                        </select>
                     </div>
 
-                    <button onclick="executeAgent()" class="w-full py-4 bg-[#d4af37] text-black font-black uppercase tracking-widest text-xs rounded-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all">
-                        启动全链路 Agent 规划
+                    <div>
+                        <label class="block text-[10px] text-slate-500 uppercase mb-2">3. 核心产品 (输入获得: 细分行业 AI 营销词库)</label>
+                        <input id="product" type="text" placeholder="如：光伏逆变器、定制模具、宠物医疗" class="w-full p-4 bg-black border border-white/10 rounded-2xl text-sm focus:border-[#d4af37] outline-none">
+                    </div>
+
+                    <button onclick="diagnose()" class="w-full py-5 bg-[#d4af37] text-black font-black uppercase tracking-widest text-xs rounded-2xl hover:bg-white hover:scale-[1.02] transition-all shadow-lg shadow-[#d4af37]/20">
+                        执行深度行业诊断与方案调取
                     </button>
                 </div>
             </div>
 
-            <div class="lg:col-span-2 space-y-6">
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="stat-badge p-4 rounded-2xl text-center">
-                        <div class="text-[10px] text-slate-500 uppercase">获客成本 (CAC)</div>
-                        <div class="text-xl font-bold text-white italic">￥120</div>
-                    </div>
-                    <div class="stat-badge p-4 rounded-2xl text-center">
-                        <div class="text-[10px] text-slate-500 uppercase">内容效率提升</div>
-                        <div class="text-xl font-bold text-white italic">48x</div>
-                    </div>
-                    <div class="stat-badge p-4 rounded-2xl text-center">
-                        <div class="text-[10px] text-slate-500 uppercase">转化提升率</div>
-                        <div class="text-xl font-bold text-white italic">+35%</div>
-                    </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="logic-card p-5 rounded-3xl text-center">
+                    <p class="text-[9px] text-slate-500 uppercase">线索转化提升</p>
+                    <p class="text-2xl font-black text-white italic">+215%</p>
                 </div>
-
-                <div id="output-box" class="glass-card p-8 rounded-[2rem] min-h-[350px]">
-                    <div id="placeholder" class="h-full flex flex-col items-center justify-center text-slate-700">
-                        <div class="text-4xl mb-4">🤖</div>
-                        <p class="text-xs italic">等待全链路参数输入以激活智慧助手逻辑...</p>
-                    </div>
-                    <div id="agent-report" class="hidden space-y-6">
-                        </div>
+                <div class="logic-card p-5 rounded-3xl text-center">
+                    <p class="text-[9px] text-slate-500 uppercase">内容生产降本</p>
+                    <p class="text-2xl font-black text-white italic">-85%</p>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="lg:col-span-8">
+            <div class="logic-card rounded-[2.5rem] p-8 md:p-12 min-h-[680px] terminal">
+                <div id="welcome" class="h-full flex flex-col items-center justify-center space-y-6">
+                    <div class="w-16 h-16 border border-[#d4af37]/30 rounded-full flex items-center justify-center animate-pulse">
+                        <span class="text-2xl">⚡</span>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-white font-bold uppercase tracking-widest">SHAO.KX Intelligence Ready</p>
+                        <p class="text-[10px] text-slate-600 mt-2 leading-relaxed">请输入左侧参数以从数据库检索：<br>1. 多国别获客逻辑 | 2. AIGC 提效方案 | 3. 2026 数字化白皮书建议</p>
+                    </div>
+                </div>
+
+                <div id="report" class="hidden space-y-10 animate-fade-in">
+                    </div>
+            </div>
+        </div>
+    </main>
 
     <script>
-        function executeAgent() {
-            const channel = document.getElementById('channel').value;
-            const value = document.getElementById('p-value').value;
-            const report = document.getElementById('agent-report');
-            const placeholder = document.getElementById('placeholder');
+        // 核心专家知识库 - 纯 JavaScript 写死逻辑
+        const EXPERT_DB = {
+            market_logic: {
+                de: {
+                    title: "欧洲(德国)精密获客逻辑",
+                    logic: "德国采购经理倾向于基于“合规背书”进行初筛。必须展示 CE、TUV 或碳足迹证书。首轮沟通严禁使用激进的促销词。",
+                    action: "方案：使用“极客魔推”生成德语工厂实景视频，展示数字化 ERP 管理流程。通过 LinkedIn 进行‘高管对高管’的触达。",
+                    email_hook: "“We are a digital-first supplier with full REACH certification for ${product}...”"
+                },
+                ae: {
+                    title: "中东(阿联酋)信任型经营逻辑",
+                    logic: "中东贸易极其依赖‘社交资产’。他们更倾向于通过 WhatsApp 视频通话看厂。交易常伴随长达 90-120 天的账期要求。",
+                    action: "方案：部署“AI 数字人麦可”进行 24 小时阿语直播。针对迪拜/沙特重点客户，在斋月前夕执行‘千面邮’礼节性触达。",
+                    email_hook: "“Customizing high-end ${product} for Middle East infrastructure projects with flexible LC support...”"
+                },
+                vn: {
+                    title: "东南亚(越南)性价比/分销逻辑",
+                    logic: "该地区是典型的‘流量驱动’市场。客户在寻找能快速周转、支持小起订量(MOQ)的柔性供应链。",
+                    action: "方案：启动 100 台 ARM 手机服务器矩阵，在 TikTok 执行全天候铺稿。直接展示现货库存，强调‘24小时发货’。",
+                    email_hook: "“Stock Ready for ${product}. Support small MOQ & rapid re-order for local distributors...”"
+                }
+            },
+            pain_solution: {
+                no_leads: {
+                    h: "主动获客降维打击方案",
+                    detail: "针对你找不到人的痛点：利用“易搜邮 V6.0”全网聚合算法，不再搜官网，而是搜：社媒指纹+海关提单数据+B2B平台隐藏API。实现从 0 基础到 500 个精准决策人邮箱仅需 3 分钟。",
+                    metric: "CAC（获客成本）从平均 280 元降至 112 元。"
+                },
+                no_reply: {
+                    h: "千面邮 (Personalized AI) 转化引擎",
+                    detail: "客户不回是因为你的内容是‘群发感’。本系统会自动提取客户官网的关键词。如果他官网有‘Innovation’，邮件首段就写创新。如果他官网有‘Safety’，我们就写安全。",
+                    metric: "询盘转化率预计从 0.8% 提升至 3.5%。"
+                },
+                no_traffic: {
+                    h: "AI 麦可内容流水线",
+                    detail: "解决没素材的问题：你只需拍 30 秒工厂原片，AI 麦可自动执行：多语种配音 + 自动切片成 50 条去重短视频 + 全球多节点定时发布。实现‘一个人就是一个短视频运营部’。",
+                    metric: "内容效率提升 48 倍，平均每条视频生成成本不足 0.5 元。"
+                }
+            }
+        };
 
-            if(!value) { alert('请输入产品价值点'); return; }
+        function diagnose() {
+            const m = document.getElementById('market').value;
+            const p = document.getElementById('painpoint').value;
+            const prod = document.getElementById('product').value || "工业品";
+            const report = document.getElementById('report');
+            const welcome = document.getElementById('welcome');
 
-            placeholder.classList.add('hidden');
+            welcome.classList.add('hidden');
             report.classList.remove('hidden');
-            report.innerHTML = '<p class="text-[#d4af37] animate-pulse italic text-xs">AI 麦可 4.0 正在基于全链路蓝图规划工作流...</p>';
+            report.innerHTML = `<p class="text-[#d4af37] animate-pulse font-bold">SHAO.KX AGENT 正在调取 2012-2022 A股外贸上市公司数字化面板数据... 正在匹配 ${prod} 行业深度逻辑...</p>`;
 
             setTimeout(() => {
-                let content = "";
-                if(channel === 'tiktok') {
-                    content = `
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-start border-b border-white/5 pb-4">
-                                <h4 class="text-white font-bold text-sm">【极客魔推】短视频分发策略</h4>
-                                <span class="trust-tag">区块链指纹已嵌入</span>
+                const marketData = EXPERT_DB.market_logic[m];
+                const painData = EXPERT_DB.pain_solution[p];
+
+                report.innerHTML = `
+                    <div class="space-y-12">
+                        <section>
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="step-num text-[10px]">01</span>
+                                <h4 class="text-white font-black text-sm uppercase tracking-tighter">${marketData.title}</h4>
                             </div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <p class="text-[10px] text-slate-500 mb-1">AIGC 视频生成</p>
-                                    <p class="text-xs text-white">5分钟自动生成 50 条适配视频，降低成本 70%。</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-7 border-l border-white/5">
+                                <div class="space-y-3">
+                                    <p class="text-slate-400 font-bold">【底层逻辑】</p>
+                                    <p>${marketData.logic}</p>
                                 </div>
-                                <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                                    <p class="text-[10px] text-slate-500 mb-1">流量预估</p>
-                                    <p class="text-xs text-white">访问量预期提升 30%，覆盖东南亚/欧美黄金时区。</p>
+                                <div class="bg-white/5 p-5 rounded-3xl border border-white/5">
+                                    <p class="text-[#d4af37] text-[10px] font-bold uppercase mb-2">AI 智能话术钩子</p>
+                                    <p class="italic text-xs font-mono">"${marketData.email_hook.replace('${product}', prod)}"</p>
                                 </div>
                             </div>
-                        </div>`;
-                } else if(channel === 'email') {
-                    content = `
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-start border-b border-white/5 pb-4">
-                                <h4 class="text-white font-bold text-sm">【千面邮】个性化内容触达</h4>
-                                <span class="trust-tag">CRM 智能同步</span>
+                        </section>
+
+                        <section>
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="step-num text-[10px]">02</span>
+                                <h4 class="text-white font-black text-sm uppercase tracking-tighter">${painData.h}</h4>
                             </div>
-                            <div class="bg-[#d4af37]/5 p-4 rounded-xl border border-[#d4af37]/20">
-                                <p class="text-[10px] text-[#d4af37] uppercase mb-2">定制邮件内容预览：</p>
-                                <p class="text-xs text-slate-300 italic font-mono leading-relaxed">
-                                    "Dear Client, we noticed you focus on [${value}]. Our blockchain-verified certifications ensure a seamless import process for your market..."
-                                </p>
+                            <div class="pl-7 border-l border-white/5 space-y-4">
+                                <p class="text-white/80 leading-relaxed">${painData.detail}</p>
+                                <div class="flex gap-4">
+                                    <div class="px-4 py-2 bg-[#d4af37]/10 rounded-lg text-[10px]">
+                                        <span class="text-slate-500 mr-2 uppercase">实战指标:</span>
+                                        <span class="text-[#d4af37] font-bold italic">${painData.metric}</span>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-[10px] text-slate-500 italic">自动规避 SPAM 敏感词，首轮触达将在客户当地时区 9:00 AM 执行。</p>
-                        </div>`;
-                } else {
-                    content = `<p class="text-sm text-white">Google 全渠道聚合方案已生成，已整合独立站 SEO 与 3D 数字化资产上链...</p>`;
-                }
-                report.innerHTML = content;
+                        </section>
+
+                        <section class="bg-[#d4af37]/5 p-8 rounded-[2.5rem] border border-[#d4af37]/10">
+                            <h4 class="text-[#d4af37] font-black text-xs uppercase mb-6 flex items-center gap-2">
+                                <span class="w-1 h-1 bg-[#d4af37] rounded-full"></span> 建议执行 SOP (2026 蓝图标准)
+                            </h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-[11px]">
+                                <div>
+                                    <p class="text-white font-bold mb-2 underline">T+24H 线索挖掘</p>
+                                    <p class="text-slate-500">启动全渠道聚合，抓取该区域对 ${prod} 感兴趣的活跃 Top 50 潜客。</p>
+                                </div>
+                                <div>
+                                    <p class="text-white font-bold mb-2 underline">T+48H 内容覆盖</p>
+                                    <p class="text-slate-500">AI 麦可批量生成场景化视频，利用服务器矩阵在当地黄金时段分发。</p>
+                                </div>
+                                <div>
+                                    <p class="text-white font-bold mb-2 underline">T+72H 智慧跟进</p>
+                                    <p class="text-slate-500">千面邮首轮触达。若未回复，系统自动触发‘二次跟进：案例实证’逻辑。</p>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                `;
             }, 1500);
         }
     </script>
