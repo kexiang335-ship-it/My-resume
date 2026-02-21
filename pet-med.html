@@ -3,148 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAO.KX | 宠物医疗数字化矩阵</title>
+    <title>数字宠物医疗知识索引</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap');
-        body { background: #000; color: #d4af37; font-family: 'JetBrains Mono', monospace; overflow-x: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700;900&display=swap');
+        body { background: #000; color: #fff; font-family: 'Noto Sans SC', sans-serif; }
         
-        /* 原始版本的网格背景 */
-        .bg-grid {
-            background-image: linear-gradient(rgba(212, 175, 55, 0.05) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(212, 175, 55, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-
-        /* 核心四个大框的原始样式 */
-        .feature-card {
-            background: rgba(10, 10, 10, 0.9);
-            border: 1px solid #222;
-            padding: 30px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            display: block; /* 设为块级元素以便跳转 */
+        /* 还原图片中的顶部返回按钮 */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 6px 15px;
+            border-radius: 8px;
+            font-size: 13px;
             text-decoration: none;
+            margin-bottom: 40px;
         }
 
-        .feature-card:hover {
-            border-color: #d4af37;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
-            transform: scale(1.02);
+        /* 药丸形分类按钮 */
+        .pill-btn {
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .pill-btn.active { background: #d4af37; color: #000; border-color: #d4af37; font-weight: bold; }
+        .pill-btn:hover:not(.active) { border-color: #d4af37; }
+
+        /* 还原图片中的圆角黑色卡片 */
+        .info-card {
+            background: #0c0c0c;
+            border: 1px solid #1a1a1a;
+            border-radius: 24px;
+            padding: 30px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+        .info-card:hover {
+            background: #121212;
+            transform: translateY(-5px);
+            border-color: #333;
         }
 
-        .feature-card::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0;
-            width: 4px; height: 100%;
-            background: #d4af37;
-            transform: scaleY(0);
-            transition: 0.3s;
-        }
-
-        .feature-card:hover::before {
-            transform: scaleY(1);
-        }
-
-        .scan-line {
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            background: rgba(212, 175, 55, 0.2);
-            top: 0;
-            animation: scan 3s linear infinite;
-        }
-
-        @keyframes scan {
-            0% { top: 0; }
-            100% { top: 100%; }
-        }
+        .category-label { color: #d4af37; font-size: 10px; font-weight: 900; letter-spacing: 1px; margin-bottom: 12px; }
+        .card-title { font-size: 22px; font-weight: 900; margin-bottom: 15px; }
+        .card-desc { color: #555; font-size: 14px; line-height: 1.6; }
     </style>
 </head>
-<body class="bg-grid min-h-screen">
+<body class="p-8 md:p-20">
 
-    <div class="max-w-7xl mx-auto p-6 md:p-12">
-        <header class="flex justify-between items-start mb-16 border-b border-[#d4af37]/20 pb-8">
-            <div>
-                <div class="flex items-center gap-3">
-                    <div class="w-3 h-3 bg-[#d4af37] animate-pulse"></div>
-                    <h1 class="text-3xl font-black italic tracking-tighter text-white">PET_CORE_LOGIC v1.0</h1>
-                </div>
-                <p class="text-[10px] text-slate-500 mt-2 uppercase tracking-[0.3em]">数字化医疗诊疗作品库 / 第三期</p>
-            </div>
-            <div class="text-right hidden md:block text-[10px] text-slate-500">
-                <p>LATENCY: 14ms</p>
-                <p>ENCRYPTION: AES-256</p>
-                <p>USER: SHAO.KX_ADMIN</p>
-            </div>
+    <div class="max-w-6xl mx-auto">
+        <a href="index.html" class="back-btn">← 返回仓库</a>
+        
+        <header class="mb-16">
+            <h1 class="text-4xl font-black text-[#d4af37] mb-2">数字宠物医疗知识索引</h1>
+            <p class="text-xs text-slate-500 font-bold tracking-widest uppercase">VETERINARY DIGITAL DATABASE V1.0</p>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="flex flex-wrap gap-4 mb-16">
+            <a href="#" class="pill-btn active">全部科目</a>
+            <a href="pet_inner.html" class="pill-btn">内科诊疗</a>
+            <a href="pet_skin.html" class="pill-btn">皮肤科</a>
+            <a href="pet_drug.html" class="pill-btn">处方药典</a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <a href="pet_inner.html" class="feature-card group">
-                <div class="scan-line"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20 transition-colors">01</span>
-                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">INTERNAL</span>
-                </div>
-                <h2 class="text-2xl font-bold text-white mb-4">内科诊疗数据库</h2>
-                <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                    集成犬细小病毒 (CPV)、犬瘟热 (CDV) 等核心病毒学诊疗路径。
-                    包含补液模型与干扰素动力学分析。
-                </p>
-                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
+            <a href="pet_inner.html" class="info-card">
+                <p class="category-label uppercase">CATEGORY: INNER</p>
+                <h2 class="card-title text-white">犬细小病毒诊疗</h2>
+                <p class="card-desc">基于临床病例总结的补液方案与干扰素使用规范。</p>
             </a>
 
-            <a href="pet_skin.html" class="feature-card group">
-                <div class="scan-line"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20">02</span>
-                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">SKIN</span>
-                </div>
-                <h2 class="text-2xl font-bold text-white mb-4">皮肤病理索引</h2>
-                <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                    涵盖真菌、蠕形螨、过敏性皮炎等常见病例识别。
-                    伍德氏灯荧光特征库及用药周期监控。
-                </p>
-                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
+            <a href="pet_skin.html" class="info-card">
+                <p class="category-label uppercase">CATEGORY: SKIN</p>
+                <h2 class="card-title text-white">真菌性皮肤病识别</h2>
+                <p class="card-desc">伍德氏灯下的显色特征与伊曲康唑剂量模型。</p>
             </a>
 
-            <a href="pet_drug.html" class="feature-card group">
-                <div class="scan-line"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20">03</span>
-                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">DRUGS</span>
-                </div>
-                <h2 class="text-2xl font-bold text-white mb-4">危急重症药典</h2>
-                <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                    实时公斤体重换算算法。包含阿托品、肾上腺素、利多卡因等
-                    ICU 级别急救药物使用规范。
-                </p>
-                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
+            <a href="pet_drug.html" class="info-card">
+                <p class="category-label uppercase">CATEGORY: DRUG</p>
+                <h2 class="card-title text-white">危急重症用药手册</h2>
+                <p class="card-desc">包含阿托品、肾上腺素等急救药物的公斤体重换算表。</p>
             </a>
 
-            <a href="pet_feline.html" class="feature-card group">
-                <div class="scan-line"></div>
-                <div class="flex justify-between items-start mb-6">
-                    <span class="text-4xl font-black text-white/10 group-hover:text-[#d4af37]/20">04</span>
-                    <span class="text-[10px] border border-[#d4af37]/30 px-2 py-1">FELINE</span>
-                </div>
-                <h2 class="text-2xl font-bold text-white mb-4">猫科全链路专题</h2>
-                <p class="text-sm text-slate-400 leading-relaxed mb-6">
-                    猫泌尿系统综合征 (FIC/FLUTD) 专项管理。
-                    包含环境减压 (MEMO) 与长期饮食干预路径。
-                </p>
-                <div class="text-[10px] font-bold text-[#d4af37] underline underline-offset-4">ACCESS DATABASE ></div>
+            <a href="pet_feline.html" class="info-card">
+                <p class="category-label uppercase">CATEGORY: INNER</p>
+                <h2 class="card-title text-white">猫泌尿系统综合征</h2>
+                <p class="card-desc">饮食结构调整与导尿术后的标准化护理路径。</p>
             </a>
 
         </div>
-
-        <footer class="mt-16 pt-8 border-t border-[#d4af37]/10 flex flex-col md:flex-row justify-between text-[10px] text-slate-600 font-bold uppercase tracking-widest">
-            <p>Shao.KX / Digital Medicine Archive</p>
-            <p class="mt-2 md:mt-0 text-[#d4af37]/40">System ready. Links established to sub-modules.</p>
-        </footer>
     </div>
 
 </body>
