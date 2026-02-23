@@ -9,17 +9,15 @@
     <style>
         body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; overflow-x: hidden; margin: 0; }
 
-        /* --- 1. 核心：飞机掀屏动画 --- */
+        /* --- 1. 真实飞机开屏（掀幕式） --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000; overflow: hidden;
-            pointer-events: none;
+            background: #000; z-index: 10000; overflow: hidden; pointer-events: none;
         }
-        /* 揭幕遮罩 */
         #reveal-mask {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
-            clip-path: polygon(0 100%, 0 100%, 0 100%); /* 初始完全遮盖 */
+            clip-path: polygon(0 100%, 0 100%, 0 100%);
             animation: uncover 2.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
         }
         @keyframes uncover {
@@ -28,62 +26,69 @@
         }
 
         .plane-wrapper {
-            position: absolute; bottom: -10%; left: -10%;
-            width: 250px; z-index: 10001;
+            position: absolute; bottom: -20%; left: -20%;
+            width: 400px; z-index: 10001;
             animation: planeTakeOff 2.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
         }
-        @keyframes planeTakeOff {
-            0% { transform: translate(0, 0) rotate(-15deg) scale(0.5); }
-            100% { transform: translate(140vw, -120vh) rotate(-15deg) scale(1.5); }
+        /* 真实飞机容器 */
+        .real-plane-img {
+            width: 100%;
+            filter: drop-shadow(0 20px 30px rgba(255,255,255,0.2));
+            transform: rotate(-10deg);
+        }
+        .plane-logo-text {
+            position: absolute; top: 45%; left: 35%;
+            font-size: 14px; font-weight: 900; color: #333;
+            transform: skewX(-20deg); opacity: 0.8;
         }
 
-        /* 真实感的飞机SVG */
-        .real-plane { fill: white; filter: drop-shadow(0 10px 20px rgba(255,255,255,0.3)); }
-        .plane-name { fill: #d4af37; font-weight: 900; font-size: 2px; }
+        @keyframes planeTakeOff {
+            0% { transform: translate(0, 0) scale(0.6); }
+            100% { transform: translate(140vw, -120vh) scale(1.8); }
+        }
 
-        /* --- 2. 核心：3D旋转地球（带遮挡效果） --- */
+        /* --- 2. 3D地球环绕（真实遮挡） --- */
         .earth-orbit-container {
             position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
             width: 120px; height: 120px; z-index: 60; perspective: 1000px;
         }
         .earth-main {
-            width: 70px; height: 70px; background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
-            background-size: cover; border-radius: 50%; position: absolute; top: 25px; left: 25px;
-            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.9), 0 0 20px rgba(212,175,55,0.4);
-            animation: earthRotate 15s linear infinite;
+            width: 80px; height: 80px; background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
+            background-size: cover; border-radius: 50%; position: absolute; top: 20px; left: 20px;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.9), 0 0 25px rgba(212,175,55,0.4);
+            animation: earthRotate 20s linear infinite;
         }
         .mini-plane-orbit {
             position: absolute; width: 100%; height: 100%;
             transform-style: preserve-3d;
-            animation: orbit3d 4s linear infinite;
+            animation: orbit3d 5s linear infinite;
         }
         .mini-plane-icon {
-            position: absolute; top: 50%; left: 50%; font-size: 20px;
-            transform-origin: center;
+            position: absolute; top: 50%; left: 50%; font-size: 22px;
+            filter: drop-shadow(0 0 5px white);
         }
-        @keyframes earthRotate { from { background-position: 0 0; } to { background-position: 280px 0; } }
+        @keyframes earthRotate { from { background-position: 0 0; } to { background-position: 320px 0; } }
         @keyframes orbit3d {
-            0% { transform: rotateY(0deg); z-index: 70; opacity: 1; }
-            45% { transform: rotateY(160deg); z-index: 70; opacity: 1; }
-            50% { transform: rotateY(180deg); z-index: 50; opacity: 0.3; } /* 绕到后面 */
-            95% { transform: rotateY(340deg); z-index: 50; opacity: 0.3; }
-            100% { transform: rotateY(360deg); z-index: 70; opacity: 1; }
+            0% { transform: rotateY(0deg); z-index: 70; opacity: 1; scale: 1.2; }
+            45% { transform: rotateY(160deg); z-index: 70; opacity: 1; scale: 1; }
+            50% { transform: rotateY(180deg); z-index: 50; opacity: 0; scale: 0.8; } /* 消失在球后 */
+            95% { transform: rotateY(340deg); z-index: 50; opacity: 0; }
+            100% { transform: rotateY(360deg); z-index: 70; opacity: 1; scale: 1.2; }
         }
 
-        /* --- 3. 核心：左右跳进动效 --- */
-        .jump-left { opacity: 0; transform: translateX(-100px); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .jump-right { opacity: 0; transform: translateX(100px); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        /* --- 3. 左右跳动动效 --- */
+        .jump-left { opacity: 0; transform: translateX(-80px); transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .jump-right { opacity: 0; transform: translateX(80px); transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .reveal.active .jump-left, .reveal.active .jump-right { opacity: 1; transform: translateX(0); }
 
-        /* --- 维持原版流金沙/玻璃卡片 --- */
-        #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
+        /* --- 基础样式保持不变 --- */
+        #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; }
         .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
         #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
         #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(212, 175, 55, 0.2); position: relative; overflow: hidden; transition: all 0.5s ease; }
-        .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); }
-        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
+        .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.2); }
         .reveal { opacity: 0; transition: opacity 0.8s ease; }
         .reveal.active { opacity: 1; }
     </style>
@@ -93,14 +98,11 @@
     <div id="loader">
         <div id="reveal-mask"></div>
         <div class="plane-wrapper">
-            <svg class="real-plane" viewBox="0 0 24 24">
-                <path d="M21,16L21,14L13,9L13,3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5L10,9L2,14L2,16L10,13.5L10,19L8,20.5L8,22L11.5,21L15,22L15,20.5L13,19L13,13.5L21,16Z"/>
-                <text x="5" y="15" class="plane-name" transform="rotate(0)">SHAO.KX</text>
-            </svg>
+            <img src="https://www.pngall.com/wp-content/uploads/2/Aeroplane-PNG-Image.png" class="real-plane-img" alt="SHAO.KX Plane">
+            <div class="plane-logo-text">SHAO.KX</div>
         </div>
     </div>
 
-    <div id="toast" class="copy-toast uppercase text-xs tracking-widest">已成功复制</div>
     <div id="sand-background">
         <div id="flow-1" class="sand-flow"></div>
         <div id="flow-2" class="sand-flow"></div>
@@ -203,18 +205,20 @@
         </div>
     </section>
 
-    <footer id="contact" class="py-40 px-10 relative z-10 text-center reveal">
-        <h2 class="text-5xl font-black mb-16 gold-text italic tracking-tighter uppercase">Let's Connect</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            <button onclick="copyText('13814632349')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase">13814632349</button>
-            <button onclick="copyText('2306367140@qq.com')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase">2306367140@qq.com</button>
+    <section id="education" class="py-24 px-10 relative z-10 reveal">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
+            <div class="glass-card p-12 rounded-[3rem] jump-left text-center md:text-left">
+                <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
+                <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
+                <p class="text-sm text-slate-400 leading-loose">学校坚持“需求导向,能力为本”理念。致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。</p>
+            </div>
         </div>
-    </footer>
+    </section>
 
     <script>
         window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
-            // 2.5秒后动画完成，移除loader
             setTimeout(() => {
                 loader.style.opacity = '0';
                 setTimeout(() => { loader.style.display = 'none'; }, 1000);
@@ -234,14 +238,6 @@
             flows[0].style.transform = `translate(${clientX - 600}px, ${clientY - 450}px)`;
             flows[1].style.transform = `translate(${window.innerWidth - clientX - 450}px, ${window.innerHeight - clientY - 550}px)`;
         });
-
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toast');
-                toast.style.display = 'block';
-                setTimeout(() => { toast.style.display = 'none'; }, 2000);
-            });
-        }
     </script>
 </body>
 </html>
