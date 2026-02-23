@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
+        /* =========================================
+           CORE RESET & BASE STYLES (保留原样)
+           ========================================= */
         body { 
             font-family: 'Inter', sans-serif; 
             background: #000; 
@@ -15,80 +18,164 @@
             margin: 0;
         }
 
-        /* 1. 开屏动画 */
-        #loader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 9999;
-            transition: opacity 1s ease, visibility 1s;
+        /* =========================================
+           1. 纯代码 3D 建模大飞机 (硬核扩充)
+           ========================================= */
+        #heavy-loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10000; pointer-events: none;
         }
         
-        .loader-mountain {
-            width: 80px;
-            height: 60px;
-            margin-bottom: 10px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: logoFade 1.2s forwards ease-out;
-        }
-        
-        .mountain-svg {
-            fill: url(#mountainGradient);
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+        /* 撕开的黑色帷幕 */
+        #tear-curtain {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 10001;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+            animation: curtainTearingEffect 2.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
         }
 
-        .loader-logo { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            margin-bottom: 25px; 
-            opacity: 0; 
-            transform: translateY(20px); 
-            animation: logoFade 1.5s forwards ease-out 0.3s;
+        /* 3D 飞机容器：尺寸巨大 */
+        .plane-3d-viewport {
+            position: absolute; bottom: -20%; left: -20%;
+            width: 800px; height: 400px; z-index: 10002;
+            perspective: 2000px;
+            animation: giantPlaneTakeoff 2.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
         }
-        
+
+        .plane-object {
+            position: relative; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(15deg) rotateY(-35deg) rotateZ(-12deg);
+        }
+
+        /* 飞机构造细节：纯CSS建模 */
+        .fuselage-main {
+            position: absolute; width: 550px; height: 70px; 
+            background: linear-gradient(to bottom, #ffffff, #e6e6e6, #cccccc);
+            border-radius: 50% 120% 100% 50% / 50% 100% 100% 50%;
+            box-shadow: inset -20px -10px 40px rgba(0,0,0,0.3), 0 20px 60px rgba(255,255,255,0.15);
+        }
+        .cockpit-window {
+            position: absolute; top: 15px; right: 40px; width: 60px; height: 15px;
+            background: #1a1a1a; border-radius: 5px 20px 5px 5px;
+            transform: skewX(-10deg); border: 1px solid #444;
+        }
+        .wing-left {
+            position: absolute; top: -100px; left: 150px;
+            width: 220px; height: 400px; background: #f5f5f5;
+            clip-path: polygon(15% 45%, 100% 0, 85% 100%, 0 80%);
+            transform: rotateX(88deg); border-bottom: 2px solid #ddd;
+        }
+        .tail-v {
+            position: absolute; top: -60px; left: 10px;
+            width: 80px; height: 120px; background: #e0e0e0;
+            clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 90%);
+            border-left: 2px solid #fff;
+        }
+        .engine-l {
+            position: absolute; bottom: -20px; left: 220px;
+            width: 80px; height: 35px; background: #333; border-radius: 10px 40px 40px 10px;
+            transform: translateZ(50px);
+        }
+        .plane-callsign {
+            position: absolute; top: 25px; left: 200px;
+            font-size: 26px; font-weight: 900; color: #222;
+            font-family: 'Inter'; letter-spacing: -1px; transform: rotateY(5deg);
+        }
+
+        /* 撕幕动画：飞机带动幕布 */
+        @keyframes curtainTearingEffect {
+            0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+            100% { clip-path: polygon(180% 180%, 180% 180%, 180% 180%, 180% 180%); }
+        }
+        @keyframes giantPlaneTakeoff {
+            0% { transform: translate(0, 0) scale(0.5); }
+            100% { transform: translate(160vw, -140vh) scale(1.8); }
+        }
+
+        /* =========================================
+           2. 右上角：数字时钟 + 缩小版地球 (扩充细节)
+           ========================================= */
+        .system-monitor {
+            position: fixed; top: 25px; right: 40px; z-index: 1000;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 15px;
+        }
+        #realtime-clock {
+            font-family: 'Courier New', Courier, monospace; font-size: 24px; font-weight: 900;
+            color: #d4af37; background: rgba(0,0,0,0.6); padding: 8px 18px;
+            border: 1px solid rgba(212,175,55,0.4); border-radius: 2px;
+            text-shadow: 0 0 10px rgba(212,175,55,0.8);
+            letter-spacing: 2px;
+        }
+        .earth-container-mini {
+            width: 55px; height: 55px; perspective: 500px;
+        }
+        .earth-sphere-mini {
+            width: 100%; height: 100%;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
+            background-size: 110px 55px; border-radius: 50%;
+            box-shadow: inset -8px -8px 15px #000, 0 0 20px rgba(212,175,55,0.3);
+            animation: earthRotationMini 12s linear infinite;
+        }
+        @keyframes earthRotationMini { from { background-position: 0 0; } to { background-position: 110px 0; } }
+
+        /* =========================================
+           3. 原有代码结构 (完整保留，不许改动)
+           ========================================= */
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 9998; transition: opacity 1s ease, visibility 1s;
+        }
+        .loader-mountain { width: 80px; height: 60px; margin-bottom: 10px; opacity: 0; transform: translateY(20px); animation: logoFade 1.2s forwards ease-out; }
+        .mountain-svg { fill: url(#mountainGradient); filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5)); }
+        .loader-logo { font-size: 2.5rem; font-weight: 900; letter-spacing: 4px; margin-bottom: 25px; opacity: 0; transform: translateY(20px); animation: logoFade 1.5s forwards ease-out 0.3s; }
         .loader-bar { width: 180px; height: 2px; background: rgba(212, 175, 55, 0.1); position: relative; overflow: hidden; }
         .loader-bar::after { content: ""; position: absolute; left: -100%; width: 100%; height: 100%; background: #d4af37; animation: barLoad 2s infinite ease; }
-        
         @keyframes logoFade { to { opacity: 1; transform: translateY(0); } }
         @keyframes barLoad { 0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; } }
 
-        /* 2. 流金沙背景 */
         #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
         .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
         #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
         #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
 
-        /* 3. 企业级滑动入场 */
         .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .glass-card { 
-            background: rgba(10, 10, 10, 0.8); 
-            backdrop-filter: blur(25px); 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            position: relative; 
-            overflow: hidden; 
-            transition: all 0.5s ease; 
-        }
-        .glass-card::after {
-            content: "";
-            position: absolute;
-            top: -50%; left: -100%; width: 50%; height: 200%;
-            background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: rotate(45deg); transition: none; pointer-events: none;
-        }
+        .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(212, 175, 55, 0.2); position: relative; overflow: hidden; transition: all 0.5s ease; }
+        .glass-card::after { content: ""; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); transition: none; pointer-events: none; }
         .glass-card:hover::after { left: 150%; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
         .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.15); }
+        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1001; font-weight: 800; }
 
-        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
+        /* 内容板块间距加强 */
+        section { position: relative; z-index: 10; }
     </style>
 </head>
 <body class="leading-relaxed">
+
+    <div id="heavy-loader">
+        <div id="tear-curtain"></div>
+        <div class="plane-3d-viewport">
+            <div class="plane-object">
+                <div class="wing-left"></div>
+                <div class="fuselage-main">
+                    <div class="cockpit-window"></div>
+                    <div class="plane-callsign">SHAO.KX</div>
+                </div>
+                <div class="tail-v"></div>
+                <div class="engine-l"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="system-monitor">
+        <div id="realtime-clock">00:00:00</div>
+        <div class="earth-container-mini">
+            <div class="earth-sphere-mini"></div>
+        </div>
+    </div>
 
     <div id="loader">
         <div class="loader-mountain">
@@ -215,7 +302,6 @@
                     <span class="group-hover:translate-x-1 transition-transform">→</span>
                 </a>
             </div>
-
             <div class="relative p-1 bg-gradient-to-br from-[#d4af37]/20 to-transparent rounded-[4rem] md:rounded-[8rem]">
                 <div class="bg-black/80 backdrop-blur-3xl rounded-[4rem] md:rounded-[8rem] p-8 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="glass-card p-8 rounded-[3rem] text-center">
@@ -245,15 +331,15 @@
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">专业技能 / Core Skills</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
+                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 transition-all hover:bg-white/10">
                     <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">医学严谨逻辑</h4>
                     <p class="text-xs text-slate-400">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p>
                 </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
+                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 transition-all hover:bg-white/10">
                     <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">AI 自动化赋能</h4>
                     <p class="text-xs text-slate-400">精通利用AI重构重复性流程，实现核心业务降本增效。</p>
                 </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
+                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 transition-all hover:bg-white/10">
                     <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">团队与财务管理</h4>
                     <p class="text-xs text-slate-400">具备完整的制度搭建、人员培训及年度预算制定经验。</p>
                 </div>
@@ -291,17 +377,37 @@
                 2306367140@qq.com
             </button>
         </div>
+        <div class="mt-20 text-[10px] text-slate-600 tracking-[0.5em] uppercase">Built for SHAO.KX / 2025 Standard</div>
     </footer>
 
     <script>
+        // 1. 实时数字时钟逻辑
+        function refreshClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('realtime-clock').textContent = `${h}:${m}:${s}`;
+        }
+        setInterval(refreshClock, 1000);
+        refreshClock();
+
+        // 2. 开屏加载逻辑 (整合原代码与新撕幕逻辑)
         window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
+            const heavyLoader = document.getElementById('heavy-loader');
+            const originalLoader = document.getElementById('loader');
+            
+            // 2.8秒后移除撕幕层和原加载层
             setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.visibility = 'hidden'; }, 1000);
-            }, 1800);
+                heavyLoader.style.display = 'none';
+                originalLoader.style.opacity = '0';
+                setTimeout(() => { 
+                    originalLoader.style.visibility = 'hidden'; 
+                }, 1000);
+            }, 2800);
         });
 
+        // 3. 原有滚动观察逻辑 (保留)
         const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -310,6 +416,7 @@
         }, observerOptions);
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+        // 4. 原有背景互动逻辑 (保留)
         const flows = [document.getElementById('flow-1'), document.getElementById('flow-2')];
         document.addEventListener('mousemove', (e) => {
             const { clientX, clientY } = e;
@@ -319,6 +426,7 @@
             flows[1].style.transform = `translate(${w - clientX - 450}px, ${h - clientY - 550}px)`;
         });
 
+        // 5. 原有复制逻辑 (保留)
         function copyText(text) {
             navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById('toast');
