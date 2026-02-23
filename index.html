@@ -7,6 +7,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
+        /* =========================================
+           1. 核心全局样式
+           ========================================= */
         body { 
             font-family: 'Inter', sans-serif; 
             background: #000; 
@@ -15,16 +18,74 @@
             margin: 0;
         }
 
-        /* 1. 开屏动画 */
+        /* =========================================
+           2. 导航栏内嵌监控区 (紧跟在Logo右侧)
+           ========================================= */
+        .nav-monitor {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            pointer-events: none;
+            padding-left: 20px;
+            margin-left: 20px;
+            border-left: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .mini-earth {
+            width: 22px;
+            height: 22px;
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
+            background-size: 44px 22px;
+            border-radius: 50%;
+            box-shadow: inset -3px -3px 6px #000, 0 0 10px rgba(212, 175, 55, 0.3);
+            animation: earthSpin 15s linear infinite;
+        }
+
+        #mini-clock {
+            font-family: 'Inter', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            color: #d4af37;
+            letter-spacing: 1px;
+        }
+
+        @keyframes earthSpin {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 44px 0;
+            }
+        }
+
+        /* =========================================
+           3. 渲染级开屏动画
+           ========================================= */
         #loader {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%;
             background: #000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
             z-index: 9999;
             transition: opacity 1s ease, visibility 1s;
         }
-        
+
+        .loader-glow {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 60%);
+            border-radius: 50%;
+            animation: pulseGlow 3s infinite ease-in-out;
+            pointer-events: none;
+        }
+
         .loader-mountain {
             width: 80px;
             height: 60px;
@@ -32,11 +93,13 @@
             opacity: 0;
             transform: translateY(20px);
             animation: logoFade 1.2s forwards ease-out;
+            position: relative;
+            z-index: 2;
         }
         
         .mountain-svg {
             fill: url(#mountainGradient);
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6)); 
         }
 
         .loader-logo { 
@@ -47,25 +110,101 @@
             opacity: 0; 
             transform: translateY(20px); 
             animation: logoFade 1.5s forwards ease-out 0.3s;
+            position: relative;
+            z-index: 2;
         }
         
-        .loader-bar { width: 180px; height: 2px; background: rgba(212, 175, 55, 0.1); position: relative; overflow: hidden; }
-        .loader-bar::after { content: ""; position: absolute; left: -100%; width: 100%; height: 100%; background: #d4af37; animation: barLoad 2s infinite ease; }
+        .loader-bar { 
+            width: 180px; 
+            height: 2px; 
+            background: rgba(212, 175, 55, 0.1); 
+            position: relative; 
+            overflow: hidden; 
+            z-index: 2;
+        }
+
+        .loader-bar::after { 
+            content: ""; 
+            position: absolute; 
+            left: -100%; 
+            width: 100%; 
+            height: 100%; 
+            background: #d4af37; 
+            animation: barLoad 2s infinite ease; 
+        }
         
-        @keyframes logoFade { to { opacity: 1; transform: translateY(0); } }
-        @keyframes barLoad { 0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; } }
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.4); opacity: 1; }
+        }
 
-        /* 2. 流金沙背景 */
-        #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
-        .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
-        #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
-        #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
+        @keyframes logoFade { 
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            } 
+        }
 
-        /* 3. 企业级滑动入场 */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        @keyframes barLoad { 
+            0% { left: -100%; } 
+            50% { left: 0%; } 
+            100% { left: 100%; } 
+        }
 
-        .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        /* =========================================
+           4. 流金沙背景
+           ========================================= */
+        #sand-background { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            z-index: -1; 
+            background: #000; 
+            overflow: hidden; 
+        }
+
+        .sand-flow { 
+            position: absolute; 
+            border-radius: 50%; 
+            filter: blur(100px); 
+            pointer-events: none; 
+            mix-blend-mode: screen; 
+            transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); 
+        }
+
+        #flow-1 { 
+            width: 1200px; 
+            height: 900px; 
+            background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); 
+        }
+
+        #flow-2 { 
+            width: 900px; 
+            height: 1100px; 
+            background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); 
+        }
+
+        /* =========================================
+           5. 企业级滑动入场及组件样式
+           ========================================= */
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(50px); 
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1); 
+        }
+
+        .reveal.active { 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+
+        .gold-text { 
+            background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
 
         .glass-card { 
             background: rgba(10, 10, 10, 0.8); 
@@ -75,22 +214,50 @@
             overflow: hidden; 
             transition: all 0.5s ease; 
         }
+
         .glass-card::after {
             content: "";
             position: absolute;
-            top: -50%; left: -100%; width: 50%; height: 200%;
+            top: -50%; 
+            left: -100%; 
+            width: 50%; 
+            height: 200%;
             background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
-            transform: rotate(45deg); transition: none; pointer-events: none;
+            transform: rotate(45deg); 
+            transition: none; 
+            pointer-events: none;
         }
-        .glass-card:hover::after { left: 150%; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.15); }
 
-        .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
+        .glass-card:hover::after { 
+            left: 150%; 
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+
+        .glass-card:hover { 
+            border-color: #d4af37; 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(184, 134, 11, 0.15); 
+        }
+
+        .copy-toast { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            background: #d4af37; 
+            color: #000; 
+            padding: 12px 30px; 
+            border-radius: 99px; 
+            display: none; 
+            z-index: 10000; 
+            font-weight: 800; 
+        }
     </style>
 </head>
 <body class="leading-relaxed">
 
     <div id="loader">
+        <div class="loader-glow"></div>
         <div class="loader-mountain">
             <svg viewBox="0 0 100 60" class="mountain-svg">
                 <defs>
@@ -116,16 +283,27 @@
 
     <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-            <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
-            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase">
-                <a href="#home" class="hover:text-white transition">概览</a>
-                <a href="#work" class="hover:text-white transition">工作经验</a>
-                <a href="#projects" class="hover:text-white transition">项目经历</a>
-                <a href="#portfolio" class="hover:text-white transition text-[#d4af37]">作品集 Portfolio</a>
-                <a href="#skills" class="hover:text-white transition">专业技能</a>
-                <a href="#education" class="hover:text-white transition">教育背景</a>
+            
+            <div class="flex items-center">
+                <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
+                <div class="nav-monitor">
+                    <div id="mini-clock">00:00:00</div>
+                    <div class="mini-earth"></div>
+                </div>
+            </div>
+
+            <div class="hidden lg:flex items-center text-[11px] font-bold tracking-widest uppercase">
+                <div class="flex space-x-8 mr-8">
+                    <a href="#home" class="hover:text-white transition">概览</a>
+                    <a href="#work" class="hover:text-white transition">工作经验</a>
+                    <a href="#projects" class="hover:text-white transition">项目经历</a>
+                    <a href="#portfolio" class="hover:text-white transition text-[#d4af37]">作品集 Portfolio</a>
+                    <a href="#skills" class="hover:text-white transition">专业技能</a>
+                    <a href="#education" class="hover:text-white transition">教育背景</a>
+                </div>
                 <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系方式</a>
             </div>
+            
         </div>
     </nav>
 
@@ -294,38 +472,83 @@
     </footer>
 
     <script>
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
+        // 1. 初始化实时时钟
+        function initRealTimeClock() {
+            const clockElement = document.getElementById('mini-clock');
+            setInterval(() => {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                clockElement.textContent = `${hours}:${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        // 2. 初始化开屏动画隐藏逻辑
+        function initLoader() {
+            const loaderElement = document.getElementById('loader');
             setTimeout(() => {
-                loader.style.opacity = '0';
-                setTimeout(() => { loader.style.visibility = 'hidden'; }, 1000);
+                loaderElement.style.opacity = '0';
+                setTimeout(() => { 
+                    loaderElement.style.visibility = 'hidden'; 
+                }, 1000);
             }, 1800);
-        });
+        }
 
-        const observerOptions = { threshold: 0.15 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('active'); }
-            });
-        }, observerOptions);
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        const flows = [document.getElementById('flow-1'), document.getElementById('flow-2')];
-        document.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            const w = window.innerWidth;
-            const h = window.innerHeight;
-            flows[0].style.transform = `translate(${clientX - 600}px, ${clientY - 450}px)`;
-            flows[1].style.transform = `translate(${w - clientX - 450}px, ${h - clientY - 550}px)`;
-        });
-
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                const toast = document.getElementById('toast');
-                toast.style.display = 'block';
-                setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        // 3. 初始化滚动浮现效果
+        function initScrollReveal() {
+            const observerOptions = { 
+                threshold: 0.15 
+            };
+            
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) { 
+                        entry.target.classList.add('active'); 
+                    }
+                });
+            }, observerOptions);
+            
+            const revealElements = document.querySelectorAll('.reveal');
+            revealElements.forEach(element => {
+                revealObserver.observe(element);
             });
         }
+
+        // 4. 初始化背景鼠标流光追踪
+        function initSandFlow() {
+            const flow1 = document.getElementById('flow-1');
+            const flow2 = document.getElementById('flow-2');
+            
+            document.addEventListener('mousemove', (event) => {
+                const clientX = event.clientX;
+                const clientY = event.clientY;
+                const windowWidth = window.innerWidth;
+                const windowHeight = window.innerHeight;
+                
+                flow1.style.transform = `translate(${clientX - 600}px, ${clientY - 450}px)`;
+                flow2.style.transform = `translate(${windowWidth - clientX - 450}px, ${windowHeight - clientY - 550}px)`;
+            });
+        }
+
+        // 5. 复制文本到剪贴板功能
+        function copyText(textToCopy) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const toastElement = document.getElementById('toast');
+                toastElement.style.display = 'block';
+                setTimeout(() => { 
+                    toastElement.style.display = 'none'; 
+                }, 2000);
+            });
+        }
+
+        // 绑定页面加载事件执行初始化
+        window.addEventListener('load', () => {
+            initRealTimeClock();
+            initLoader();
+            initScrollReveal();
+            initSandFlow();
+        });
     </script>
 </body>
 </html>
