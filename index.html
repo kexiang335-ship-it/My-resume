@@ -8,257 +8,206 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; overflow-x: hidden; margin: 0; }
-
-        /* --- 1. 核心：白色巨机“撕开”开屏 --- */
+        
+        /* --- 1. 纯代码 3D 建模大飞机 --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: transparent; z-index: 10000; overflow: hidden; pointer-events: none;
+            background: transparent; z-index: 10000; pointer-events: none;
         }
-        /* 黑色帷幕背景 */
         #curtain {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000;
-            z-index: 10001;
-            /* 初始完全遮盖 */
+            background: #000; z-index: 10001;
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-            animation: tearCurtain 2.5s cubic-bezier(0.6, 0.05, 0.01, 0.9) forwards;
+            animation: tearCurtain 2.2s cubic-bezier(0.6, 0.05, 0.01, 0.9) forwards;
         }
-        /* 撕开路径：飞机在前面撕，幕布在后面退 */
+
+        .plane-3d-scene {
+            position: absolute; bottom: -20%; left: -20%;
+            width: 600px; height: 300px; z-index: 10002;
+            perspective: 1000px;
+            animation: planeFlyBy 2.2s cubic-bezier(0.6, 0.05, 0.01, 0.9) forwards;
+        }
+        /* CSS 3D 机身建模 */
+        .plane-model {
+            position: relative; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(10deg) rotateY(-30deg) rotateZ(-15deg);
+        }
+        .fuselage { /* 机身 */
+            position: absolute; width: 400px; height: 60px;
+            background: #fff; border-radius: 50% 100% 100% 50%;
+            box-shadow: inset -10px -5px 20px rgba(0,0,0,0.2), 0 10px 30px rgba(255,255,255,0.2);
+        }
+        .wing { /* 机翼 */
+            position: absolute; top: 20px; left: 100px;
+            width: 150px; height: 250px; background: #eee;
+            clip-path: polygon(0 40%, 100% 0, 80% 100%, 0 70%);
+            transform: rotateX(80deg);
+        }
+        .tail { /* 尾翼 */
+            position: absolute; top: -20px; left: 10px;
+            width: 60px; height: 80px; background: #ddd;
+            clip-path: polygon(0 0, 100% 40%, 100% 100%, 0 80%);
+        }
+        .plane-text {
+            position: absolute; top: 20px; left: 150px;
+            font-size: 18px; font-weight: 900; color: #333; transform: rotateY(10deg);
+        }
+
         @keyframes tearCurtain {
             0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
             100% { clip-path: polygon(150% 150%, 150% 150%, 150% 150%, 150% 150%); }
         }
-
-        /* 纯白巨型客机 */
-        .giant-plane-wrapper {
-            position: absolute; bottom: -30%; left: -30%;
-            width: 700px; /* 足够大占满屏幕 */
-            z-index: 10002;
-            transform-style: preserve-3d;
-            animation: planeTearing 2.5s cubic-bezier(0.6, 0.05, 0.01, 0.9) forwards;
-        }
-        .white-plane {
-            width: 100%;
-            filter: drop-shadow(0 0 50px rgba(255,255,255,0.4)) contrast(1.1);
-            transform: rotate(-15deg);
-        }
-        .plane-brand {
-            position: absolute; top: 48%; left: 35%;
-            font-size: 22px; font-weight: 900; color: #222;
-            font-family: 'Inter'; transform: skewX(-20deg);
+        @keyframes planeFlyBy {
+            0% { transform: translate(0, 0) scale(0.5); }
+            100% { transform: translate(140vw, -120vh) scale(1.8); }
         }
 
-        @keyframes planeTearing {
-            0% { transform: translate(0, 0) scale(0.6) rotate(0deg); }
-            100% { transform: translate(150vw, -130vh) scale(1.6) rotate(-10deg); }
+        /* --- 2. 右上角：时钟与缩小版地球 --- */
+        .top-right-panel {
+            position: fixed; top: 20px; right: 30px; z-index: 100;
+            display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
         }
+        #digital-clock {
+            font-family: 'monospace'; font-size: 20px; font-weight: 900;
+            color: #d4af37; background: rgba(0,0,0,0.5); padding: 5px 12px;
+            border: 1px solid rgba(212,175,55,0.3); border-radius: 4px;
+        }
+        .small-earth {
+            width: 60px; height: 60px; background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
+            background-size: cover; border-radius: 50%;
+            box-shadow: inset -5px -5px 15px #000, 0 0 15px rgba(212,175,55,0.3);
+            animation: spin 10s linear infinite;
+        }
+        @keyframes spin { from { background-position: 0 0; } to { background-position: 120px 0; } }
 
-        /* --- 2. 右上角：地球 + 实时时钟 --- */
-        .info-panel {
-            position: absolute; right: 30px; top: 50%; transform: translateY(-50%);
-            display: flex; flex-direction: column; align-items: center; gap: 20px; z-index: 60;
-        }
-        #clock {
-            font-family: 'Inter', monospace; font-weight: 900; font-size: 24px;
-            color: #d4af37; text-shadow: 0 0 15px rgba(212,175,55,0.5);
-            background: rgba(255,255,255,0.05); padding: 5px 15px; border-radius: 8px;
-            border-left: 3px solid #d4af37; min-width: 140px; text-align: center;
-        }
-        .earth-orbit-container {
-            width: 120px; height: 120px; perspective: 1000px;
-        }
-        .earth-main {
-            width: 80px; height: 80px; background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
-            background-size: cover; border-radius: 50%; position: absolute; top: 20px; left: 20px;
-            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.9), 0 0 25px rgba(212,175,55,0.3);
-            animation: earthSpin 15s linear infinite;
-        }
-        .mini-plane-orbit {
-            position: absolute; width: 100%; height: 100%; transform-style: preserve-3d;
-            animation: orbit3d 4s linear infinite;
-        }
-        .mini-plane-icon { position: absolute; top: 50%; left: 50%; font-size: 20px; }
-        @keyframes earthSpin { from { background-position: 0 0; } to { background-position: 160px 0; } }
-        @keyframes orbit3d {
-            0% { transform: rotateY(0deg) translateZ(70px); z-index: 70; opacity: 1; }
-            50% { transform: rotateY(180deg) translateZ(70px); z-index: 40; opacity: 0; }
-            100% { transform: rotateY(360deg) translateZ(70px); z-index: 70; opacity: 1; }
-        }
-
-        /* --- 3. 元素跳入效果 --- */
-        .jump-left { opacity: 0; transform: translateX(-100px); transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .jump-right { opacity: 0; transform: translateX(100px); transition: all 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .reveal.active .jump-left, .reveal.active .jump-right { opacity: 1; transform: translateX(0); }
-
-        /* --- 原版基础样式保持不变 --- */
+        /* 背景流体 */
         #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; }
-        .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s ease-out; }
-        #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
-        #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
+        .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; }
+        #flow-1 { width: 1000px; height: 800px; background: radial-gradient(circle, #b8860b 0%, transparent 70%); top: -10%; left: -10%; }
+        
+        /* 通用样式 */
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(212, 175, 55, 0.2); position: relative; overflow: hidden; transition: all 0.5s ease; }
-        .reveal { opacity: 0; transition: opacity 1s ease; }
-        .reveal.active { opacity: 1; }
+        .glass-card { background: rgba(15, 15, 15, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.2); transition: 0.4s; }
+        .glass-card:hover { border-color: #d4af37; }
     </style>
 </head>
-<body class="leading-relaxed">
+<body>
 
     <div id="loader">
         <div id="curtain"></div>
-        <div class="giant-plane-wrapper">
-            <img src="https://www.pngall.com/wp-content/uploads/2/Aeroplane-PNG-Image.png" class="white-plane" alt="SHAO.KX Giant">
-            <div class="plane-brand">SHAO.KX</div>
+        <div class="plane-3d-scene">
+            <div class="plane-model">
+                <div class="fuselage"></div>
+                <div class="wing"></div>
+                <div class="tail"></div>
+                <div class="plane-text">SHAO.KX</div>
+            </div>
         </div>
     </div>
 
-    <div id="sand-background">
-        <div id="flow-1" class="sand-flow"></div>
-        <div id="flow-2" class="sand-flow"></div>
+    <div class="top-right-panel">
+        <div id="digital-clock">00:00:00</div>
+        <div class="small-earth"></div>
     </div>
 
-    <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between relative">
-            <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
-            
-            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase items-center mr-64">
-                <a href="#home" class="hover:text-white transition">概览</a>
-                <a href="#work" class="hover:text-white transition">工作经验</a>
-                <a href="#projects" class="hover:text-white transition">项目经历</a>
-                <a href="#portfolio" class="hover:text-white transition text-[#d4af37]">作品集</a>
-                <a href="#skills" class="hover:text-white transition">专业技能</a>
-                <a href="#education" class="hover:text-white transition">教育背景</a>
-                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系方式</a>
-            </div>
+    <div id="sand-background"><div id="flow-1" class="sand-flow"></div></div>
 
-            <div class="info-panel">
-                <div id="clock">00:00:00</div>
-                <div class="earth-orbit-container">
-                    <div class="earth-main"></div>
-                    <div class="mini-plane-orbit">
-                        <div class="mini-plane-icon">✈️</div>
-                    </div>
-                </div>
+    <nav class="fixed w-full z-50 bg-black/80 border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
+            <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
+            <div class="hidden lg:flex space-x-6 text-[11px] font-bold uppercase tracking-widest text-gray-400">
+                <a href="#home" class="hover:text-white">概览</a>
+                <a href="#work" class="hover:text-white">工作经验</a>
+                <a href="#projects" class="hover:text-white">项目经历</a>
+                <a href="#portfolio" class="text-[#d4af37]">作品集 Portfolio</a>
+                <a href="#skills" class="hover:text-white">专业技能</a>
+                <a href="#education" class="hover:text-white">教育背景</a>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="relative pt-44 pb-32 px-10 reveal">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
-            <div class="flex-1 space-y-8 text-center md:text-left jump-left">
-                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
-                <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
+    <main class="relative z-10">
+        <section id="home" class="pt-48 pb-20 px-10 max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12">
+            <div class="flex-1">
+                <h1 class="text-6xl font-black text-white mb-6">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
+                <p class="text-xl text-gray-400">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
             </div>
-            <div class="flex-1 relative jump-right">
-                <div class="relative w-64 md:w-80 mx-auto group">
-                    <div class="absolute -inset-4 bg-[#d4af37]/20 rounded-[2.5rem] blur-3xl opacity-60"></div>
-                    <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#d4af37]/30 shadow-2xl">
-                        <img src="https://i.ibb.co/JRGwm7R7/20250312151127.jpg" alt="邵柯翔" class="w-full h-full object-cover">
-                    </div>
-                </div>
+            <div class="w-72 h-96 rounded-3xl overflow-hidden border border-gold-500/30">
+                <img src="https://i.ibb.co/JRGwm7R7/20250312151127.jpg" class="w-full h-full object-cover">
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="work" class="py-24 px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">工作经验 / Work Experience</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-10 rounded-3xl jump-left">
-                    <span class="text-[#b8860b] text-xs font-mono">2024 - 至今</span>
-                    <h3 class="text-2xl font-bold text-white mt-2 mb-2">南京市瑞雨山科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">执行董事</p>
-                    <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 组织及协调各部门负责人，主导新员工标准化培训体系</li>
-                        <li>• 建立完善公司招聘流程，编制各阶段人才引进计划</li>
-                        <li>• 制定公司薪酬绩效制度，组织策划大型品牌活动</li>
-                    </ul>
+        <section id="work" class="py-20 px-10 max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold gold-text mb-10 italic">工作经验 / Work Experience</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="glass-card p-8 rounded-2xl">
+                    <span class="text-gold-500 text-sm">2024 - 至今</span>
+                    <h3 class="text-xl font-bold text-white mt-2">南京市瑞雨山科技有限公司 | 执行董事</h3>
+                    <p class="text-gray-400 mt-4 text-sm leading-relaxed">主导新员工标准化培训体系，建立完善公司招聘流程，制定薪酬绩效制度。</p>
                 </div>
-                <div class="glass-card p-10 rounded-3xl jump-right">
-                    <span class="text-[#b8860b] text-xs font-mono">2025.02 - 2025.06</span>
-                    <h3 class="text-2xl font-bold text-white mt-2 mb-2">北京三块在线科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园送金陵科技学院幕府校区负责人</p>
-                    <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 负责校区配送团队的组建、培训及日常管理考核</li>
-                        <li>• 优化校区物流配送路径，确保日均500+单量高效送达</li>
-                        <li>• 实时监控运营数据，处理突发异常，维持零事故记录</li>
-                    </ul>
+                <div class="glass-card p-8 rounded-2xl">
+                    <span class="text-gold-500 text-sm">2025.02 - 2025.06</span>
+                    <h3 class="text-xl font-bold text-white mt-2">美团校园送 | 校区负责人</h3>
+                    <p class="text-gray-400 mt-4 text-sm leading-relaxed">统筹幕府校区配送团队，确保日均500+单量零事故送达，优化物流路径。</p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="projects" class="py-24 px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest uppercase">项目实战 / Project Experience</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-                <div class="glass-card p-6 rounded-2xl jump-left">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">美团校园送项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">幕府校区负责人</p>
-                    <p class="text-[13px] text-slate-400">统筹建立标准化体系，实现单量突破与稳定运营。</p>
+        <section id="projects" class="py-20 px-10 max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold gold-text mb-10 italic">项目实战 / Projects</h2>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="glass-card p-6 rounded-xl text-sm">
+                    <h4 class="font-bold text-white">小红书转化项目</h4>
+                    <p class="text-gray-500 mt-2">通过矩阵账号获取1000条线索，达成6万成交。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl jump-left" style="transition-delay: 0.1s;">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">小红书转化项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">获客转化负责人</p>
-                    <p class="text-[13px] text-slate-400">管理矩阵账号获取1000条线索，达成6万元成交额。</p>
+                <div class="glass-card p-6 rounded-xl text-sm">
+                    <h4 class="font-bold text-white">AI 跨境电商优化</h4>
+                    <p class="text-gray-500 mt-2">流程重构，将4人工作量压缩至1人4小时。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl jump-right" style="transition-delay: 0.2s;">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">跨境电商优化</h4>
-                    <p class="text-xs text-slate-500 mb-4">AI自动化应用</p>
-                    <p class="text-[13px] text-slate-400">重构商品上架流程，将4人工作量压缩至1人4小时。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl jump-right" style="transition-delay: 0.3s;">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">宠物医药推广</h4>
-                    <p class="text-xs text-slate-500 mb-4">渠道维护</p>
-                    <p class="text-[13px] text-slate-400">对接周边宠物医院，协助整理信息并完成推广活动。</p>
-                </div>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="education" class="py-24 px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
-            <div class="glass-card p-12 rounded-[3rem] jump-left">
-                <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
-                <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
-                <p class="text-sm text-slate-400 leading-loose">学校坚持“需求导向,能力为本”理念。致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。</p>
+        <section id="portfolio" class="py-20 px-10 max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold gold-text mb-10 italic">作品集 / Portfolio</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="aspect-video glass-card rounded-xl flex items-center justify-center text-gray-500">运营方案.pdf</div>
+                <div class="aspect-video glass-card rounded-xl flex items-center justify-center text-gray-500">品牌策划案.vlog</div>
+                <div class="aspect-video glass-card rounded-xl flex items-center justify-center text-gray-500">AI自动化脚本展示</div>
             </div>
-        </div>
-    </section>
+        </section>
+
+        <section id="education" class="py-20 px-10 max-w-6xl mx-auto">
+            <div class="glass-card p-10 rounded-[2rem]">
+                <h3 class="text-2xl font-bold text-white">金陵科技学院</h3>
+                <p class="text-gold-500 font-bold mt-2">动物医学 · 本科 (2024 - 2028)</p>
+                <p class="text-gray-400 mt-4 leading-relaxed">专注于临床诊断思维与实验室技能培养，展现严谨的专业背景。</p>
+            </div>
+        </section>
+
+        <footer id="contact" class="py-20 px-10 text-center">
+            <h2 class="text-3xl font-bold gold-text mb-10">联系方式 / Contact</h2>
+            <div class="flex flex-wrap justify-center gap-10 text-xl font-bold text-white">
+                <div>电话: <span class="text-gold-500">13814632349</span></div>
+                <div>邮箱: <span class="text-gold-500">2306367140@qq.com</span></div>
+            </div>
+        </footer>
+    </main>
 
     <script>
-        // 实时数字时钟
+        // 时钟逻辑
         function updateClock() {
             const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+            document.getElementById('digital-clock').textContent = now.toTimeString().split(' ')[0];
         }
         setInterval(updateClock, 1000);
         updateClock();
 
+        // 动画移除
         window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            // 动画结束后移除
             setTimeout(() => {
-                loader.style.display = 'none';
-            }, 2600);
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('active');
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-        const flows = [document.getElementById('flow-1'), document.getElementById('flow-2')];
-        document.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            flows[0].style.transform = `translate(${clientX - 600}px, ${clientY - 450}px)`;
-            flows[1].style.transform = `translate(${window.innerWidth - clientX - 450}px, ${window.innerHeight - clientY - 550}px)`;
+                document.getElementById('loader').style.display = 'none';
+            }, 2300);
         });
     </script>
 </body>
