@@ -11,39 +11,37 @@
     <style>
         body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; overflow-x: hidden; margin: 0; }
         
+        /* 强制硬件加速，消除文字卡顿 */
+        .reveal-left, .reveal-right, .reveal-up { 
+            will-change: transform, opacity; 
+            backface-visibility: hidden;
+        }
+
         /* 恢复并增强流光背景 */
         #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
         .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; }
         #flow-1 { width: 1000px; height: 800px; background: radial-gradient(circle, rgba(184, 134, 11, 0.3) 0%, transparent 70%); }
         #flow-2 { width: 800px; height: 1000px; background: radial-gradient(circle, rgba(245, 224, 163, 0.2) 0%, transparent 60%); }
 
-        /* 原始 glass-card 样式完全还原 */
         .glass-card { 
             background: rgba(10, 10, 10, 0.8); 
             backdrop-filter: blur(25px); 
             border: 1px solid rgba(212, 175, 55, 0.2); 
-            position: relative; 
-            overflow: hidden; 
-            transition: all 0.5s ease;
+            position: relative; overflow: hidden; transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .glass-card::after {
             content: ""; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%;
             background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
             transform: rotate(45deg); pointer-events: none;
         }
-        .glass-card:hover::after { left: 150%; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .glass-card:hover::after { left: 150%; transition: all 0.8s ease; }
         .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.2); }
 
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        /* 初始动画状态 */
-        .reveal-left { opacity: 0; transform: translateX(-100px); }
-        .reveal-right { opacity: 0; transform: translateX(100px); }
-        .reveal-up { opacity: 0; transform: translateY(50px); }
-
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
         .loader-bar { width: 180px; height: 2px; background: rgba(212, 175, 55, 0.1); position: relative; overflow: hidden; }
-        .loader-bar::after { content: ""; position: absolute; left: -100%; width: 100%; height: 100%; background: #d4af37; animation: barLoad 2s infinite ease; }
+        .loader-bar::after { content: ""; position: absolute; left: -100%; width: 100%; height: 100%; background: #d4af37; animation: barLoad 1.5s infinite ease-in-out; }
         @keyframes barLoad { 0% { left: -100%; } 100% { left: 100%; } }
     </style>
 </head>
@@ -68,7 +66,6 @@
                 <a href="#projects" class="hover:text-white transition">项目经历</a>
                 <a href="portfolio.html" class="px-3 py-1 bg-[#d4af37]/10 text-[#d4af37] border border-[#d4af37]/30 rounded hover:bg-[#d4af37] hover:text-black transition-all">作品集 Portfolio</a>
                 <a href="#skills" class="hover:text-white transition">专业技能</a>
-                <a href="#education" class="hover:text-white transition">教育背景</a>
                 <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系方式</a>
             </div>
         </div>
@@ -76,10 +73,10 @@
 
     <section id="home" class="relative pt-44 pb-32 px-10">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
-            <div class="flex-1 space-y-8 text-center md:text-left reveal-left">
-                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
-                <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
+            <div class="flex-1 space-y-8 text-center md:text-left">
+                <div class="reveal-left inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
+                <h1 class="reveal-left text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
+                <p class="reveal-left text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
             </div>
             <div class="flex-1 relative reveal-right">
                 <div class="relative w-64 md:w-80 mx-auto group">
@@ -118,18 +115,6 @@
         </div>
     </section>
 
-    <section id="projects" class="py-24 px-10 relative z-10">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest uppercase reveal-up">项目实战 / Project Experience</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-                <div class="glass-card p-6 rounded-2xl reveal-up"><h4 class="text-lg font-bold text-white mb-2 italic">美团校园送项目</h4><p class="text-[13px] text-slate-400">统筹建立标准化体系，实现单量突破与稳定运营。</p></div>
-                <div class="glass-card p-6 rounded-2xl reveal-up"><h4 class="text-lg font-bold text-white mb-2 italic">小红书转化项目</h4><p class="text-[13px] text-slate-400">管理矩阵账号获取1000条线索，达成6万元成交额。</p></div>
-                <div class="glass-card p-6 rounded-2xl reveal-up"><h4 class="text-lg font-bold text-white mb-2 italic">跨境电商优化</h4><p class="text-[13px] text-slate-400">重构商品上架流程，将4人工作量压缩至1人4小时。</p></div>
-                <div class="glass-card p-6 rounded-2xl reveal-up"><h4 class="text-lg font-bold text-white mb-2 italic">宠物医药推广</h4><p class="text-[13px] text-slate-400">对接周边宠物医院，协助整理信息并完成推广活动。</p></div>
-            </div>
-        </div>
-    </section>
-
     <section id="portfolio" class="py-24 px-10 relative z-10">
         <div class="max-w-7xl mx-auto">
             <div class="flex justify-between items-end mb-12 px-6 reveal-up">
@@ -138,12 +123,11 @@
                     <p class="text-[#b8860b] text-xs font-bold tracking-widest mt-2 uppercase">Core Portfolio Showcase</p>
                 </div>
                 <a href="portfolio.html" class="group flex items-center space-x-2 text-[10px] font-bold tracking-[0.2em] text-[#d4af37] uppercase border-b border-[#d4af37]/30 pb-1 hover:border-[#d4af37] transition-all">
-                    <span>更多作品 / View More</span>
-                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                    <span>更多作品</span> <span class="group-hover:translate-x-1 transition-transform">→</span>
                 </a>
             </div>
 
-            <div class="relative p-1 bg-gradient-to-br from-[#d4af37]/20 to-transparent rounded-[4rem] md:rounded-[8rem] reveal-up" style="transition-duration: 1.5s;">
+            <div class="relative p-1 bg-gradient-to-br from-[#d4af37]/20 to-transparent rounded-[4rem] md:rounded-[8rem] reveal-up">
                 <div class="bg-black/80 backdrop-blur-3xl rounded-[4rem] md:rounded-[8rem] p-8 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="glass-card p-8 rounded-[3rem] text-center">
                         <div class="text-3xl mb-4">🌍</div>
@@ -168,73 +152,51 @@
         </div>
     </section>
 
-    <section id="skills" class="py-24 px-10 relative z-10">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase reveal-up">专业技能 / Core Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 reveal-left"><h4 class="text-white font-bold mb-3 text-sm">医学严谨逻辑</h4><p class="text-xs text-slate-400">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p></div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 reveal-up"><h4 class="text-white font-bold mb-3 text-sm">AI 自动化赋能</h4><p class="text-xs text-slate-400">精通利用AI重构重复性流程，实现核心业务降本增效。</p></div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5 reveal-right"><h4 class="text-white font-bold mb-3 text-sm">团队与财务管理</h4><p class="text-xs text-slate-400">具备完整的制度搭建、人员培训及年度预算制定经验。</p></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="education" class="py-24 px-10 relative z-10">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase reveal-up">教育背景 / Education</h2>
-            <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center reveal-up">
-                <div class="flex-1 text-center md:text-left">
-                    <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
-                    <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest text-sm">动物医学 · 本科 (2024 - 2028)</p>
-                    <p class="text-sm text-slate-400 leading-loose">本人所在专业重点培养临床诊断思维与实验室技能。</p>
-                </div>
-                <div class="w-full md:w-1/3 p-6 bg-black/40 rounded-2xl text-xs text-slate-500 space-y-4 text-left">
-                    <p>📍 南京市江宁大学城</p>
-                    <p>🎓 国家级一流本科专业</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer id="contact" class="py-40 px-10 relative z-10 text-center">
         <h2 class="text-5xl font-black mb-16 gold-text italic uppercase reveal-up">Let's Connect</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto reveal-up">
-            <button onclick="copyText('13814632349')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold">13814632349</button>
-            <button onclick="copyText('2306367140@qq.com')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold">2306367140@qq.com</button>
+            <button onclick="alert('已复制')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold">13814632349</button>
+            <button onclick="alert('已复制')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold">2306367140@qq.com</button>
         </div>
     </footer>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        // 1. 开屏与首屏入场
+        // 极致丝滑入场逻辑
         window.addEventListener('load', () => {
             const tl = gsap.timeline();
-            tl.to("#loader", { opacity: 0, duration: 1, delay: 1, onComplete: () => document.getElementById('loader').style.display = 'none' });
-            // 头像从右往左“弹”进来
-            tl.fromTo(".reveal-right", { x: 150, opacity: 0 }, { x: 0, opacity: 1, duration: 1.5, ease: "back.out(1.2)" }, "-=0.5");
-            // 文字从左往右入场
-            tl.fromTo(".reveal-left", { x: -150, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: "power4.out" }, "-=1.2");
+            tl.to("#loader", { opacity: 0, duration: 0.8, delay: 0.5, onComplete: () => document.getElementById('loader').style.display = 'none' });
+            
+            // 头像：缩减位移，改用更高级的 expo 曲线
+            tl.fromTo(".reveal-right", { x: 80, opacity: 0 }, { x: 0, opacity: 1, duration: 1.2, ease: "expo.out" }, "-=0.3");
+            
+            // 文字板块：分层入场，杜绝整块移动的沉重感
+            tl.fromTo(".reveal-left", 
+                { x: -60, opacity: 0 }, 
+                { x: 0, opacity: 1, duration: 1, stagger: 0.15, ease: "expo.out" }, 
+                "-=1"
+            );
         });
 
-        // 2. 通用滚动飘入效果：往上滑/往下滑都生效，模拟南孚的高级感
-        const reveals = [".reveal-up", ".reveal-left", ".reveal-right"];
-        reveals.forEach(cls => {
-            gsap.utils.toArray(cls).forEach(el => {
+        // 滚动飘入优化：增加 scale 微动效，更有“飘过来”的感觉
+        const revealConfig = [
+            { cls: ".reveal-up", x: 0, y: 60 },
+            { cls: ".reveal-left", x: -60, y: 0 },
+            { cls: ".reveal-right", x: 60, y: 0 }
+        ];
+
+        revealConfig.forEach(cfg => {
+            gsap.utils.toArray(cfg.cls).forEach(el => {
                 gsap.fromTo(el, 
-                    { 
-                        x: cls === ".reveal-left" ? -100 : (cls === ".reveal-right" ? 100 : 0),
-                        y: cls === ".reveal-up" ? 100 : 0,
-                        opacity: 0,
-                        scale: 0.95
-                    },
+                    { x: cfg.x, y: cfg.y, opacity: 0, scale: 0.98 },
                     { 
                         x: 0, y: 0, opacity: 1, scale: 1,
                         duration: 1.2, 
                         ease: "power3.out",
                         scrollTrigger: {
                             trigger: el,
-                            start: "top 90%",
+                            start: "top 92%",
                             toggleActions: "play reverse play reverse"
                         }
                     }
@@ -242,17 +204,13 @@
             });
         });
 
-        // 3. 鼠标背景流光（找回且更丝滑）
+        // 鼠标流光：提高灵敏度
         const flows = [document.getElementById('flow-1'), document.getElementById('flow-2')];
         document.addEventListener('mousemove', (e) => {
             const { clientX, clientY } = e;
-            gsap.to(flows[0], { x: clientX - 500, y: clientY - 400, duration: 2, ease: "power2.out" });
-            gsap.to(flows[1], { x: window.innerWidth - clientX - 400, y: window.innerHeight - clientY - 500, duration: 2.5, ease: "power2.out" });
+            gsap.to(flows[0], { x: clientX - 500, y: clientY - 400, duration: 1.2, ease: "power2.out" });
+            gsap.to(flows[1], { x: window.innerWidth - clientX - 400, y: window.innerHeight - clientY - 500, duration: 1.5, ease: "power2.out" });
         });
-
-        function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => { alert("已复制到剪贴板"); });
-        }
     </script>
 </body>
 </html>
