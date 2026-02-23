@@ -4,587 +4,663 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>邵柯翔 | 创业公司CEO & 项目负责人</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    
     <style>
         /* =========================================
-           1. 核心全局样式与性能补丁
+           2. 全局核心变量与性能优化定义
            ========================================= */
         :root {
             --gold-primary: #d4af37;
+            --gold-light: #fff3ad;
             --gold-dark: #8a6d3b;
+            --bg-black: #000000;
+            --glass-bg: rgba(10, 10, 10, 0.85);
+            --transition-smooth: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* 基础样式重置 */
         body { 
             font-family: 'Inter', sans-serif; 
-            background: #000; 
+            background: var(--bg-black); 
             color: var(--gold-primary); 
             overflow-x: hidden;
             margin: 0;
-            /* 解决移动端点击高亮问题 */
+            line-height: 1.6;
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* 隐藏滚动条但保留功能 */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000; }
+        ::-webkit-scrollbar-thumb { background: var(--gold-dark); border-radius: 10px; }
+
         /* =========================================
-           2. 导航栏内嵌监控区 (针对手机端优化)
+           3. 导航栏内嵌监控区样式 (Logo右侧)
            ========================================= */
         .nav-monitor {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             pointer-events: none;
-            padding-left: 15px;
-            margin-left: 15px;
-            border-left: 1px solid rgba(212, 175, 55, 0.3);
+            padding-left: 20px;
+            margin-left: 20px;
+            border-left: 1px solid rgba(212, 175, 55, 0.2);
         }
 
-        /* 手机端如果太挤，稍微缩小一点点 */
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
             .nav-monitor {
                 padding-left: 10px;
                 margin-left: 10px;
-                gap: 6px;
+                gap: 8px;
             }
         }
 
+        /* 小地球自转动画 */
         .mini-earth {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             background-image: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
-            background-size: 40px 20px;
+            background-size: 44px 22px;
             border-radius: 50%;
-            box-shadow: inset -2px -2px 4px #000, 0 0 8px rgba(212, 175, 55, 0.3);
-            animation: earthSpin 15s linear infinite;
-            /* 性能优化：强制开启 GPU 加速 */
-            transform: translateZ(0);
+            box-shadow: inset -2px -2px 4px #000, 0 0 10px rgba(212, 175, 55, 0.4);
+            animation: earthSpin 12s linear infinite;
+            will-change: background-position;
+            transform: translateZ(0); /* GPU 加速 */
         }
 
+        @keyframes earthSpin {
+            0% { background-position: 0 0; }
+            100% { background-position: 44px 0; }
+        }
+
+        /* 动态时钟样式 */
         #mini-clock {
             font-family: 'Inter', monospace;
             font-size: 11px;
             font-weight: 900;
             color: var(--gold-primary);
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-        }
-
-        @keyframes earthSpin {
-            0% { background-position: 0 0; }
-            100% { background-position: 40px 0; }
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
         }
 
         /* =========================================
-           3. 渲染级开屏动画 (针对白屏问题优化)
+           4. 极简黑金开屏加载动画
            ========================================= */
         #loader {
             position: fixed;
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: #000;
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 9999;
-            transition: opacity 0.8s ease, visibility 0.8s;
-            /* 确保在最顶层 */
-            backface-visibility: hidden;
+            transition: opacity 1s ease, visibility 1s;
         }
 
         .loader-glow {
             position: absolute;
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: pulseGlow 3s infinite ease-in-out;
-            pointer-events: none;
-        }
-
-        .loader-mountain {
-            width: 70px;
-            height: 50px;
-            margin-bottom: 15px;
-            opacity: 0;
-            transform: translateY(15px);
-            animation: logoFade 1.2s forwards ease-out;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .mountain-svg {
-            fill: url(#mountainGradient);
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5)); 
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            animation: pulseGlow 4s infinite ease-in-out;
         }
 
         .loader-logo { 
-            font-size: 2rem; 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            margin-bottom: 25px; 
-            opacity: 0; 
-            transform: translateY(15px); 
-            animation: logoFade 1.5s forwards ease-out 0.3s;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .loader-bar { 
-            width: 150px; 
-            height: 2px; 
-            background: rgba(212, 175, 55, 0.1); 
-            position: relative; 
-            overflow: hidden; 
+            font-size: 2.5rem; font-weight: 900; letter-spacing: 8px; 
+            margin-bottom: 30px; opacity: 0; transform: translateY(20px); 
+            animation: logoFadeIn 1.5s forwards ease-out 0.5s;
             z-index: 2;
         }
 
-        .loader-bar::after { 
-            content: ""; 
-            position: absolute; 
-            left: -100%; 
-            width: 100%; 
-            height: 100%; 
-            background: var(--gold-primary); 
-            animation: barLoad 2s infinite ease; 
-        }
-        
         @keyframes pulseGlow {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.3); opacity: 0.8; }
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.4); opacity: 0.7; }
         }
 
-        @keyframes logoFade { 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-
-        @keyframes barLoad { 
-            0% { left: -100%; } 
-            50% { left: 0%; } 
-            100% { left: 100%; } 
-        }
+        @keyframes logoFadeIn { to { opacity: 1; transform: translateY(0); } }
 
         /* =========================================
-           4. 流金沙背景 (移动端 GPU 优化)
+           5. 流金沙背景系统 (手机端性能适配版)
            ========================================= */
         #sand-background { 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            z-index: -1; 
-            background: #000; 
-            overflow: hidden; 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; 
+            z-index: -1; background: #000; overflow: hidden; 
         }
 
         .sand-flow { 
-            position: absolute; 
-            border-radius: 50%; 
-            filter: blur(80px); /* 移动端降低模糊半径以提升性能 */
-            pointer-events: none; 
-            mix-blend-mode: screen; 
-            transition: transform 1.5s cubic-bezier(0.1, 0.4, 0.2, 1); 
-            will-change: transform; /* 核心优化点：告诉浏览器启用硬件加速 */
+            position: absolute; border-radius: 50%; filter: blur(80px); 
+            pointer-events: none; mix-blend-mode: screen; 
+            transition: transform 2s cubic-bezier(0.1, 0.4, 0.2, 1); 
+            will-change: transform;
         }
 
         #flow-1 { 
-            width: 800px; 
-            height: 600px; 
-            background: radial-gradient(circle, rgba(184, 134, 11, 0.35) 0%, transparent 70%); 
+            width: 900px; height: 700px; 
+            background: radial-gradient(circle, rgba(184, 134, 11, 0.3) 0%, transparent 70%); 
         }
 
         #flow-2 { 
-            width: 700px; 
-            height: 800px; 
-            background: radial-gradient(circle, rgba(245, 224, 163, 0.25) 0%, transparent 60%); 
+            width: 800px; height: 900px; 
+            background: radial-gradient(circle, rgba(245, 224, 163, 0.2) 0%, transparent 60%); 
         }
 
         /* =========================================
-           5. 业务模块通用样式
+           6. 业务模块通用动效
            ========================================= */
         .reveal { 
-            opacity: 0; 
-            transform: translateY(30px); 
-            transition: all 1s cubic-bezier(0.5, 0, 0, 1); 
+            opacity: 0; transform: translateY(40px); 
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1); 
         }
 
         .reveal.active { 
-            opacity: 1; 
-            transform: translateY(0); 
+            opacity: 1; transform: translateY(0); 
         }
 
         .gold-text { 
             background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+
+        /* =========================================
+           7. 作品集卡片专用交互逻辑 (核心改动)
+           ========================================= */
+        .portfolio-card-wrap {
+            display: block;
+            text-decoration: none;
+            height: 100%;
+            cursor: pointer;
         }
 
         .glass-card { 
-            background: rgba(10, 10, 10, 0.85); 
+            background: var(--glass-bg); 
             backdrop-filter: blur(20px); 
             border: 1px solid rgba(212, 175, 55, 0.15); 
             position: relative; 
             overflow: hidden; 
-            transition: all 0.4s ease; 
+            transition: var(--transition-smooth);
+            height: 100%;
         }
 
-        .glass-card:hover { 
+        /* 鼠标悬停或点击时的反馈 */
+        .portfolio-card-wrap:hover .glass-card { 
             border-color: var(--gold-primary); 
-            transform: translateY(-5px); 
+            transform: translateY(-15px) scale(1.02); 
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 20px rgba(212, 175, 55, 0.1);
+            background: rgba(20, 20, 20, 0.95);
+        }
+
+        .portfolio-card-wrap:active .glass-card {
+            transform: translateY(-5px) scale(0.98);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.5s ease;
+        }
+
+        .portfolio-card-wrap:hover .card-icon {
+            transform: scale(1.2) rotate(5deg);
         }
 
         .copy-toast { 
-            position: fixed; 
-            bottom: 40px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            background: var(--gold-primary); 
-            color: #000; 
-            padding: 10px 25px; 
-            border-radius: 99px; 
-            display: none; 
-            z-index: 10000; 
-            font-weight: 800;
-            font-size: 12px;
-        }
-
-        /* 移除移动端横向溢出 */
-        html, body {
-            max-width: 100%;
-            overflow-x: hidden;
+            position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%); 
+            background: var(--gold-primary); color: #000; 
+            padding: 12px 30px; border-radius: 99px; 
+            display: none; z-index: 10000; font-weight: 900; 
+            font-size: 13px; letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
         }
     </style>
 </head>
-<body class="leading-relaxed">
+
+<body>
 
     <div id="loader">
         <div class="loader-glow"></div>
-        <div class="loader-mountain">
-            <svg viewBox="0 0 100 60" class="mountain-svg">
-                <defs>
-                    <linearGradient id="mountainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style="stop-color:#fff3ad;stop-opacity:1" />
-                        <stop offset="50%" style="stop-color:#d4af37;stop-opacity:1" />
-                        <stop offset="100%" style="stop-color:#8a6d3b;stop-opacity:1" />
-                    </linearGradient>
-                </defs>
-                <path d="M10 55 L40 10 L60 40 L75 25 L95 55 Z" />
-            </svg>
+        <div class="loader-logo gold-text uppercase italic">SHAO.KX</div>
+        <div class="loader-bar" style="width: 200px; height: 1px; background: rgba(212, 175, 55, 0.1); position: relative; overflow: hidden;">
+            <div id="loader-progress" style="position: absolute; left: -100%; width: 100%; height: 100%; background: var(--gold-primary); animation: barMove 2.5s infinite ease-in-out;"></div>
         </div>
-        <div class="loader-logo gold-text uppercase">Shao.kx</div>
-        <div class="loader-bar"></div>
+        <style> @keyframes barMove { 0% { left: -100%; } 50% { left: 0%; } 100% { left: 100%; } } </style>
     </div>
-
-    <div id="toast" class="copy-toast uppercase tracking-widest">已成功复制</div>
 
     <div id="sand-background">
         <div id="flow-1" class="sand-flow"></div>
         <div id="flow-2" class="sand-flow"></div>
     </div>
 
-    <nav class="fixed w-full z-50 bg-black/70 backdrop-blur-xl border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 h-16 md:h-20 flex items-center justify-between">
+    <div id="toast" class="copy-toast uppercase">SUCCESFULLY COPIED</div>
+
+    <nav class="fixed w-full z-50 bg-black/80 backdrop-blur-2xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-20 md:h-24 flex items-center justify-between">
             
             <div class="flex items-center">
-                <span class="text-xl md:text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
+                <a href="#" class="text-2xl md:text-3xl font-black gold-text italic tracking-tighter hover:opacity-80 transition">
+                    SHAO.<span class="text-white">KX</span>
+                </a>
                 <div class="nav-monitor">
                     <div id="mini-clock">00:00:00</div>
                     <div class="mini-earth"></div>
                 </div>
             </div>
 
-            <div class="hidden lg:flex items-center text-[11px] font-bold tracking-widest uppercase">
-                <div class="flex space-x-6 mr-8">
-                    <a href="#home" class="hover:text-white transition">概览</a>
-                    <a href="#work" class="hover:text-white transition">工作经验</a>
-                    <a href="#projects" class="hover:text-white transition">项目经历</a>
-                    <a href="#portfolio" class="hover:text-white transition text-[#d4af37]">作品集</a>
-                    <a href="#skills" class="hover:text-white transition">专业技能</a>
-                    <a href="#education" class="hover:text-white transition">教育背景</a>
-                </div>
-                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系方式</a>
+            <div class="hidden lg:flex items-center space-x-10 text-[10px] font-bold tracking-[0.3em] uppercase">
+                <a href="#home" class="hover:text-white transition">Overview / 概览</a>
+                <a href="#work" class="hover:text-white transition">Experience / 经历</a>
+                <a href="#projects" class="hover:text-white transition">Execution / 实战</a>
+                <a href="#portfolio" class="text-[#d4af37] border-b border-[#d4af37]/50 pb-1">Portfolio / 作品</a>
+                <a href="#contact" class="px-6 py-3 bg-[#d4af37] text-black rounded-sm hover:bg-white transition-all shadow-lg">Contact / 联络</a>
             </div>
             
+            <div class="lg:hidden text-[#d4af37]">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </div>
         </div>
     </nav>
 
-    <section id="home" class="relative pt-32 md:pt-44 pb-20 md:pb-32 px-6 md:px-10 reveal">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16 relative z-10">
-            <div class="flex-1 space-y-6 md:space-y-8 text-center md:text-left">
-                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
-                <h1 class="text-4xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.2] md:leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
-                <p class="text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
+    <section id="home" class="relative pt-40 md:pt-60 pb-24 md:pb-40 px-6 md:px-12 reveal">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 md:gap-24 relative z-10">
+            <div class="flex-[1.2] space-y-8 md:space-y-12 text-center md:text-left">
+                <div class="inline-flex items-center space-x-3 px-5 py-2 border border-[#d4af37]/40 rounded-full bg-[#d4af37]/5">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d4af37] opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-[#d4af37]"></span>
+                    </span>
+                    <span class="text-[10px] font-black tracking-[0.25em] uppercase text-white">2026 Strategy Portfolio</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-8xl font-black tracking-tighter text-white leading-[1.05] md:leading-[1]">
+                    以严谨医学逻辑 <br>
+                    重构 <span class="gold-text">商业增长路径</span>
+                </h1>
+                
+                <p class="text-lg md:text-2xl text-slate-400 max-w-2xl font-light leading-relaxed">
+                    邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技执行董事。我将医学临床的严谨诊断思维注入到企业流程自动化中，通过 AI 工具实现传统业务的指数级增效。
+                </p>
+
+                <div class="flex flex-wrap justify-center md:justify-start gap-6 pt-6">
+                    <a href="#portfolio" class="px-10 py-5 bg-[#d4af37] text-black font-black text-xs tracking-widest uppercase hover:bg-white transition-all">Explore Projects</a>
+                    <a href="#contact" class="px-10 py-5 border border-[#d4af37]/30 text-white font-black text-xs tracking-widest uppercase hover:bg-[#d4af37]/10 transition-all">Get In Touch</a>
+                </div>
             </div>
-            <div class="flex-1 relative">
-                <div class="relative w-56 md:w-80 mx-auto group">
-                    <div class="absolute -inset-4 bg-[#d4af37]/20 rounded-[2.5rem] blur-3xl opacity-60"></div>
-                    <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#d4af37]/30 shadow-2xl">
-                        <img src="https://i.ibb.co/JRGwm7R7/20250312151127.jpg" alt="邵柯翔" class="w-full h-full object-cover">
+
+            <div class="flex-1 relative w-full max-w-md mx-auto">
+                <div class="absolute -inset-10 bg-[#d4af37]/15 rounded-full blur-[100px] animate-pulse"></div>
+                <div class="relative aspect-[3/4] rounded-[3rem] overflow-hidden border border-[#d4af37]/30 shadow-[0_50px_100px_rgba(0,0,0,0.9)]">
+                    <img src="https://i.ibb.co/JRGwm7R7/20250312151127.jpg" alt="Shao Kexiang" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000 scale-105 hover:scale-100">
+                    <div class="absolute bottom-10 left-10 right-10 p-6 bg-black/60 backdrop-blur-md border border-white/10 rounded-2xl">
+                        <div class="text-[10px] font-bold text-[#d4af37] mb-1">CURRENT STATUS</div>
+                        <div class="text-white font-black text-sm italic">CEO @ Ruiyushan Technology</div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="work" class="py-16 md:py-24 px-6 md:px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-xl md:text-2xl font-bold mb-10 md:mb-12 gold-text tracking-widest text-center uppercase">工作经验 / Work Experience</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                <div class="glass-card p-8 md:p-10 rounded-3xl">
-                    <span class="text-[#b8860b] text-xs font-mono">2024 - 至今</span>
-                    <h3 class="text-xl md:text-2xl font-bold text-white mt-2 mb-2">南京市瑞雨山科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">执行董事</p>
-                    <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 组织及协调各部门负责人，主导新员工标准化培训体系</li>
-                        <li>• 建立完善公司招聘流程，编制各阶段人才引进计划</li>
-                        <li>• 制定公司薪酬绩效制度，组织策划大型品牌活动</li>
-                    </ul>
-                </div>
-                <div class="glass-card p-8 md:p-10 rounded-3xl">
-                    <span class="text-[#b8860b] text-xs font-mono">2025.02 - 2025.06</span>
-                    <h3 class="text-xl md:text-2xl font-bold text-white mt-2 mb-2">北京三块在线科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园送项目负责人</p>
-                    <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 负责校区配送团队的组建、培训及日常管理考核</li>
-                        <li>• 优化校区物流配送路径，确保日均500+单量高效送达</li>
-                        <li>• 实时监控运营数据，处理突发异常，维持零事故记录</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="py-16 md:py-24 px-6 md:px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-xl md:text-2xl font-bold mb-10 md:mb-12 gold-text tracking-widest uppercase">项目实战 / Project Experience</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 text-left">
-                <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">美团校园送项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">幕府校区负责人</p>
-                    <p class="text-[13px] text-slate-400">统筹建立标准化体系，实现单量突破与稳定运营。</p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">小红书转化项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">获客转化负责人</p>
-                    <p class="text-[13px] text-slate-400">管理矩阵账号获取1000条线索，达成6万元成交额。</p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">跨境电商优化</h4>
-                    <p class="text-xs text-slate-500 mb-4">AI自动化应用</p>
-                    <p class="text-[13px] text-slate-400">重构商品上架流程，将4人工作量压缩至1人4小时。</p>
-                </div>
-                <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">宠物医药推广</h4>
-                    <p class="text-xs text-slate-500 mb-4">渠道维护</p>
-                    <p class="text-[13px] text-slate-400">对接周边宠物医院，协助整理信息并完成推广活动。</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="portfolio" class="py-16 md:py-24 px-6 md:px-10 relative z-10 reveal">
+    <section id="work" class="py-24 md:py-32 px-6 md:px-12 relative z-10 reveal">
         <div class="max-w-7xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 md:mb-12 px-6 gap-4">
-                <div class="text-center md:text-left">
-                    <h2 class="text-2xl md:text-3xl font-black text-white uppercase italic tracking-tighter">核心作品展示</h2>
-                    <p class="text-[#b8860b] text-xs font-bold tracking-widest mt-2 uppercase">Core Portfolio Showcase</p>
+            <div class="mb-20 text-center">
+                <h2 class="text-3xl md:text-5xl font-black text-white italic tracking-tighter uppercase">职业履历 <span class="gold-text">Experience</span></h2>
+                <div class="h-1 w-20 bg-[#d4af37] mx-auto mt-6"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div class="glass-card p-10 md:p-14 rounded-[3rem]">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <span class="text-[#b8860b] text-xs font-mono font-bold tracking-widest">2024 - PRESENT</span>
+                            <h3 class="text-2xl md:text-3xl font-black text-white mt-4">南京市瑞雨山科技有限公司</h3>
+                            <p class="text-[#d4af37] text-xs font-bold uppercase mt-2 tracking-widest italic">Executive Director / 执行董事</p>
+                        </div>
+                        <div class="text-4xl">🏢</div>
+                    </div>
+                    <ul class="space-y-6 text-sm md:text-base text-slate-400">
+                        <li class="flex items-start gap-4">
+                            <span class="text-[#d4af37] mt-1">▹</span>
+                            <span>组织及协调各部门负责人，主导新员工标准化培训体系，确保人才梯队建设的高效落地。</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-[#d4af37] mt-1">▹</span>
+                            <span>建立完善公司招聘流程，编制各阶段人才引进计划，成功引进多位核心技术专家。</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-[#d4af37] mt-1">▹</span>
+                            <span>制定公司薪酬绩效制度，组织策划大型品牌活动，提升公司品牌在行业内的影响力。</span>
+                        </li>
+                    </ul>
                 </div>
-                <a href="portfolio.html" class="group flex items-center space-x-2 text-[10px] font-bold tracking-[0.2em] text-[#d4af37] uppercase border-b border-[#d4af37]/30 pb-1">
-                    <span>更多作品 / View More</span>
-                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+
+                <div class="glass-card p-10 md:p-14 rounded-[3rem]">
+                    <div class="flex justify-between items-start mb-8">
+                        <div>
+                            <span class="text-[#b8860b] text-xs font-mono font-bold tracking-widest">2025.02 - 2025.06</span>
+                            <h3 class="text-2xl md:text-3xl font-black text-white mt-4">北京三块在线科技有限公司</h3>
+                            <p class="text-[#d4af37] text-xs font-bold uppercase mt-2 tracking-widest italic">Campus Project Leader / 美团项目负责人</p>
+                        </div>
+                        <div class="text-4xl">🛵</div>
+                    </div>
+                    <ul class="space-y-6 text-sm md:text-base text-slate-400">
+                        <li class="flex items-start gap-4">
+                            <span class="text-[#d4af37] mt-1">▹</span>
+                            <span>负责幕府校区配送团队的全面组建、培训及日常管理考核，建立起一套零延迟的反馈机制。</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-[#d4af37] mt-1">▹</span>
+                            <span>优化校区物流配送路径，通过数据监控与实时调度，确保日均500+单量在高峰期稳定送达。</span>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <span class="text-[#d4af37] mt-1">▹</span>
+                            <span>实时监控运营数据，精准处理突发异常，实现项目运营期间“零事故、零投诉”目标。</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-24 md:py-32 px-6 md:px-12 relative z-10 reveal">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-xl md:text-2xl font-bold mb-16 gold-text tracking-[0.3em] uppercase text-center italic">项目实战执行 / Execution</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div class="glass-card p-8 rounded-[2rem] border-l-4 border-l-[#d4af37]">
+                    <h4 class="text-xl font-black text-white mb-4 italic">美团校园送</h4>
+                    <p class="text-[11px] text-[#b8860b] mb-6 uppercase font-bold tracking-widest">幕府校区运营</p>
+                    <p class="text-xs text-slate-400 leading-relaxed">统筹建立标准化管理体系，负责校区单量突破与稳定运营，单量环比增长40%。</p>
+                </div>
+                <div class="glass-card p-8 rounded-[2rem] border-l-4 border-l-[#d4af37]">
+                    <h4 class="text-xl font-black text-white mb-4 italic">小红书转化</h4>
+                    <p class="text-[11px] text-[#b8860b] mb-6 uppercase font-bold tracking-widest">获客转化项目</p>
+                    <p class="text-xs text-slate-400 leading-relaxed">管理矩阵账号获取1000+精准线索，通过标准化SOP流程达成6万元首期成交额。</p>
+                </div>
+                <div class="glass-card p-8 rounded-[2rem] border-l-4 border-l-[#d4af37]">
+                    <h4 class="text-xl font-black text-white mb-4 italic">跨境电商优化</h4>
+                    <p class="text-[11px] text-[#b8860b] mb-6 uppercase font-bold tracking-widest">AI 自动化应用</p>
+                    <p class="text-xs text-slate-400 leading-relaxed">重构繁琐的商品上架流程，利用AI将原本需要4人的工作量压缩至1人4小时完成。</p>
+                </div>
+                <div class="glass-card p-8 rounded-[2rem] border-l-4 border-l-[#d4af37]">
+                    <h4 class="text-xl font-black text-white mb-4 italic">宠物医药推广</h4>
+                    <p class="text-[11px] text-[#b8860b] mb-6 uppercase font-bold tracking-widest">医药渠道开发</p>
+                    <p class="text-xs text-slate-400 leading-relaxed">深入对接周边宠物医院，利用医学背景完成专业化信息整理，协助完成精准推广。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="py-24 md:py-32 px-6 md:px-12 relative z-10 reveal">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-16 gap-6">
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-5xl font-black text-white uppercase italic tracking-tighter">核心作品 <span class="gold-text">Showcase</span></h2>
+                    <p class="text-[#b8860b] text-[10px] font-bold tracking-[0.4em] mt-3 uppercase">Top Strategic Projects Overview</p>
+                </div>
+                <a href="portfolio.html" class="group flex items-center space-x-3 text-[11px] font-bold tracking-[0.3em] text-[#d4af37] uppercase border-b border-[#d4af37]/30 pb-2">
+                    <span>Explore All Works / 更多作品</span>
+                    <span class="group-hover:translate-x-2 transition-transform duration-500">→</span>
                 </a>
             </div>
 
-            <div class="relative p-1 bg-gradient-to-br from-[#d4af37]/20 to-transparent rounded-[3rem] md:rounded-[8rem]">
-                <div class="bg-black/80 backdrop-blur-3xl rounded-[3rem] md:rounded-[8rem] p-6 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                    <div class="glass-card p-8 rounded-[2.5rem] text-center">
-                        <div class="text-3xl mb-4">🌍</div>
-                        <h4 class="text-lg font-bold text-white mb-3">AI外贸谈判系统</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">针对中东/欧美市场定制的AI报价与商务谈判模拟工具。</p>
-                        <a href="#" class="text-[10px] font-bold text-[#d4af37] uppercase">查看详情</a>
-                    </div>
-                    <div class="glass-card p-8 rounded-[2.5rem] text-center">
-                        <div class="text-3xl mb-4">📊</div>
-                        <h4 class="text-lg font-bold text-white mb-3">流程自动化中枢</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">集成RPA与GPT-4，实现跨境电商上架流程全自动重构。</p>
-                        <a href="#" class="text-[10px] font-bold text-[#d4af37] uppercase">查看详情</a>
-                    </div>
-                    <div class="glass-card p-8 rounded-[2.5rem] text-center">
-                        <div class="text-3xl mb-4">🐾</div>
-                        <h4 class="text-lg font-bold text-white mb-3">数字宠物医疗库</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">结合医学背景开发的宠物疾病快速诊断与药品索引系统。</p>
-                        <a href="#" class="text-[10px] font-bold text-[#d4af37] uppercase">查看详情</a>
-                    </div>
+            <div class="relative p-2 bg-gradient-to-br from-[#d4af37]/20 via-transparent to-transparent rounded-[4rem] md:rounded-[10rem]">
+                <div class="bg-black/90 backdrop-blur-3xl rounded-[4rem] md:rounded-[10rem] p-8 md:p-20 grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+                    
+                    <a href="project-ai.html" class="portfolio-card-wrap">
+                        <div class="glass-card p-10 md:p-12 rounded-[3.5rem] text-center flex flex-col justify-between">
+                            <div>
+                                <div class="card-icon">🌍</div>
+                                <h4 class="text-2xl font-black text-white mb-4">AI外贸谈判系统</h4>
+                                <p class="text-sm text-slate-500 leading-relaxed mb-10">
+                                    基于大模型开发的智能报价与谈判工具，模拟中东与欧美商务场景，提升跨境业务转化率。
+                                </p>
+                            </div>
+                            <div class="py-4 border border-[#d4af37]/20 text-[10px] font-black text-[#d4af37] uppercase tracking-[0.3em] rounded-2xl group-hover:bg-[#d4af37] group-hover:text-black transition-all">
+                                查看详情 / VIEW PROJECT
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="project-auto.html" class="portfolio-card-wrap">
+                        <div class="glass-card p-10 md:p-12 rounded-[3.5rem] text-center flex flex-col justify-between">
+                            <div>
+                                <div class="card-icon">📊</div>
+                                <h4 class="text-2xl font-black text-white mb-4">流程自动化中枢</h4>
+                                <p class="text-sm text-slate-500 leading-relaxed mb-10">
+                                    集成 RPA 与定制化 AI 接口，深度重构跨境电商上架与数据反馈链路，实现流程级降本增效。
+                                </p>
+                            </div>
+                            <div class="py-4 border border-[#d4af37]/20 text-[10px] font-black text-[#d4af37] uppercase tracking-[0.3em] rounded-2xl group-hover:bg-[#d4af37] group-hover:text-black transition-all">
+                                查看详情 / VIEW PROJECT
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="project-pet.html" class="portfolio-card-wrap">
+                        <div class="glass-card p-10 md:p-12 rounded-[3.5rem] text-center flex flex-col justify-between">
+                            <div>
+                                <div class="card-icon">🐾</div>
+                                <h4 class="text-2xl font-black text-white mb-4">数字宠物医疗库</h4>
+                                <p class="text-sm text-slate-500 leading-relaxed mb-10">
+                                    垂直于动物医学领域的知识库项目，结合临床数据提供精准的病理索引与药品辅助诊断。
+                                </p>
+                            </div>
+                            <div class="py-4 border border-[#d4af37]/20 text-[10px] font-black text-[#d4af37] uppercase tracking-[0.3em] rounded-2xl group-hover:bg-[#d4af37] group-hover:text-black transition-all">
+                                查看详情 / VIEW PROJECT
+                            </div>
+                        </div>
+                    </a>
+
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="skills" class="py-16 md:py-24 px-6 md:px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-xl md:text-2xl font-bold mb-10 md:mb-12 gold-text tracking-widest text-center uppercase">专业技能 / Core Skills</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">医学严谨逻辑</h4>
-                    <p class="text-xs text-slate-400">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p>
-                </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">AI 自动化赋能</h4>
-                    <p class="text-xs text-slate-400">精通利用AI重构重复性流程，实现核心业务降本增效。</p>
-                </div>
-                <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">团队与财务管理</h4>
-                    <p class="text-xs text-slate-400">具备完整的制度搭建、人员培训及年度预算制定经验。</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="education" class="py-16 md:py-24 px-6 md:px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-xl md:text-2xl font-bold mb-10 md:mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
-            <div class="glass-card p-8 md:p-12 rounded-[2.5rem] md:rounded-[3rem] flex flex-col md:flex-row gap-8 md:gap-12 items-center text-center md:text-left">
-                <div class="flex-1">
-                    <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
-                    <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
+    <section id="skills" class="py-24 md:py-32 px-6 md:px-12 relative z-10 reveal">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-xl md:text-2xl font-bold mb-16 gold-text tracking-[0.5em] text-center uppercase italic">专业领域 / CORE SKILLS</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
+                <div class="group">
+                    <div class="h-[2px] w-full bg-[#d4af37]/10 mb-8 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[#d4af37] -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+                    </div>
+                    <h4 class="text-white font-black mb-4 uppercase tracking-tighter text-lg">医学严谨逻辑分析</h4>
                     <p class="text-sm text-slate-400 leading-loose">
-                        学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。
+                        凭借深厚的动物医学背景，我养成了临床诊断般的缜密思维，能够从复杂的业务数据中精准识别“病灶”，并提出科学的重构方案。
                     </p>
                 </div>
-                <div class="w-full md:w-1/3 p-6 bg-black/40 rounded-2xl text-[11px] text-slate-500 space-y-4 text-left">
-                    <p>📍 南京市江宁大学城</p>
-                    <p>🎓 国家级一流本科专业建设点背景</p>
-                    <p>🔬 省级实验教学示范中心支持</p>
+                <div class="group">
+                    <div class="h-[2px] w-full bg-[#d4af37]/10 mb-8 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[#d4af37] -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+                    </div>
+                    <h4 class="text-white font-black mb-4 uppercase tracking-tighter text-lg">AI 自动化工具深度应用</h4>
+                    <p class="text-sm text-slate-400 leading-loose">
+                        精通将主流 AI（GPT/Claude/RPA）嵌入实际工作流，特别是在跨境贸易、内容分发领域拥有丰富的“去人工化”实践经验。
+                    </p>
+                </div>
+                <div class="group">
+                    <div class="h-[2px] w-full bg-[#d4af37]/10 mb-8 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-[#d4af37] -translate-x-full group-hover:translate-x-0 transition-transform duration-1000"></div>
+                    </div>
+                    <h4 class="text-white font-black mb-4 uppercase tracking-tighter text-lg">创业公司团队统筹</h4>
+                    <p class="text-sm text-slate-400 leading-loose">
+                        作为执行董事，我具备从 0 到 1 搭建团队制度、设计薪酬绩效、处理复杂财务预算及组织超百人规模活动的核心领导力。
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer id="contact" class="py-32 md:py-40 px-6 md:px-10 relative z-10 text-center reveal">
-        <h2 class="text-4xl md:text-5xl font-black mb-12 md:mb-16 gold-text italic tracking-tighter uppercase">Let's Connect</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 max-w-4xl mx-auto">
-            <button onclick="copyText('13814632349')" class="py-6 md:py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase text-sm">
-                13814632349
+    <section id="education" class="py-24 md:py-32 px-6 md:px-12 relative z-10 reveal">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-xl md:text-2xl font-bold mb-16 gold-text tracking-[0.3em] uppercase text-center italic">教育背景 / EDUCATION</h2>
+            <div class="glass-card p-10 md:p-20 rounded-[4rem] flex flex-col md:flex-row gap-12 md:gap-20 items-center">
+                <div class="flex-1 text-center md:text-left">
+                    <h3 class="text-4xl md:text-5xl font-black text-white mb-6 tracking-tighter">金陵科技学院</h3>
+                    <p class="text-[#b8860b] text-lg font-bold mb-8 italic uppercase tracking-[0.2em]">动物医学 · 本科 (2024 - 2028)</p>
+                    <p class="text-slate-400 leading-relaxed max-w-2xl text-base">
+                        作为一所高水平应用型大学，金陵科技学院不仅赋予了我严谨的医学专业技能，更培养了我“需求导向、能力为本”的实践精神。在校期间重点攻克临床诊断逻辑与前沿生物技术。
+                    </p>
+                </div>
+                <div class="w-full md:w-[350px] p-10 bg-black/40 rounded-3xl text-xs text-slate-500 space-y-6 border border-white/5">
+                    <div class="flex items-center gap-4">
+                        <span class="text-[#d4af37]">📍</span>
+                        <span>南京市江宁大学城核心区</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-[#d4af37]">🎓</span>
+                        <span>国家级一流本科专业建设背景</span>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <span class="text-[#d4af37]">🔬</span>
+                        <span>省级动物医学实验教学中心支持</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact" class="py-32 md:py-56 px-6 md:px-12 relative z-10 text-center reveal">
+        <h2 class="text-6xl md:text-9xl font-black mb-20 gold-text italic tracking-[ -0.05em] uppercase">LET'S CONNECT</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-32">
+            <button onclick="copyToClipboard('13814632349')" class="group relative py-10 border border-[#d4af37]/30 rounded-3xl overflow-hidden hover:bg-[#d4af37] transition-all duration-700">
+                <span class="relative z-10 text-xl font-black tracking-widest uppercase group-hover:text-black transition-colors">13814632349</span>
+                <div class="absolute bottom-4 left-0 right-0 text-[10px] font-bold text-[#d4af37] group-hover:text-black/50 opacity-60">CLICK TO COPY / 点击复制</div>
             </button>
-            <button onclick="copyText('2306367140@qq.com')" class="py-6 md:py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase text-sm">
-                2306367140@qq.com
+            <button onclick="copyToClipboard('2306367140@qq.com')" class="group relative py-10 border border-[#d4af37]/30 rounded-3xl overflow-hidden hover:bg-[#d4af37] transition-all duration-700">
+                <span class="relative z-10 text-xl font-black tracking-widest uppercase group-hover:text-black transition-colors">2306367140@qq.com</span>
+                <div class="absolute bottom-4 left-0 right-0 text-[10px] font-bold text-[#d4af37] group-hover:text-black/50 opacity-60">CLICK TO COPY / 点击复制</div>
             </button>
+        </div>
+
+        <div class="border-t border-white/10 pt-20 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-[10px] text-slate-600 font-bold tracking-[0.5em] uppercase">© 2026 SHAO KEXIANG. ALL RIGHTS RESERVED.</div>
+            <div class="flex space-x-8 text-[10px] text-slate-600 font-bold uppercase tracking-widest">
+                <a href="#" class="hover:text-[#d4af37] transition">Privacy Policy</a>
+                <a href="#" class="hover:text-[#d4af37] transition">Terms of Service</a>
+            </div>
         </div>
     </footer>
 
     <script>
         /**
-         * 1. 实时时钟初始化
+         * [Logic 1] 实时动态时钟驱动
          */
-        function startLiveClock() {
-            const clockBox = document.getElementById('mini-clock');
+        function initLiveClock() {
+            const clockElement = document.getElementById('mini-clock');
             const updateTime = () => {
                 const now = new Date();
                 const h = String(now.getHours()).padStart(2, '0');
                 const m = String(now.getMinutes()).padStart(2, '0');
                 const s = String(now.getSeconds()).padStart(2, '0');
-                clockBox.textContent = `${h}:${m}:${s}`;
+                clockElement.textContent = `${h}:${m}:${s}`;
             };
             setInterval(updateTime, 1000);
             updateTime();
         }
 
         /**
-         * 2. 开屏动画控制（增强鲁棒性）
+         * [Logic 2] 增强型开屏控制逻辑 (解决手机端白屏)
          */
-        function handleLoader() {
+        function handleGlobalLoader() {
             const loader = document.getElementById('loader');
-            // 设置强制退出阈值，防止卡死
-            const forceExitTime = 2500; 
+            const body = document.body;
             
-            const closeLoader = () => {
-                loader.style.opacity = '0';
-                setTimeout(() => { 
-                    loader.style.visibility = 'hidden'; 
-                }, 800);
-            };
+            // 确保页面在网络环境极差的情况下也能展示内容 (1.8秒强制释放)
+            const forceClose = setTimeout(() => {
+                releaseLoader();
+            }, 1800);
 
-            // 页面加载完成后 1.8秒执行
-            setTimeout(closeLoader, 1800);
+            window.addEventListener('load', () => {
+                clearTimeout(forceClose);
+                setTimeout(releaseLoader, 1000);
+            });
+
+            function releaseLoader() {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.visibility = 'hidden';
+                }, 1000);
+            }
         }
 
         /**
-         * 3. 元素滚动浮现逻辑
+         * [Logic 3] 元素滚动入场观察器
          */
-        function setupScrollReveal() {
-            const options = { 
-                threshold: 0.1,
+        function initScrollReveal() {
+            const observerOptions = {
+                threshold: 0.15,
                 rootMargin: "0px 0px -50px 0px"
             };
-            
-            const observer = new IntersectionObserver((entries) => {
+
+            const revealObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) { 
-                        entry.target.classList.add('active'); 
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
                     }
                 });
-            }, options);
-            
-            document.querySelectorAll('.reveal').forEach(el => {
-                observer.observe(el);
-            });
+            }, observerOptions);
+
+            document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
         }
 
         /**
-         * 4. 动态金沙背景追踪 (移动端触摸适配)
+         * [Logic 4] 动态金沙交互追踪 (全平台适配)
          */
-        function handleSandAnimation() {
+        function initSandFlow() {
             const f1 = document.getElementById('flow-1');
             const f2 = document.getElementById('flow-2');
             
-            const moveLogic = (x, y) => {
-                const w = window.innerWidth;
-                const h = window.innerHeight;
-                f1.style.transform = `translate(${x - 400}px, ${y - 300}px)`;
-                f2.style.transform = `translate(${w - x - 350}px, ${h - y - 400}px)`;
+            const handleMovement = (x, y) => {
+                const winW = window.innerWidth;
+                const winH = window.innerHeight;
+                // 算法：控制两个光斑反向运动
+                f1.style.transform = `translate(${x - 450}px, ${y - 350}px)`;
+                f2.style.transform = `translate(${winW - x - 400}px, ${winH - y - 450}px)`;
             };
 
-            // 电脑端：鼠标移动
+            // 桌面端鼠标追踪
             document.addEventListener('mousemove', (e) => {
-                moveLogic(e.clientX, e.clientY);
+                requestAnimationFrame(() => handleMovement(e.clientX, e.clientY));
             });
 
-            // 移动端：手指滑动
+            // 移动端触摸追踪
             document.addEventListener('touchmove', (e) => {
                 const touch = e.touches[0];
-                moveLogic(touch.clientX, touch.clientY);
+                handleMovement(touch.clientX, touch.clientY);
             }, { passive: true });
         }
 
         /**
-         * 5. 复制到剪贴板
+         * [Logic 5] 剪贴板复制功能
          */
-        function copyText(val) {
-            navigator.clipboard.writeText(val).then(() => {
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
                 const toast = document.getElementById('toast');
                 toast.style.display = 'block';
-                // 简单的动画效果
+                // 简单的渐入效果
                 toast.animate([
-                    { opacity: 0, transform: 'translate(-50%, 20px)' },
-                    { opacity: 1, transform: 'translate(-50%, 0)' }
-                ], { duration: 300, fill: 'forwards' });
+                    { opacity: 0, transform: 'translateX(-50%) translateY(20px)' },
+                    { opacity: 1, transform: 'translateX(-50%) translateY(0)' }
+                ], { duration: 500, fill: 'forwards' });
 
-                setTimeout(() => { 
-                    toast.style.display = 'none'; 
-                }, 2000);
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 2500);
             }).catch(err => {
-                console.error('复制失败: ', err);
+                console.error('Copy failed:', err);
             });
         }
 
-        // 统一启动所有初始化函数
-        window.addEventListener('DOMContentLoaded', () => {
-            startLiveClock();
-            handleLoader();
-            setupScrollReveal();
-            handleSandAnimation();
+        /**
+         * [Init] 全局启动引擎
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            initLiveClock();
+            handleGlobalLoader();
+            initScrollReveal();
+            initSandFlow();
         });
     </script>
 </body>
