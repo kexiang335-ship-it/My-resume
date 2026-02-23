@@ -9,72 +9,95 @@
     <style>
         body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; overflow-x: hidden; margin: 0; }
 
-        /* --- 1. 核心需求：白色大飞机开屏动画 --- */
+        /* --- 1. 核心：飞机掀屏动画 --- */
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000; display: flex; justify-content: center; align-items: center;
-            overflow: hidden; transition: opacity 1s ease, visibility 1s;
+            background: #000; z-index: 10000; overflow: hidden;
+            pointer-events: none;
         }
-        .plane-container { position: absolute; width: 100%; display: flex; justify-content: center; }
-        .big-plane {
-            width: 300px; fill: #fff; filter: drop-shadow(0 0 20px rgba(255,255,255,0.4));
-            transform: translateX(-150vw) rotate(5deg);
-            animation: planeFly 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        /* 揭幕遮罩 */
+        #reveal-mask {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000;
+            clip-path: polygon(0 100%, 0 100%, 0 100%); /* 初始完全遮盖 */
+            animation: uncover 2.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
         }
-        @keyframes planeFly {
-            0% { transform: translateX(-120vw) translateY(50px) scale(0.8) rotate(5deg); }
-            50% { transform: translateX(0) translateY(0) scale(1.1) rotate(0deg); }
-            100% { transform: translateX(120vw) translateY(-50px) scale(1.2) rotate(-5deg); }
+        @keyframes uncover {
+            0% { clip-path: polygon(0 100%, 0 100%, 0 100%); }
+            100% { clip-path: polygon(-50% 150%, 150% 150%, 150% -50%); }
         }
 
-        /* --- 2. 核心需求：右上角盘旋地球动画 --- */
+        .plane-wrapper {
+            position: absolute; bottom: -10%; left: -10%;
+            width: 250px; z-index: 10001;
+            animation: planeTakeOff 2.5s cubic-bezier(0.7, 0, 0.3, 1) forwards;
+        }
+        @keyframes planeTakeOff {
+            0% { transform: translate(0, 0) rotate(-15deg) scale(0.5); }
+            100% { transform: translate(140vw, -120vh) rotate(-15deg) scale(1.5); }
+        }
+
+        /* 真实感的飞机SVG */
+        .real-plane { fill: white; filter: drop-shadow(0 10px 20px rgba(255,255,255,0.3)); }
+        .plane-name { fill: #d4af37; font-weight: 900; font-size: 2px; }
+
+        /* --- 2. 核心：3D旋转地球（带遮挡效果） --- */
         .earth-orbit-container {
-            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
-            width: 80px; height: 80px; z-index: 60;
+            position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+            width: 120px; height: 120px; z-index: 60; perspective: 1000px;
         }
-        .earth-mini {
-            width: 40px; height: 40px; background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
-            background-size: cover; border-radius: 50%; margin: 20px auto;
-            box-shadow: inset -5px -5px 15px rgba(0,0,0,0.8), 0 0 15px rgba(212,175,55,0.3);
-            animation: earthRotate 10s linear infinite;
+        .earth-main {
+            width: 70px; height: 70px; background: url('https://upload.wikimedia.org/wikipedia/commons/2/22/Earth_Western_Hemisphere_transparent_background.png');
+            background-size: cover; border-radius: 50%; position: absolute; top: 25px; left: 25px;
+            box-shadow: inset -10px -10px 20px rgba(0,0,0,0.9), 0 0 20px rgba(212,175,55,0.4);
+            animation: earthRotate 15s linear infinite;
         }
-        .orbit {
-            position: absolute; top: 50%; left: 50%; width: 70px; height: 30px;
-            border: 1px solid rgba(212,175,55,0.2); border-radius: 50%;
-            transform: translate(-50%, -50%) rotateX(70deg);
+        .mini-plane-orbit {
+            position: absolute; width: 100%; height: 100%;
+            transform-style: preserve-3d;
+            animation: orbit3d 4s linear infinite;
         }
-        .plane-mini {
-            position: absolute; top: -5px; left: 50%; font-size: 12px;
-            animation: orbitFly 4s linear infinite;
+        .mini-plane-icon {
+            position: absolute; top: 50%; left: 50%; font-size: 20px;
+            transform-origin: center;
         }
-        @keyframes earthRotate { from { background-position: 0 0; } to { background-position: 160px 0; } }
-        @keyframes orbitFly {
-            from { transform: rotate(0deg) translateX(35px) rotate(-0deg); }
-            to { transform: rotate(360deg) translateX(35px) rotate(-360deg); }
+        @keyframes earthRotate { from { background-position: 0 0; } to { background-position: 280px 0; } }
+        @keyframes orbit3d {
+            0% { transform: rotateY(0deg); z-index: 70; opacity: 1; }
+            45% { transform: rotateY(160deg); z-index: 70; opacity: 1; }
+            50% { transform: rotateY(180deg); z-index: 50; opacity: 0.3; } /* 绕到后面 */
+            95% { transform: rotateY(340deg); z-index: 50; opacity: 0.3; }
+            100% { transform: rotateY(360deg); z-index: 70; opacity: 1; }
         }
 
-        /* --- 原版基础样式保持不变 --- */
+        /* --- 3. 核心：左右跳进动效 --- */
+        .jump-left { opacity: 0; transform: translateX(-100px); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .jump-right { opacity: 0; transform: translateX(100px); transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .reveal.active .jump-left, .reveal.active .jump-right { opacity: 1; transform: translateX(0); }
+
+        /* --- 维持原版流金沙/玻璃卡片 --- */
         #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
         .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
         #flow-1 { width: 1200px; height: 900px; background: radial-gradient(circle, rgba(184, 134, 11, 0.4) 0%, transparent 70%); }
         #flow-2 { width: 900px; height: 1100px; background: radial-gradient(circle, rgba(245, 224, 163, 0.3) 0%, transparent 60%); }
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .glass-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px); border: 1px solid rgba(212, 175, 55, 0.2); position: relative; overflow: hidden; transition: all 0.5s ease; }
-        .glass-card::after { content: ""; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%; background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%); transform: rotate(45deg); pointer-events: none; }
-        .glass-card:hover::after { left: 150%; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.15); }
+        .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); }
         .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
+        .reveal { opacity: 0; transition: opacity 0.8s ease; }
+        .reveal.active { opacity: 1; }
     </style>
 </head>
 <body class="leading-relaxed">
 
     <div id="loader">
-        <div class="plane-container">
-            <svg class="big-plane" viewBox="0 0 24 24"><path d="M21,16L21,14L13,9L13,3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5L10,9L2,14L2,16L10,13.5L10,19L8,20.5L8,22L11.5,21L15,22L15,20.5L13,19L13,13.5L21,16Z"/></svg>
+        <div id="reveal-mask"></div>
+        <div class="plane-wrapper">
+            <svg class="real-plane" viewBox="0 0 24 24">
+                <path d="M21,16L21,14L13,9L13,3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5L10,9L2,14L2,16L10,13.5L10,19L8,20.5L8,22L11.5,21L15,22L15,20.5L13,19L13,13.5L21,16Z"/>
+                <text x="5" y="15" class="plane-name" transform="rotate(0)">SHAO.KX</text>
+            </svg>
         </div>
-        <div class="loader-logo gold-text uppercase mt-40">Shao.kx</div>
     </div>
 
     <div id="toast" class="copy-toast uppercase text-xs tracking-widest">已成功复制</div>
@@ -87,7 +110,7 @@
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between relative">
             <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
             
-            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase items-center mr-32">
+            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase items-center mr-48">
                 <a href="#home" class="hover:text-white transition">概览</a>
                 <a href="#work" class="hover:text-white transition">工作经验</a>
                 <a href="#projects" class="hover:text-white transition">项目经历</a>
@@ -98,21 +121,22 @@
             </div>
 
             <div class="earth-orbit-container">
-                <div class="orbit"></div>
-                <div class="earth-mini"></div>
-                <div class="plane-mini">✈️</div>
+                <div class="earth-main"></div>
+                <div class="mini-plane-orbit">
+                    <div class="mini-plane-icon">✈️</div>
+                </div>
             </div>
         </div>
     </nav>
 
     <section id="home" class="relative pt-44 pb-32 px-10 reveal">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
-            <div class="flex-1 space-y-8 text-center md:text-left">
+            <div class="flex-1 space-y-8 text-center md:text-left jump-left">
                 <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
                 <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
                 <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
             </div>
-            <div class="flex-1 relative">
+            <div class="flex-1 relative jump-right">
                 <div class="relative w-64 md:w-80 mx-auto group">
                     <div class="absolute -inset-4 bg-[#d4af37]/20 rounded-[2.5rem] blur-3xl opacity-60"></div>
                     <div class="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-[#d4af37]/30 shadow-2xl">
@@ -127,7 +151,7 @@
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">工作经验 / Work Experience</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-10 rounded-3xl">
+                <div class="glass-card p-10 rounded-3xl jump-left">
                     <span class="text-[#b8860b] text-xs font-mono">2024 - 至今</span>
                     <h3 class="text-2xl font-bold text-white mt-2 mb-2">南京市瑞雨山科技有限公司</h3>
                     <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">执行董事</p>
@@ -137,7 +161,7 @@
                         <li>• 制定公司薪酬绩效制度，组织策划大型品牌活动</li>
                     </ul>
                 </div>
-                <div class="glass-card p-10 rounded-3xl">
+                <div class="glass-card p-10 rounded-3xl jump-right">
                     <span class="text-[#b8860b] text-xs font-mono">2025.02 - 2025.06</span>
                     <h3 class="text-2xl font-bold text-white mt-2 mb-2">北京三块在线科技有限公司</h3>
                     <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园送金陵科技学院幕府校区负责人</p>
@@ -155,74 +179,25 @@
         <div class="max-w-6xl mx-auto text-center">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest uppercase">项目实战 / Project Experience</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
-                <div class="glass-card p-6 rounded-2xl">
+                <div class="glass-card p-6 rounded-2xl jump-left">
                     <h4 class="text-lg font-bold text-white mb-2 italic">美团校园送项目</h4>
                     <p class="text-xs text-slate-500 mb-4">幕府校区负责人</p>
                     <p class="text-[13px] text-slate-400">统筹建立标准化体系，实现单量突破与稳定运营。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
+                <div class="glass-card p-6 rounded-2xl jump-left" style="transition-delay: 0.2s;">
                     <h4 class="text-lg font-bold text-white mb-2 italic">小红书转化项目</h4>
                     <p class="text-xs text-slate-500 mb-4">获客转化负责人</p>
                     <p class="text-[13px] text-slate-400">管理矩阵账号获取1000条线索，达成6万元成交额。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
+                <div class="glass-card p-6 rounded-2xl jump-right" style="transition-delay: 0.4s;">
                     <h4 class="text-lg font-bold text-white mb-2 italic">跨境电商优化</h4>
                     <p class="text-xs text-slate-500 mb-4">AI自动化应用</p>
                     <p class="text-[13px] text-slate-400">重构商品上架流程，将4人工作量压缩至1人4小时。</p>
                 </div>
-                <div class="glass-card p-6 rounded-2xl">
+                <div class="glass-card p-6 rounded-2xl jump-right" style="transition-delay: 0.6s;">
                     <h4 class="text-lg font-bold text-white mb-2 italic">宠物医药推广</h4>
                     <p class="text-xs text-slate-500 mb-4">渠道维护</p>
                     <p class="text-[13px] text-slate-400">对接周边宠物医院，协助整理信息并完成推广活动。</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="portfolio" class="py-24 px-10 relative z-10 reveal">
-        <div class="max-w-7xl mx-auto">
-            <div class="flex justify-between items-end mb-12 px-6">
-                <div>
-                    <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter">核心作品展示</h2>
-                    <p class="text-[#b8860b] text-xs font-bold tracking-widest mt-2 uppercase">Core Portfolio Showcase</p>
-                </div>
-                <a href="portfolio.html" class="group flex items-center space-x-2 text-[10px] font-bold tracking-[0.2em] text-[#d4af37] uppercase border-b border-[#d4af37]/30 pb-1 hover:border-[#d4af37] transition-all">
-                    <span>更多作品 / View More</span> <span class="group-hover:translate-x-1 transition-transform">→</span>
-                </a>
-            </div>
-            <div class="relative p-1 bg-gradient-to-br from-[#d4af37]/20 to-transparent rounded-[4rem] md:rounded-[8rem]">
-                <div class="bg-black/80 backdrop-blur-3xl rounded-[4rem] md:rounded-[8rem] p-8 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="glass-card p-8 rounded-[3rem] text-center">
-                        <div class="text-3xl mb-4">🌍</div>
-                        <h4 class="text-lg font-bold text-white mb-3">AI外贸谈判系统</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">针对中东/欧美市场定制的AI报价与商务谈判模拟工具。</p>
-                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase">查看详情</a>
-                    </div>
-                    <div class="glass-card p-8 rounded-[3rem] text-center">
-                        <div class="text-3xl mb-4">📊</div>
-                        <h4 class="text-lg font-bold text-white mb-3">流程自动化中枢</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">集成RPA与GPT-4，实现跨境电商上架流程全自动重构。</p>
-                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase">查看详情</a>
-                    </div>
-                    <div class="glass-card p-8 rounded-[3rem] text-center">
-                        <div class="text-3xl mb-4">🐾</div>
-                        <h4 class="text-lg font-bold text-white mb-3">数字宠物医疗库</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">结合医学背景开发的宠物疾病快速诊断与药品索引系统。</p>
-                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase">查看详情</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="education" class="py-24 px-10 relative z-10 reveal">
-        <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
-            <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center text-center md:text-left">
-                <div class="flex-1">
-                    <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
-                    <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
-                    <p class="text-sm text-slate-400 leading-loose">学校坚持“需求导向,能力为本”理念。致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。</p>
                 </div>
             </div>
         </div>
@@ -237,32 +212,27 @@
     </footer>
 
     <script>
-        // 脚本部分也 1:1 还原，仅微调 Loader 时间以配合飞机动画
         window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
+            // 2.5秒后动画完成，移除loader
             setTimeout(() => {
                 loader.style.opacity = '0';
-                setTimeout(() => { loader.style.visibility = 'hidden'; }, 1000);
-            }, 2200); // 配合飞机飞过的时间
+                setTimeout(() => { loader.style.display = 'none'; }, 1000);
+            }, 2500);
         });
 
-        // 维持你原版的 IntersectionObserver
-        const observerOptions = { threshold: 0.15 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) { entry.target.classList.add('active'); }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
         document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // 维持你原版的鼠标流金沙
         const flows = [document.getElementById('flow-1'), document.getElementById('flow-2')];
         document.addEventListener('mousemove', (e) => {
             const { clientX, clientY } = e;
-            const w = window.innerWidth;
-            const h = window.innerHeight;
             flows[0].style.transform = `translate(${clientX - 600}px, ${clientY - 450}px)`;
-            flows[1].style.transform = `translate(${w - clientX - 450}px, ${h - clientY - 550}px)`;
+            flows[1].style.transform = `translate(${window.innerWidth - clientX - 450}px, ${window.innerHeight - clientY - 550}px)`;
         });
 
         function copyText(text) {
