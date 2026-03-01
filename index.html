@@ -86,6 +86,20 @@
         .glass-card:hover { border-color: #d4af37; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(184, 134, 11, 0.15); }
 
         .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
+        
+        /* 语言切换按钮样式 */
+        .lang-switch {
+            border: 1px solid rgba(212, 175, 55, 0.5);
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #d4af37;
+        }
+        .lang-switch:hover {
+            background: #d4af37;
+            color: #000;
+        }
     </style>
 </head>
 <body class="leading-relaxed">
@@ -107,7 +121,7 @@
         <div class="loader-bar"></div>
     </div>
 
-    <div id="toast" class="copy-toast uppercase text-xs tracking-widest">已成功复制</div>
+    <div id="toast" class="copy-toast uppercase text-xs tracking-widest" data-zh="已成功复制" data-en="COPIED SUCCESSFULLY">已成功复制</div>
 
     <div id="sand-background">
         <div id="flow-1" class="sand-flow"></div>
@@ -117,14 +131,15 @@
     <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
         <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
             <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
-            <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase">
-                <a href="#home" class="hover:text-white transition">概览</a>
-                <a href="#work" class="hover:text-white transition">工作经验</a>
-                <a href="#projects" class="hover:text-white transition">项目经历</a>
-                <a href="#portfolio" class="hover:text-white transition text-[#d4af37]">作品集 Portfolio</a>
-                <a href="#skills" class="hover:text-white transition">专业技能</a>
-                <a href="#education" class="hover:text-white transition">教育背景</a>
-                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all">联系方式</a>
+            <div class="hidden lg:flex items-center space-x-8 text-[11px] font-bold tracking-widest uppercase">
+                <a href="#home" class="hover:text-white transition" data-zh="概览" data-en="OVERVIEW">概览</a>
+                <a href="#work" class="hover:text-white transition" data-zh="工作经验" data-en="EXPERIENCE">工作经验</a>
+                <a href="#projects" class="hover:text-white transition" data-zh="项目经历" data-en="PROJECTS">项目经历</a>
+                <a href="#portfolio" class="hover:text-white transition text-[#d4af37]" data-zh="作品集 Portfolio" data-en="PORTFOLIO">作品集 Portfolio</a>
+                <a href="#skills" class="hover:text-white transition" data-zh="专业技能" data-en="SKILLS">专业技能</a>
+                <a href="#education" class="hover:text-white transition" data-zh="教育背景" data-en="EDUCATION">教育背景</a>
+                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all" data-zh="联系方式" data-en="CONTACT">联系方式</a>
+                <button onclick="toggleLanguage()" class="lang-switch text-[10px]" id="langBtn">EN</button>
             </div>
         </div>
     </nav>
@@ -132,9 +147,12 @@
     <section id="home" class="relative pt-44 pb-32 px-10 reveal">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
             <div class="flex-1 space-y-8 text-center md:text-left">
-                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">以严谨医学背景 <br> 驱动 <span class="gold-text">高效项目增长</span></h1>
-                <p class="text-xl text-slate-400 max-w-xl leading-relaxed">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
+                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white" data-zh="Startup CEO & Project Leader" data-en="Startup CEO & Project Leader">Startup CEO & Project Leader</div>
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]" id="hero-title">
+                    <span data-zh="以严谨医学背景" data-en="Driven by Medical Rigor,">以严谨医学背景</span> <br> 
+                    <span data-zh="驱动" data-en="Powering">驱动</span> <span class="gold-text" data-zh="高效项目增长" data-en="Efficient Growth">高效项目增长</span>
+                </h1>
+                <p class="text-xl text-slate-400 max-w-xl leading-relaxed" data-zh="邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。" data-en="Shao Kexiang, with a background in Veterinary Medicine from JIT. Currently CEO of Ruiyushan Tech. Expert in using AI tools for process standardization with proven experience in cost reduction and efficiency.">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
             </div>
             <div class="flex-1 relative">
                 <div class="relative w-64 md:w-80 mx-auto group">
@@ -149,26 +167,26 @@
 
     <section id="work" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">工作经验 / Work Experience</h2>
+            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase" data-zh="工作经验 / Work Experience" data-en="Work Experience">工作经验 / Work Experience</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="glass-card p-10 rounded-3xl">
-                    <span class="text-[#b8860b] text-xs font-mono">2024 - 至今</span>
-                    <h3 class="text-2xl font-bold text-white mt-2 mb-2">南京市瑞雨山科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">执行董事</p>
+                    <span class="text-[#b8860b] text-xs font-mono" data-zh="2024 - 至今" data-en="2024 - Present">2024 - 至今</span>
+                    <h3 class="text-2xl font-bold text-white mt-2 mb-2" data-zh="南京市瑞雨山科技有限公司" data-en="Nanjing Ruiyushan Tech Co., Ltd.">南京市瑞雨山科技有限公司</h3>
+                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest" data-zh="执行董事" data-en="Executive Director">执行董事</p>
                     <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 组织及协调各部门负责人，主导新员工标准化培训体系</li>
-                        <li>• 建立完善公司招聘流程，编制各阶段人才引进计划</li>
-                        <li>• 制定公司薪酬绩效制度，组织策划大型品牌活动</li>
+                        <li data-zh="• 组织及协调各部门负责人，主导新员工标准化培训体系" data-en="• Coordinate department heads and lead standardized training systems.">• 组织及协调各部门负责人，主导新员工标准化培训体系</li>
+                        <li data-zh="• 建立完善公司招聘流程，编制各阶段人才引进计划" data-en="• Establish recruitment processes and talent acquisition plans.">• 建立完善公司招聘流程，编制各阶段人才引进计划</li>
+                        <li data-zh="• 制定公司薪酬绩效制度，组织策划大型品牌活动" data-en="• Formulate compensation systems and organize brand events.">• 制定公司薪酬绩效制度，组织策划大型品牌活动</li>
                     </ul>
                 </div>
                 <div class="glass-card p-10 rounded-3xl">
                     <span class="text-[#b8860b] text-xs font-mono">2025.02 - 2025.06</span>
-                    <h3 class="text-2xl font-bold text-white mt-2 mb-2">北京三块在线科技有限公司</h3>
-                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest">美团校园送金陵科技学院幕府校区负责人</p>
+                    <h3 class="text-2xl font-bold text-white mt-2 mb-2" data-zh="北京三块在线科技有限公司" data-en="Meituan (Beijing Sankuai Online Tech)">北京三块在线科技有限公司</h3>
+                    <p class="text-[#b8860b] text-xs mb-4 font-bold uppercase tracking-widest" data-zh="美团校园送金陵科技学院幕府校区负责人" data-en="Campus Delivery Leader (JIT Mufu Campus)">美团校园送金陵科技学院幕府校区负责人</p>
                     <ul class="text-sm text-slate-400 space-y-3">
-                        <li>• 负责校区配送团队的组建、培训及日常管理考核</li>
-                        <li>• 优化校区物流配送路径，确保日均500+单量高效送达</li>
-                        <li>• 实时监控运营数据，处理突发异常，维持零事故记录</li>
+                        <li data-zh="• 负责校区配送团队的组建、培训及日常管理考核" data-en="• Responsible for delivery team formation, training, and management.">• 负责校区配送团队的组建、培训及日常管理考核</li>
+                        <li data-zh="• 优化校区物流配送路径，确保日均500+单量高效送达" data-en="• Optimize logistics paths for 500+ daily orders.">• 优化校区物流配送路径，确保日均500+单量高效送达</li>
+                        <li data-zh="• 实时监控运营数据，处理突发异常，维持零事故记录" data-en="• Monitor real-time data and maintain zero-accident records.">• 实时监控运营数据，处理突发异常，维持零事故记录</li>
                     </ul>
                 </div>
             </div>
@@ -177,27 +195,27 @@
 
     <section id="projects" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest uppercase">项目实战 / Project Experience</h2>
+            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest uppercase" data-zh="项目实战 / Project Experience" data-en="Project Highlights">项目实战 / Project Experience</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
                 <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">美团校园送项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">幕府校区负责人</p>
-                    <p class="text-[13px] text-slate-400">统筹建立标准化体系，实现单量突破与稳定运营。</p>
+                    <h4 class="text-lg font-bold text-white mb-2 italic" data-zh="美团校园送项目" data-en="Meituan Delivery">美团校园送项目</h4>
+                    <p class="text-xs text-slate-500 mb-4" data-zh="幕府校区负责人" data-en="Campus Site Leader">幕府校区负责人</p>
+                    <p class="text-[13px] text-slate-400" data-zh="统筹建立标准化体系，实现单量突破与稳定运营。" data-en="Established standardized systems for operational stability.">统筹建立标准化体系，实现单量突破与稳定运营。</p>
                 </div>
                 <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">小红书转化项目</h4>
-                    <p class="text-xs text-slate-500 mb-4">获客转化负责人</p>
-                    <p class="text-[13px] text-slate-400">管理矩阵账号获取1000条线索，达成6万元成交额。</p>
+                    <h4 class="text-lg font-bold text-white mb-2 italic" data-zh="小红书转化项目" data-en="Red (Xiaohongshu)">小红书转化项目</h4>
+                    <p class="text-xs text-slate-500 mb-4" data-zh="获客转化负责人" data-en="Conversion Lead">获客转化负责人</p>
+                    <p class="text-[13px] text-slate-400" data-zh="管理矩阵账号获取1000条线索，达成6万元成交额。" data-en="Managed account matrices to generate 1000+ leads.">管理矩阵账号获取1000条线索，达成6万元成交额。</p>
                 </div>
                 <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">跨境电商优化</h4>
-                    <p class="text-xs text-slate-500 mb-4">AI自动化应用</p>
-                    <p class="text-[13px] text-slate-400">重构商品上架流程，将4人工作量压缩至1人4小时。</p>
+                    <h4 class="text-lg font-bold text-white mb-2 italic" data-zh="跨境电商优化" data-en="E-commerce AI">跨境电商优化</h4>
+                    <p class="text-xs text-slate-500 mb-4" data-zh="AI自动化应用" data-en="AI Automation">AI自动化应用</p>
+                    <p class="text-[13px] text-slate-400" data-zh="重构商品上架流程，将4人工作量压缩至1人4小时。" data-en="Refactored listing workflow, saving 75% labor costs.">重构商品上架流程，将4人工作量压缩至1人4小时。</p>
                 </div>
                 <div class="glass-card p-6 rounded-2xl">
-                    <h4 class="text-lg font-bold text-white mb-2 italic">宠物医药推广</h4>
-                    <p class="text-xs text-slate-500 mb-4">渠道维护</p>
-                    <p class="text-[13px] text-slate-400">对接周边宠物医院，协助整理信息并完成推广活动。</p>
+                    <h4 class="text-lg font-bold text-white mb-2 italic" data-zh="宠物医药推广" data-en="Pet Medicine">宠物医药推广</h4>
+                    <p class="text-xs text-slate-500 mb-4" data-zh="渠道维护" data-en="Channel Mgt">渠道维护</p>
+                    <p class="text-[13px] text-slate-400" data-zh="对接周边宠物医院，协助整理信息并完成推广活动。" data-en="Collaborated with pet hospitals for marketing campaigns.">对接周边宠物医院，协助整理信息并完成推广活动。</p>
                 </div>
             </div>
         </div>
@@ -207,11 +225,11 @@
         <div class="max-w-7xl mx-auto">
             <div class="flex justify-between items-end mb-12 px-6">
                 <div>
-                    <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter">核心作品展示</h2>
-                    <p class="text-[#b8860b] text-xs font-bold tracking-widest mt-2 uppercase">Core Portfolio Showcase</p>
+                    <h2 class="text-3xl font-black text-white uppercase italic tracking-tighter" data-zh="核心作品展示" data-en="PORTFOLIO SHOWCASE">核心作品展示</h2>
+                    <p class="text-[#b8860b] text-xs font-bold tracking-widest mt-2 uppercase" data-zh="Core Portfolio Showcase" data-en="Selected Strategic Projects">Core Portfolio Showcase</p>
                 </div>
                 <a href="portfolio.html" class="group flex items-center space-x-2 text-[10px] font-bold tracking-[0.2em] text-[#d4af37] uppercase border-b border-[#d4af37]/30 pb-1 hover:border-[#d4af37] transition-all">
-                    <span>更多作品 / View More</span>
+                    <span data-zh="更多作品 / View More" data-en="VIEW MORE">更多作品 / View More</span>
                     <span class="group-hover:translate-x-1 transition-transform">→</span>
                 </a>
             </div>
@@ -220,21 +238,21 @@
                 <div class="bg-black/80 backdrop-blur-3xl rounded-[4rem] md:rounded-[8rem] p-8 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="glass-card p-8 rounded-[3rem] text-center">
                         <div class="text-3xl mb-4">🌍</div>
-                        <h4 class="text-lg font-bold text-white mb-3">AI外贸谈判系统</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">针对中东/欧美市场定制的AI报价与商务谈判模拟工具。</p>
-                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase">查看详情</a>
+                        <h4 class="text-lg font-bold text-white mb-3" data-zh="AI外贸谈判系统" data-en="AI Trade Negotiator">AI外贸谈判系统</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-6" data-zh="针对中东/欧美市场定制的AI报价与商务谈判模拟工具。" data-en="AI-powered tool for MENA/Western market negotiations.">针对中东/欧美市场定制的AI报价与商务谈判模拟工具。</p>
+                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase" data-zh="查看详情" data-en="DETAILS">查看详情</a>
                     </div>
                     <div class="glass-card p-8 rounded-[3rem] text-center">
                         <div class="text-3xl mb-4">📊</div>
-                        <h4 class="text-lg font-bold text-white mb-3">流程自动化中枢</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">集成RPA与GPT-4，实现跨境电商上架流程全自动重构。</p>
-                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase">查看详情</a>
+                        <h4 class="text-lg font-bold text-white mb-3" data-zh="流程自动化中枢" data-en="Automation Hub">流程自动化中枢</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-6" data-zh="集成RPA与GPT-4，实现跨境电商上架流程全自动重构。" data-en="Integrating RPA and GPT-4 for automated e-commerce.">集成RPA与GPT-4，实现跨境电商上架流程全自动重构。</p>
+                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase" data-zh="查看详情" data-en="DETAILS">查看详情</a>
                     </div>
                     <div class="glass-card p-8 rounded-[3rem] text-center">
                         <div class="text-3xl mb-4">🐾</div>
-                        <h4 class="text-lg font-bold text-white mb-3">数字宠物医疗库</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed mb-6">结合医学背景开发的宠物疾病快速诊断与药品索引系统。</p>
-                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase">查看详情</a>
+                        <h4 class="text-lg font-bold text-white mb-3" data-zh="数字宠物医疗库" data-en="Digital Pet Med">数字宠物医疗库</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed mb-6" data-zh="结合医学背景开发的宠物疾病快速诊断与药品索引系统。" data-en="Medical diagnostic system based on veterinary logic.">结合医学背景开发的宠物疾病快速诊断与药品索引系统。</p>
+                        <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase" data-zh="查看详情" data-en="DETAILS">查看详情</a>
                     </div>
                 </div>
             </div>
@@ -243,19 +261,19 @@
 
     <section id="skills" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">专业技能 / Core Skills</h2>
+            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase" data-zh="专业技能 / Core Skills" data-en="Core Skills">专业技能 / Core Skills</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">医学严谨逻辑</h4>
-                    <p class="text-xs text-slate-400">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p>
+                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm" data-zh="医学严谨逻辑" data-en="Medical Rigor">医学严谨逻辑</h4>
+                    <p class="text-xs text-slate-400" data-zh="以科研心态处理业务痛点，掌握临床诊断与风险把控。" data-en="Applying scientific methods to business pain points.">以科研心态处理业务痛点，掌握临床诊断与风险把控。</p>
                 </div>
                 <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">AI 自动化赋能</h4>
-                    <p class="text-xs text-slate-400">精通利用AI重构重复性流程，实现核心业务降本增效。</p>
+                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm" data-zh="AI 自动化赋能" data-en="AI Empowerment">AI 自动化赋能</h4>
+                    <p class="text-xs text-slate-400" data-zh="精通利用AI重构重复性流程，实现核心业务降本增效。" data-en="Refactoring workflows with AI for cost efficiency.">精通利用AI重构重复性流程，实现核心业务降本增效。</p>
                 </div>
                 <div class="p-8 border-l border-[#b8860b]/30 bg-white/5">
-                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm">团队与财务管理</h4>
-                    <p class="text-xs text-slate-400">具备完整的制度搭建、人员培训及年度预算制定经验。</p>
+                    <h4 class="text-white font-bold mb-3 uppercase tracking-tighter text-sm" data-zh="团队与财务管理" data-en="Management">团队与财务管理</h4>
+                    <p class="text-xs text-slate-400" data-zh="具备完整的制度搭建、人员培训及年度预算制定经验。" data-en="Experience in system building and budget management.">具备完整的制度搭建、人员培训及年度预算制定经验。</p>
                 </div>
             </div>
         </div>
@@ -263,26 +281,26 @@
 
     <section id="education" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
-            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase">教育背景 / Education</h2>
+            <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase" data-zh="教育背景 / Education" data-en="Education">教育背景 / Education</h2>
             <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center text-center md:text-left">
                 <div class="flex-1">
-                    <h3 class="text-3xl font-extrabold text-white mb-4">金陵科技学院</h3>
-                    <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest">动物医学 · 本科 (2024 - 2028)</p>
-                    <p class="text-sm text-slate-400 leading-loose">
+                    <h3 class="text-3xl font-extrabold text-white mb-4" data-zh="金陵科技学院" data-en="Jinling Institute of Technology">金陵科技学院</h3>
+                    <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest" data-zh="动物医学 · 本科 (2024 - 2028)" data-en="Veterinary Medicine · Bachelor (2024 - 2028)">动物医学 · 本科 (2024 - 2028)</p>
+                    <p class="text-sm text-slate-400 leading-loose" data-zh="学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。" data-en="Dedicated to training high-quality applied talents. My major focuses on clinical diagnostic thinking and laboratory skills.">
                         学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。
                     </p>
                 </div>
                 <div class="w-full md:w-1/3 p-6 bg-black/40 rounded-2xl text-xs text-slate-500 space-y-4 text-left">
-                    <p>📍 南京市江宁大学城</p>
-                    <p>🎓 国家级一流本科专业建设点背景</p>
-                    <p>🔬 省级实验教学示范中心支持</p>
+                    <p data-zh="📍 南京市江宁大学城" data-en="📍 Jiangning University Town, Nanjing">📍 南京市江宁大学城</p>
+                    <p data-zh="🎓 国家级一流本科专业建设点背景" data-en="🎓 National First-class Undergraduate Program">🎓 国家级一流本科专业建设点背景</p>
+                    <p data-zh="🔬 省级实验教学示范中心支持" data-en="🔬 Provincial Experimental Teaching Center">🔬 省级实验教学示范中心支持</p>
                 </div>
             </div>
         </div>
     </section>
 
     <footer id="contact" class="py-40 px-10 relative z-10 text-center reveal">
-        <h2 class="text-5xl font-black mb-16 gold-text italic tracking-tighter uppercase">Let's Connect</h2>
+        <h2 class="text-5xl font-black mb-16 gold-text italic tracking-tighter uppercase" data-zh="Let's Connect" data-en="Let's Connect">Let's Connect</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <button onclick="copyText('13814632349')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase">
                 13814632349
@@ -294,6 +312,24 @@
     </footer>
 
     <script>
+        // 语言状态变量
+        let currentLang = 'zh';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'zh' ? 'en' : 'zh';
+            const btn = document.getElementById('langBtn');
+            btn.innerText = currentLang === 'zh' ? 'EN' : '中文';
+            
+            // 查找所有带有 data-zh 和 data-en 的元素进行替换
+            document.querySelectorAll('[data-zh]').forEach(el => {
+                el.innerText = el.getAttribute(`data-${currentLang}`);
+            });
+
+            // 特殊处理 Toast 文字
+            const toast = document.getElementById('toast');
+            toast.innerText = toast.getAttribute(`data-${currentLang}`);
+        }
+
         window.addEventListener('load', () => {
             const loader = document.getElementById('loader');
             setTimeout(() => {
