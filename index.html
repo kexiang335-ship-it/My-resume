@@ -26,27 +26,15 @@
         }
         
         .loader-mountain {
-            width: 80px;
-            height: 60px;
-            margin-bottom: 10px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: logoFade 1.2s forwards ease-out;
+            width: 80px; height: 60px; margin-bottom: 10px; opacity: 0;
+            transform: translateY(20px); animation: logoFade 1.2s forwards ease-out;
         }
         
-        .mountain-svg {
-            fill: url(#mountainGradient);
-            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5));
-        }
+        .mountain-svg { fill: url(#mountainGradient); filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.5)); }
 
         .loader-logo { 
-            font-size: 2.5rem; 
-            font-weight: 900; 
-            letter-spacing: 4px; 
-            margin-bottom: 25px; 
-            opacity: 0; 
-            transform: translateY(20px); 
-            animation: logoFade 1.5s forwards ease-out 0.3s;
+            font-size: 2.5rem; font-weight: 900; letter-spacing: 4px; margin-bottom: 25px; 
+            opacity: 0; transform: translateY(20px); animation: logoFade 1.5s forwards ease-out 0.3s;
         }
         
         .loader-bar { width: 180px; height: 2px; background: rgba(212, 175, 55, 0.1); position: relative; overflow: hidden; }
@@ -68,17 +56,11 @@
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .glass-card { 
-            background: rgba(10, 10, 10, 0.8); 
-            backdrop-filter: blur(25px); 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            position: relative; 
-            overflow: hidden; 
-            transition: all 0.5s ease; 
+            background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(25px); 
+            border: 1px solid rgba(212, 175, 55, 0.2); position: relative; overflow: hidden; transition: all 0.5s ease; 
         }
         .glass-card::after {
-            content: "";
-            position: absolute;
-            top: -50%; left: -100%; width: 50%; height: 200%;
+            content: ""; position: absolute; top: -50%; left: -100%; width: 50%; height: 200%;
             background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 243, 173, 0.4) 50%, rgba(255, 255, 255, 0) 100%);
             transform: rotate(45deg); transition: none; pointer-events: none;
         }
@@ -87,19 +69,35 @@
 
         .copy-toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #d4af37; color: #000; padding: 12px 30px; border-radius: 99px; display: none; z-index: 1000; font-weight: 800; }
         
-        /* 语言切换按钮样式 */
+        /* 语言切换按钮 */
         .lang-switch {
             border: 1px solid rgba(212, 175, 55, 0.5);
-            padding: 4px 12px;
-            border-radius: 4px;
+            padding: 6px 16px;
+            border-radius: 99px;
             cursor: pointer;
             transition: all 0.3s;
             color: #d4af37;
+            font-weight: bold;
+            white-space: nowrap;
         }
-        .lang-switch:hover {
-            background: #d4af37;
-            color: #000;
+        .lang-switch:hover { background: #d4af37; color: #000; }
+
+        /* 移动端汉堡菜单图标 */
+        .menu-icon { width: 24px; height: 18px; position: relative; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-icon span { display: block; height: 2px; width: 100%; background: #d4af37; border-radius: 2px; transition: 0.3s; }
+        .menu-icon.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-icon.open span:nth-child(2) { opacity: 0; }
+        .menu-icon.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* 移动端菜单面板 */
+        #mobile-menu-panel {
+            position: fixed; top: 0; left: -100%; width: 80%; height: 100vh; 
+            background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);
+            z-index: 40; transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 100px 40px;
         }
+        #mobile-menu-panel.open { left: 0; }
     </style>
 </head>
 <body class="leading-relaxed">
@@ -129,30 +127,50 @@
     </div>
 
     <nav class="fixed w-full z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-8 h-20 flex items-center justify-between">
-            <span class="text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
-            <div class="hidden lg:flex items-center space-x-8 text-[11px] font-bold tracking-widest uppercase">
-                <a href="#home" class="hover:text-white transition" data-zh="概览" data-en="OVERVIEW">概览</a>
-                <a href="#work" class="hover:text-white transition" data-zh="工作经验" data-en="EXPERIENCE">工作经验</a>
-                <a href="#projects" class="hover:text-white transition" data-zh="项目经历" data-en="PROJECTS">项目经历</a>
-                <a href="#portfolio" class="hover:text-white transition text-[#d4af37]" data-zh="作品集 Portfolio" data-en="PORTFOLIO">作品集 Portfolio</a>
-                <a href="#skills" class="hover:text-white transition" data-zh="专业技能" data-en="SKILLS">专业技能</a>
-                <a href="#education" class="hover:text-white transition" data-zh="教育背景" data-en="EDUCATION">教育背景</a>
-                <a href="#contact" class="px-5 py-2 bg-[#d4af37] text-black rounded hover:bg-white transition-all" data-zh="联系方式" data-en="CONTACT">联系方式</a>
-                <button onclick="toggleLanguage()" class="lang-switch text-[10px]" id="langBtn">EN</button>
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="lg:hidden flex-1">
+                <div class="menu-icon" id="hamburger" onclick="toggleMenu()">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <div class="flex-shrink-0">
+                <span class="text-xl md:text-2xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
+            </div>
+
+            <div class="flex items-center justify-end flex-1 space-x-6">
+                <div class="hidden lg:flex space-x-8 text-[11px] font-bold tracking-widest uppercase">
+                    <a href="#home" class="hover:text-white transition" data-zh="概览" data-en="OVERVIEW">概览</a>
+                    <a href="#work" class="hover:text-white transition" data-zh="工作经验" data-en="EXPERIENCE">工作经验</a>
+                    <a href="#projects" class="hover:text-white transition" data-zh="项目经历" data-en="PROJECTS">项目经历</a>
+                    <a href="#portfolio" class="hover:text-white transition text-[#d4af37]" data-zh="作品集 Portfolio" data-en="PORTFOLIO">作品集 Portfolio</a>
+                    <a href="#skills" class="hover:text-white transition" data-zh="专业技能" data-en="SKILLS">专业技能</a>
+                    <a href="#education" class="hover:text-white transition" data-zh="教育背景" data-en="EDUCATION">教育背景</a>
+                </div>
+                <button onclick="toggleLanguage()" class="lang-switch text-[10px]" id="langBtn">Switch to English</button>
             </div>
         </div>
     </nav>
 
+    <div id="mobile-menu-panel" class="flex flex-col space-y-8 text-sm font-bold tracking-[0.2em] uppercase">
+        <a href="#home" onclick="toggleMenu()" data-zh="概览" data-en="OVERVIEW">概览</a>
+        <a href="#work" onclick="toggleMenu()" data-zh="工作经验" data-en="EXPERIENCE">工作经验</a>
+        <a href="#projects" onclick="toggleMenu()" data-zh="项目经历" data-en="PROJECTS">项目经历</a>
+        <a href="#portfolio" onclick="toggleMenu()" data-zh="作品集 Portfolio" data-en="PORTFOLIO">作品集 Portfolio</a>
+        <a href="#skills" onclick="toggleMenu()" data-zh="专业技能" data-en="SKILLS">专业技能</a>
+        <a href="#education" onclick="toggleMenu()" data-zh="教育背景" data-en="EDUCATION">教育背景</a>
+        <a href="#contact" onclick="toggleMenu()" class="text-[#d4af37]" data-zh="联系方式" data-en="CONTACT">联系方式</a>
+    </div>
+
     <section id="home" class="relative pt-44 pb-32 px-10 reveal">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16 relative z-10">
             <div class="flex-1 space-y-8 text-center md:text-left">
-                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white" data-zh="Startup CEO & Project Leader" data-en="Startup CEO & Project Leader">Startup CEO & Project Leader</div>
-                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]" id="hero-title">
+                <div class="inline-block px-4 py-1 border border-[#d4af37]/50 rounded-full text-[10px] font-bold tracking-widest uppercase text-white">Startup CEO & Project Leader</div>
+                <h1 class="text-4xl md:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
                     <span data-zh="以严谨医学背景" data-en="Driven by Medical Rigor,">以严谨医学背景</span> <br> 
                     <span data-zh="驱动" data-en="Powering">驱动</span> <span class="gold-text" data-zh="高效项目增长" data-en="Efficient Growth">高效项目增长</span>
                 </h1>
-                <p class="text-xl text-slate-400 max-w-xl leading-relaxed" data-zh="邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。" data-en="Shao Kexiang, with a background in Veterinary Medicine from JIT. Currently CEO of Ruiyushan Tech. Expert in using AI tools for process standardization with proven experience in cost reduction and efficiency.">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
+                <p class="text-lg md:text-xl text-slate-400 max-w-xl leading-relaxed" data-zh="邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。" data-en="Shao Kexiang, with a background in Veterinary Medicine from JIT. Currently CEO of Ruiyushan Tech. Expert in using AI tools for process standardization with proven experience in cost reduction and efficiency.">邵柯翔，金陵科技学院动物医学背景。现任瑞雨山科技CEO。擅长利用 AI 工具实现流程标准化，拥有卓越的降本增效实战经验。</p>
             </div>
             <div class="flex-1 relative">
                 <div class="relative w-64 md:w-80 mx-auto group">
@@ -234,21 +252,21 @@
                 </a>
             </div>
 
-            <div class="relative p-1 bg-gradient-to-br from-[#d4af37]/20 to-transparent rounded-[4rem] md:rounded-[8rem]">
-                <div class="bg-black/80 backdrop-blur-3xl rounded-[4rem] md:rounded-[8rem] p-8 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="glass-card p-8 rounded-[3rem] text-center">
+            <div class="relative p-1 bg-gradient-to-br from-[#d4af37]/20 to-transparent rounded-[2rem] md:rounded-[8rem]">
+                <div class="bg-black/80 backdrop-blur-3xl rounded-[2rem] md:rounded-[8rem] p-8 md:p-16 grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="glass-card p-8 rounded-[2rem] md:rounded-[3rem] text-center">
                         <div class="text-3xl mb-4">🌍</div>
                         <h4 class="text-lg font-bold text-white mb-3" data-zh="AI外贸谈判系统" data-en="AI Trade Negotiator">AI外贸谈判系统</h4>
                         <p class="text-xs text-slate-500 leading-relaxed mb-6" data-zh="针对中东/欧美市场定制的AI报价与商务谈判模拟工具。" data-en="AI-powered tool for MENA/Western market negotiations.">针对中东/欧美市场定制的AI报价与商务谈判模拟工具。</p>
                         <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase" data-zh="查看详情" data-en="DETAILS">查看详情</a>
                     </div>
-                    <div class="glass-card p-8 rounded-[3rem] text-center">
+                    <div class="glass-card p-8 rounded-[2rem] md:rounded-[3rem] text-center">
                         <div class="text-3xl mb-4">📊</div>
                         <h4 class="text-lg font-bold text-white mb-3" data-zh="流程自动化中枢" data-en="Automation Hub">流程自动化中枢</h4>
                         <p class="text-xs text-slate-500 leading-relaxed mb-6" data-zh="集成RPA与GPT-4，实现跨境电商上架流程全自动重构。" data-en="Integrating RPA and GPT-4 for automated e-commerce.">集成RPA与GPT-4，实现跨境电商上架流程全自动重构。</p>
                         <a href="portfolio.html" class="text-[10px] font-bold text-[#d4af37] hover:underline uppercase" data-zh="查看详情" data-en="DETAILS">查看详情</a>
                     </div>
-                    <div class="glass-card p-8 rounded-[3rem] text-center">
+                    <div class="glass-card p-8 rounded-[2rem] md:rounded-[3rem] text-center">
                         <div class="text-3xl mb-4">🐾</div>
                         <h4 class="text-lg font-bold text-white mb-3" data-zh="数字宠物医疗库" data-en="Digital Pet Med">数字宠物医疗库</h4>
                         <p class="text-xs text-slate-500 leading-relaxed mb-6" data-zh="结合医学背景开发的宠物疾病快速诊断与药品索引系统。" data-en="Medical diagnostic system based on veterinary logic.">结合医学背景开发的宠物疾病快速诊断与药品索引系统。</p>
@@ -282,9 +300,9 @@
     <section id="education" class="py-24 px-10 relative z-10 reveal">
         <div class="max-w-6xl mx-auto">
             <h2 class="text-2xl font-bold mb-12 gold-text tracking-widest text-center uppercase" data-zh="教育背景 / Education" data-en="Education">教育背景 / Education</h2>
-            <div class="glass-card p-12 rounded-[3rem] flex flex-col md:flex-row gap-12 items-center text-center md:text-left">
+            <div class="glass-card p-8 md:p-12 rounded-[2rem] md:rounded-[3rem] flex flex-col md:flex-row gap-12 items-center text-center md:text-left">
                 <div class="flex-1">
-                    <h3 class="text-3xl font-extrabold text-white mb-4" data-zh="金陵科技学院" data-en="Jinling Institute of Technology">金陵科技学院</h3>
+                    <h3 class="text-2xl md:text-3xl font-extrabold text-white mb-4" data-zh="金陵科技学院" data-en="Jinling Institute of Technology">金陵科技学院</h3>
                     <p class="text-[#b8860b] font-bold mb-6 italic uppercase tracking-widest" data-zh="动物医学 · 本科 (2024 - 2028)" data-en="Veterinary Medicine · Bachelor (2024 - 2028)">动物医学 · 本科 (2024 - 2028)</p>
                     <p class="text-sm text-slate-400 leading-loose" data-zh="学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。" data-en="Dedicated to training high-quality applied talents. My major focuses on clinical diagnostic thinking and laboratory skills.">
                         学校坚持“需求导向,能力为本”理念。作为公办全日制本科，致力于高素质应用型人才培养。本人所在专业重点培养临床诊断思维与实验室技能。
@@ -300,7 +318,7 @@
     </section>
 
     <footer id="contact" class="py-40 px-10 relative z-10 text-center reveal">
-        <h2 class="text-5xl font-black mb-16 gold-text italic tracking-tighter uppercase" data-zh="Let's Connect" data-en="Let's Connect">Let's Connect</h2>
+        <h2 class="text-4xl md:text-5xl font-black mb-16 gold-text italic tracking-tighter uppercase" data-zh="Let's Connect" data-en="Let's Connect">Let's Connect</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <button onclick="copyText('13814632349')" class="py-8 border border-[#d4af37]/30 rounded-2xl hover:bg-[#d4af37] hover:text-black transition-all font-bold tracking-widest uppercase">
                 13814632349
@@ -312,22 +330,32 @@
     </footer>
 
     <script>
-        // 语言状态变量
         let currentLang = 'zh';
 
+        // 切换语言函数
         function toggleLanguage() {
             currentLang = currentLang === 'zh' ? 'en' : 'zh';
             const btn = document.getElementById('langBtn');
-            btn.innerText = currentLang === 'zh' ? 'EN' : '中文';
             
-            // 查找所有带有 data-zh 和 data-en 的元素进行替换
+            // 按钮文字切换
+            btn.innerText = currentLang === 'zh' ? 'Switch to English' : '切换至中文';
+            
+            // 翻译所有带 data-zh 的元素
             document.querySelectorAll('[data-zh]').forEach(el => {
                 el.innerText = el.getAttribute(`data-${currentLang}`);
             });
 
-            // 特殊处理 Toast 文字
+            // 翻译 Toast
             const toast = document.getElementById('toast');
             toast.innerText = toast.getAttribute(`data-${currentLang}`);
+        }
+
+        // 移动端菜单开关
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu-panel');
+            const icon = document.getElementById('hamburger');
+            menu.classList.toggle('open');
+            icon.classList.toggle('open');
         }
 
         window.addEventListener('load', () => {
@@ -338,7 +366,7 @@
             }, 1800);
         });
 
-        const observerOptions = { threshold: 0.15 };
+        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) { entry.target.classList.add('active'); }
