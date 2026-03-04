@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAO.KX | 全链路外贸数字化 AI 经营 Agent (白皮书深度集成版)</title>
+    <title>SHAO.KX | 全链路外贸数字化 AI Agent</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
@@ -19,15 +19,19 @@
         .tool-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 6px; font-size: 10px; color: #888; transition: 0.2s; cursor: pointer; }
         .tool-btn:hover { background: #d4af37; color: #000; border-color: #d4af37; }
 
+        /* 打字机光标动画 */
+        .cursor-blink::after { content: '█'; animation: blink 1s step-end infinite; color: #d4af37; margin-left: 4px; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* PDF 打印专用样式 */
         @media print {
             body { background: white !important; color: black !important; padding: 0 !important; }
-            header, .lg\:col-span-4, .guide-step, .p-4.border-b, .tool-btn, button { display: none !important; }
+            header, .lg\:col-span-4, .guide-step, .p-4.border-b, .tool-btn, button, #thought-process { display: none !important; }
             .lg\:col-span-8 { width: 100% !important; margin: 0 !important; }
-            .logic-panel { border: none !important; background: transparent !important; }
-            #terminal-screen { color: black !important; padding: 0 !important; }
-            .text-white { color: black !important; }
-            .bg-white\/5, .bg-black { background: #f3f4f6 !important; border: 1px solid #ddd !important; }
-            .text-slate-300, .text-slate-500, .text-slate-400 { color: #333 !important; }
+            .logic-panel { border: none !important; background: transparent !important; box-shadow: none !important; }
+            #terminal-screen { color: black !important; padding: 0 !important; overflow: visible !important; }
+            .text-white, .text-[#d4af37], .text-slate-300 { color: black !important; }
+            #report-output { font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.8; white-space: pre-wrap; }
         }
     </style>
 </head>
@@ -37,28 +41,13 @@
         <header class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-white/10 pb-6">
             <div>
                 <h1 class="text-4xl font-black italic tracking-tighter text-white">SHAO.KX <span class="text-[#d4af37]">AGENT</span></h1>
-                <p class="text-xs text-slate-500 mt-2 uppercase tracking-[0.3em]">全链路外贸经营数字化操作系统 v4.0 (2026 白皮书深度集成版)</p>
+                <p class="text-xs text-slate-500 mt-2 uppercase tracking-[0.3em]">全链路外贸经营数字化操作系统 v4.0</p>
             </div>
             <div class="mt-4 md:mt-0 bg-white/5 p-3 rounded-xl border border-white/10">
                 <p class="text-[10px] text-slate-400 mb-1 font-bold uppercase">数据源 (Data Source)</p>
-                <p class="text-[11px] text-slate-500 leading-relaxed">集成 2025-2030 中国外贸白皮书核心逻辑<br>实时连接 Gemini AI 进行市场深度推理</p>
+                <p class="text-[11px] text-green-500 leading-relaxed font-bold animate-pulse">● Gemini AI Neural Network Active</p>
             </div>
         </header>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="guide-step">
-                <p class="text-[#d4af37] font-bold mb-1">STEP 01: 设定画像</p>
-                <p class="text-slate-400">输入产品与区域，系统自动从《2030深度白皮书》提取该市场的准入与增长逻辑。</p>
-            </div>
-            <div class="guide-step">
-                <p class="text-[#d4af37] font-bold mb-1">STEP 02: 启动引擎</p>
-                <p class="text-slate-400">AI 麦可 4.0 启动，将分发效率提升 48 倍，模拟 100 台手机矩阵逻辑生成报告。</p>
-            </div>
-            <div class="guide-step">
-                <p class="text-[#d4af37] font-bold mb-1">STEP 03: 风险扫描</p>
-                <p class="text-slate-400">扫描 UFLPA 溯源、欧盟 CBAM 等 2026 年强制性壁垒，生成专家级合规方案。</p>
-            </div>
-        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div class="lg:col-span-4 space-y-6">
@@ -69,56 +58,38 @@
                     <div class="space-y-6">
                         <div>
                             <label class="text-[10px] text-slate-500 mb-2 block uppercase font-bold">1. 核心产品线 (Core Product)</label>
-                            <input type="text" id="prod-input" placeholder="例如: 储能电池, 工业模具, 医疗耗材">
+                            <input type="text" id="prod-input" placeholder="输入任何产品 (如: 储能电池, 辣椒酱, 无人机)">
                         </div>
                         <div>
                             <label class="text-[10px] text-slate-500 mb-2 block uppercase font-bold">2. 战略目标区域 (Region)</label>
                             <select id="region-input">
-                                <option value="德国/欧洲">德国/欧洲 (CBAM/北降南升/合规先行)</option>
-                                <option value="美国/北美">美国/北美 (13%关税峰值/CPSC申报/UFLPA)</option>
-                                <option value="沙特/中东">沙特/中东 (2030愿景/南南贸易/高增长)</option>
-                                <option value="越南/东南亚">越南/东南亚 (贸易断路器/转口逻辑/分销)</option>
+                                <option value="欧洲市场(含德国)">欧洲市场 (合规先行/碳壁垒)</option>
+                                <option value="北美市场(含美国)">北美市场 (关税峰值/溯源)</option>
+                                <option value="中东市场(含沙特)">中东市场 (高增长/南南贸易)</option>
+                                <option value="东南亚市场(含越南)">东南亚市场 (转口/贸易断路器)</option>
                             </select>
                         </div>
                         <div>
                             <label class="text-[10px] text-slate-500 mb-2 block uppercase font-bold">3. 执行优先级 (Focus)</label>
                             <div class="grid grid-cols-2 gap-2">
                                 <label class="flex items-center gap-2 p-2 bg-white/5 rounded text-[10px] cursor-pointer hover:bg-white/10">
-                                    <input type="radio" name="focus" value="leads" checked class="w-3 h-3"> 快速获客
+                                    <input type="radio" name="focus" value="精准获客与开发" checked class="w-3 h-3"> 快速获客
                                 </label>
                                 <label class="flex items-center gap-2 p-2 bg-white/5 rounded text-[10px] cursor-pointer hover:bg-white/10">
-                                    <input type="radio" name="focus" value="content" class="w-3 h-3"> 内容霸屏
+                                    <input type="radio" name="focus" value="社媒内容霸屏与品牌渗透" class="w-3 h-3"> 内容霸屏
                                 </label>
                             </div>
                         </div>
-                        <button onclick="executeAgent()" class="btn-gold">执行 Agent 增长链条</button>
-                    </div>
-                </div>
-
-                <div class="logic-panel p-5 bg-[#d4af37]/5 border-[#d4af37]/20">
-                    <p class="text-[10px] text-[#d4af37] font-bold uppercase mb-3">2026 实时状态 (Live Status)</p>
-                    <div class="space-y-2">
-                        <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
-                            <span>AI 麦可 4.0 引擎</span>
-                            <span class="text-green-500 font-bold italic">已连接 Gemini</span>
-                        </div>
-                        <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
-                            <span>白皮书数据映射</span>
-                            <span class="text-green-500 font-bold italic">2026 VERIFIED</span>
-                        </div>
-                        <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
-                            <span>全球合规审计</span>
-                            <span class="text-green-500 font-bold italic">ACTIVE</span>
-                        </div>
+                        <button onclick="executeAgent()" id="exec-btn" class="btn-gold">启动 AI 深度生成</button>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-8">
-                <div class="logic-panel h-full flex flex-col overflow-hidden relative">
+                <div class="logic-panel h-[600px] flex flex-col relative overflow-hidden">
                     <div class="absolute top-4 right-4 z-20 flex gap-2">
-                        <button onclick="copyContent()" class="tool-btn">一键复制内容</button>
-                        <button onclick="window.print()" class="tool-btn">导出报告 PDF</button>
+                        <button onclick="copyContent()" class="tool-btn">一键复制</button>
+                        <button onclick="window.print()" class="tool-btn">导出 PDF</button>
                     </div>
 
                     <div class="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center">
@@ -127,15 +98,19 @@
                             <span class="w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"></span>
                             <span class="w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"></span>
                         </div>
-                        <span class="text-[10px] terminal-font text-slate-500">WHITE_PAPER_DATABASE_V2026.1</span>
+                        <span class="text-[10px] terminal-font text-slate-500">SHAO_AI_TERMINAL_v4.0</span>
                     </div>
                     
-                    <div id="terminal-screen" class="p-8 flex-1 overflow-y-auto terminal-font text-sm leading-relaxed text-slate-300">
+                    <div id="terminal-screen" class="p-6 md:p-8 flex-1 overflow-y-auto terminal-font text-sm leading-relaxed text-slate-300">
                         <div id="init-screen" class="h-full flex flex-col items-center justify-center space-y-4 opacity-30">
                             <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
-                            <p class="uppercase tracking-[0.4em] text-[10px]">正在挂载 6.5 万字白皮书库... 等待指令</p>
+                            <p class="uppercase tracking-[0.4em] text-[10px]">系统就绪... 等待输入指令</p>
                         </div>
-                        <div id="output-content" class="hidden space-y-8"></div>
+
+                        <div id="output-area" class="hidden">
+                            <div id="thought-process" class="text-[11px] text-slate-500 mb-6 space-y-1 border-l-2 border-[#d4af37]/30 pl-3"></div>
+                            <div id="report-output" class="whitespace-pre-wrap text-[13px] md:text-[14px] text-white leading-[1.8]"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,48 +118,84 @@
     </div>
 
     <script>
+        // AI 思考过程的模拟日志
+        const thinkingLogs = [
+            "> [SYSTEM] 正在连接 Gemini 大模型神经中枢...",
+            "> [DATA] 正在提取 2025-2030 中国外贸白皮书核心数据库...",
+            "> [ANALYSIS] 正在对目标产品进行行业属性拆解...",
+            "> [COMPLIANCE] 正在扫描目标市场的最新政策壁垒与贸易红线...",
+            "> [STRATEGY] 正在匹配最优的 AI 增长链路...",
+            "> [GENERATION] 思路构建完毕，正在生成深度报告..."
+        ];
+
         async function executeAgent() {
-            const prod = document.getElementById('prod-input').value || "工业品";
+            const prod = document.getElementById('prod-input').value || "高科技产品";
             const regionSelect = document.getElementById('region-input');
             const region = regionSelect.options[regionSelect.selectedIndex].text;
-            const focus = document.querySelector('input[name="focus"]:checked').value === 'leads' ? '快速获客' : '内容霸屏';
+            const focus = document.querySelector('input[name="focus"]:checked').value;
             
-            const output = document.getElementById('output-content');
-            const init = document.getElementById('init-screen');
+            const initScreen = document.getElementById('init-screen');
+            const outputArea = document.getElementById('output-area');
+            const thoughtProcess = document.getElementById('thought-process');
+            const reportOutput = document.getElementById('report-output');
+            const execBtn = document.getElementById('exec-btn');
+            const terminal = document.getElementById('terminal-screen');
 
-            // 初始动画效果
-            init.classList.add('hidden');
-            output.classList.remove('hidden');
-            output.innerHTML = `
-                <div class="space-y-2 animate-pulse">
-                    <p class="text-[#d4af37] text-xs">> [SYSTEM] 初始化全链路 Agent 协议...</p>
-                    <p class="text-slate-500 text-xs">> [DATA] 正在通过后端安全网关接入 Gemini 1.5 Flash...</p>
-                    <p class="text-slate-500 text-xs">> [AI] 正在针对 ${prod} 的 ${region} 市场进行经营逻辑建模...</p>
-                </div>
-            `;
+            // 锁定按钮，防止重复点击
+            execBtn.disabled = true;
+            execBtn.innerText = "生成中...";
+            execBtn.classList.add('opacity-50', 'cursor-not-allowed');
 
-            // 构造 Prompt，确保 AI 输出 JSON 格式
+            // 重置 UI
+            initScreen.classList.add('hidden');
+            outputArea.classList.remove('hidden');
+            thoughtProcess.innerHTML = '';
+            reportOutput.innerHTML = '';
+            reportOutput.classList.add('cursor-blink');
+
+            // 1. 显示思考过程 (动效模拟)
+            for (let i = 0; i < thinkingLogs.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 600)); // 每隔 0.6 秒打出一条日志
+                const log = document.createElement('div');
+                log.innerText = thinkingLogs[i].replace("目标产品", prod).replace("目标市场", region);
+                thoughtProcess.appendChild(log);
+                terminal.scrollTop = terminal.scrollHeight;
+            }
+
+            // 2. 构造强大的 Prompt，要求 AI 直接输出排版精美的纯文本/Markdown报告
             const prompt = `
-                你现在是 SHAO.KX 全链路外贸 AI Agent 经营系统。
-                请基于《2025-2030中国外贸白皮书》趋势，针对以下参数生成经营报告。
-                
-                参数：
-                - 产品：${prod}
-                - 目标区域：${region}
-                - 优先级：${focus}
-                
-                请严格按照以下 JSON 格式输出结果（不包含多余解释，确保 JSON 完整）：
-                {
-                    "title": "市场标题(包含2026关键壁垒词)",
-                    "logic": "白皮书深度干预逻辑(150字左右，分析该产品的合规与市场空间)",
-                    "leads": ["潜客公司名1", "潜客公司名2", "潜客公司名3", "潜客公司名4"],
-                    "strategy": "AI麦可4.0分发路径(具体到技术手段如数字人、TikTok矩阵、SEO优化)",
-                    "email": "2026智能开发信内容(英文)",
-                    "alerts": ["红线预警1", "增长机会预测", "财务避险建议"]
-                }
+你现在是 SHAO.KX 全链路外贸 AI Agent 专家。
+请直接生成一份极具专业感、极客风格的【2026外贸经营深度报告】。不需要任何开场白。
+
+核心参数：
+- 目标产品：${prod}
+- 目标市场：${region}
+- 执行核心：${focus}
+
+请严格按以下结构输出（请使用清晰的换行和排版，让其看起来像一份高级研报）：
+
+## 📊 市场干预逻辑 (Strategic Logic)
+（结合2026年最新白皮书趋势，深度分析该产品进入该市场的准入红线、竞争格局与突围思路。大约150字）
+
+## 🎯 极客系统挖掘：精准客户池画像
+（给出4类该产品在该市场的具体采购商/分销商画像，不要泛泛而谈，要具体到行业角色）
+1. 
+2. 
+3. 
+4. 
+
+## 🚀 AI 麦可 4.0 增长引擎分发路径
+（结合选择的执行核心，给出具体的技术性操作手段，如数字人、特定社媒矩阵、自动化脚本等）
+
+## 📧 2026 高转化智能开发信 (Smart Hook)
+（针对上述客户，写一封简短、极具杀伤力、强调合规或效率的英文开发信。纯英文。）
+
+## ⚠️ 专家级合规与避险预警 (Critical Alerts)
+（列出至少两点：1. 当地针对该产品的强制性认证/关税红线；2. 财务或物流避险建议）
             `;
 
             try {
+                // 3. 调用你的 Vercel AI 接口
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -193,66 +204,64 @@
                     })
                 });
 
+                if (!response.ok) throw new Error("Network response was not ok");
                 const data = await response.json();
-                // 解析 AI 返回的 JSON，清洗掉可能存在的 markdown 标记
-                const cleanJson = data.answer.replace(/```json|```/g, '').trim();
-                const res = JSON.parse(cleanJson);
+                const aiText = data.answer.replace(/```markdown|```/g, '').trim(); // 清洗多余标记
 
-                // 重新渲染页面
-                output.innerHTML = `
-                    <div id="printable-area" class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                        <section>
-                            <h4 class="text-white font-black text-lg underline decoration-[#d4af37] decoration-2 underline-offset-8 mb-4">${res.title}</h4>
-                            <div class="bg-white/5 p-4 rounded-xl border border-white/5">
-                                <p class="text-[10px] text-slate-500 uppercase mb-2">白皮书深度干预逻辑 (Strategic Logic)</p>
-                                <p class="text-sm leading-relaxed text-slate-300">${res.logic}</p>
-                            </div>
-                        </section>
+                // 4. 执行逐字打印效果 (Typewriter Effect)
+                await typeWriter(aiText, reportOutput, terminal);
 
-                        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
-                                <p class="text-[10px] text-blue-400 font-bold uppercase mb-2">极客系统挖掘: 精准客户池</p>
-                                <ul class="text-[11px] space-y-1">
-                                    ${res.leads.map(l => `<li>🎯 ${l}</li>`).join('')}
-                                </ul>
-                            </div>
-                            <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
-                                <p class="text-[10px] text-purple-400 font-bold uppercase mb-2">AI 麦可 4.0 分发路径</p>
-                                <p class="text-[11px] leading-relaxed text-slate-300">${res.strategy}</p>
-                            </div>
-                        </section>
-
-                        <section>
-                            <p class="text-[10px] text-slate-500 uppercase mb-2 font-bold">2026 智能开发信 (Smart Hook)</p>
-                            <div class="bg-black p-5 rounded-xl border border-white/10 relative overflow-hidden">
-                                <div class="absolute top-0 right-0 p-2 bg-white/5 text-[8px] uppercase">Verified Sourcing</div>
-                                <pre class="text-[12px] text-slate-300 whitespace-pre-wrap terminal-font">${res.email}</pre>
-                            </div>
-                        </section>
-
-                        <section class="bg-red-500/5 p-4 rounded-xl border border-red-500/20">
-                            <h5 class="text-red-500 text-[10px] font-bold uppercase mb-2 tracking-widest">⚠️ 白皮书·专家级合规预警 (2026 Critical Alert)</h5>
-                            <div class="text-[11px] text-slate-400 space-y-2 italic">
-                                ${res.alerts.map(a => `<p>● ${a}</p>`).join('')}
-                            </div>
-                        </section>
-                    </div>
-                `;
             } catch (error) {
                 console.error(error);
-                output.innerHTML = `<p class="text-red-500 text-xs font-bold uppercase">系统误差: 无法连接 AI 神经中枢，请检查 Vercel 环境变量配置。</p>`;
+                reportOutput.innerHTML = `<span class="text-red-500 font-bold">>>> 系统误差: 无法连接至 AI 神经中枢。请检查网络或后端接口状态。</span>`;
+            } finally {
+                // 移除光标，恢复按钮
+                reportOutput.classList.remove('cursor-blink');
+                execBtn.disabled = false;
+                execBtn.innerText = "重新启动生成";
+                execBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
 
+        // 逐字打印机函数
+        function typeWriter(text, element, container) {
+            return new Promise(resolve => {
+                let i = 0;
+                // 为了加快体验，每次打印 2-3 个字符，而不是 1 个
+                const speed = 15; // 毫秒
+                
+                function type() {
+                    if (i < text.length) {
+                        // 处理特殊的高亮排版，将 "## 标题" 替换为金色
+                        let char = text.charAt(i);
+                        element.innerHTML += char;
+                        i++;
+                        
+                        // 始终保持滚动条在最底部
+                        container.scrollTop = container.scrollHeight;
+                        
+                        setTimeout(type, speed);
+                    } else {
+                        // 打印完毕后，进行一次简单的 Markdown 渲染（加粗和变色）
+                        let finalHtml = element.innerHTML;
+                        finalHtml = finalHtml.replace(/## (.*?)\n/g, '<span class="text-[#d4af37] font-bold text-lg block mt-6 mb-2">▶ $1</span>\n');
+                        finalHtml = finalHtml.replace(/\*\*(.*?)\*\*/g, '<span class="text-white font-bold">$1</span>');
+                        element.innerHTML = finalHtml;
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
         function copyContent() {
-            const content = document.getElementById('output-content');
-            if (content.classList.contains('hidden')) {
-                alert("请先生成经营报告后再复制！");
+            const content = document.getElementById('report-output').innerText;
+            if (!content) {
+                alert("报告尚未生成！");
                 return;
             }
-            const text = content.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("2026 经营报告已复制！");
+            navigator.clipboard.writeText(content).then(() => {
+                alert("报告已成功复制到剪贴板！");
             });
         }
     </script>
