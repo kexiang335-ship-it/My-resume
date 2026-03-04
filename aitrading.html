@@ -41,7 +41,7 @@
             </div>
             <div class="mt-4 md:mt-0 bg-white/5 p-3 rounded-xl border border-white/10">
                 <p class="text-[10px] text-slate-400 mb-1 font-bold uppercase">数据源 (Data Source)</p>
-                <p class="text-[11px] text-slate-500 leading-relaxed">集成 2025-2030 中国外贸白皮书核心逻辑<br>覆盖：北降南升、AI麦可 4.0、全球合规红线</p>
+                <p class="text-[11px] text-slate-500 leading-relaxed">集成 2025-2030 中国外贸白皮书核心逻辑<br>实时连接 Gemini AI 进行市场深度推理</p>
             </div>
         </header>
 
@@ -74,10 +74,10 @@
                         <div>
                             <label class="text-[10px] text-slate-500 mb-2 block uppercase font-bold">2. 战略目标区域 (Region)</label>
                             <select id="region-input">
-                                <option value="DE">德国/欧洲 (CBAM/北降南升/合规先行)</option>
-                                <option value="US">美国/北美 (13%关税峰值/CPSC申报/UFLPA)</option>
-                                <option value="SA">沙特/中东 (2030愿景/南南贸易/高增长)</option>
-                                <option value="VN">越南/东南亚 (贸易断路器/转口逻辑/分销)</option>
+                                <option value="德国/欧洲">德国/欧洲 (CBAM/北降南升/合规先行)</option>
+                                <option value="美国/北美">美国/北美 (13%关税峰值/CPSC申报/UFLPA)</option>
+                                <option value="沙特/中东">沙特/中东 (2030愿景/南南贸易/高增长)</option>
+                                <option value="越南/东南亚">越南/东南亚 (贸易断路器/转口逻辑/分销)</option>
                             </select>
                         </div>
                         <div>
@@ -100,7 +100,7 @@
                     <div class="space-y-2">
                         <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
                             <span>AI 麦可 4.0 引擎</span>
-                            <span class="text-green-500 font-bold italic">效率+48X</span>
+                            <span class="text-green-500 font-bold italic">已连接 Gemini</span>
                         </div>
                         <div class="flex justify-between items-center p-2 bg-black rounded text-[10px]">
                             <span>白皮书数据映射</span>
@@ -142,59 +142,70 @@
         </div>
     </div>
 
-    
-
     <script>
-        const KNOWLEDGE_BASE = {
-            DE: {
-                title: "欧陆市场：CBAM 碳壁垒下的‘数字透明’逻辑",
-                logic: "根据白皮书：欧盟已进入‘合规与技术双驱动’时代。2026年重点是 CBAM（碳关税）进入实质执行期。必须提供‘数字产品护照’，实现产品全生命周期的合规溯源。",
-                leads: ["Siemens (机电供应链)", "Lidl International (商超直采)", "BayWa RE (能源项目)", "EuroPower Gmbh (工业代理)"],
-                strategy: "AI 麦可 4.0 分发逻辑：在 LinkedIn 定向投放带有‘碳中和审计’字样的评测视频。摒弃价格战，转向‘供应链韧性’叙事。",
-                email: "Subject: [Audit-Ready] Certified ${prod} for EU Carbon Standards\n\nHi,\nRecognizing the 2026 CBAM implementation, our ${prod} supply chain offers full digital carbon tracking. Let's discuss TCO optimization..."
-            },
-            US: {
-                title: "北美市场：13% 关税峰值与 UFLPA 溯源挑战",
-                logic: "白皮书警示：美国有效关税触及 13% 高点。虽有总统关税权限制裁定，但针对半导体、纺织品的 UFLPA（强迫劳动法案）溯源是 2026 年核心红线。必须建立原材料级追溯体系。",
-                leads: ["Home Depot (全球采购部)", "Amazon FBA Top-Sellers", "Grainger (工业分销)", "Costco (供应链中心)"],
-                strategy: "极客系统矩阵分发：规避反倾销敏感词，通过 YouTube 铺设大量‘本土仓库直发’的 AI 评测视频。重点展示 CPSC 电子申报合规性。",
-                email: "Subject: US-Compliant ${prod} - 2026 CPSC Electronic Entry Ready\n\nHi,\nWe've optimized our ${prod} logistics for the July 2026 mandatory electronic filing. Our supply chain is 100% compliant with UFLPA sourcing rules..."
-            },
-            SA: {
-                title: "中东市场：‘沙特 2030 愿景’下的南南贸易蓝海",
-                logic: "白皮书分析：中东作为‘南南贸易’增长极，非洲(+25.8%)与中东市场高度重合。订单看重‘自然对冲’与‘海外仓’布局。AI 麦可需模拟‘高管拜访’的视觉感进行破冰。",
-                leads: ["NEOM Project Team", "Saudi Aramco (供应链)", "Al-Futtaim Group", "Dubai Municipality"],
-                strategy: "AI 麦可 4.0 逻辑：使用阿拉伯语数字人 24h 进行产品答疑。模拟 100 台手机在利雅得坐标点进行 TikTok 地理位置定向分发。",
-                email: "Subject: Direct Factory Support for Saudi Vision 2030 (${prod})\n\nDear Partner,\nAs China accelerates 'South-South Trade', we offer direct SABER certification support for our high-performance ${prod}..."
-            },
-            VN: {
-                title: "东南亚市场：全球贸易的‘断路器’与转口重镇",
-                logic: "白皮书指出：东盟已成为中国外贸战略的‘断路器’。通过越南转口可有效对冲对美关税压力。2026 年重点在于‘小单快反’与分销链条的敏捷性。",
-                leads: ["Vinhomes (建设部)", "Thai Binh Distro", "Singapore Solar Hub", "Jakarta Tech Imp"],
-                strategy: "极客系统分发：利用 TikTok 直播间进行‘现货直发’模拟。强调中国原材料+当地组装的关税优化路径。支持低 MOQ 试错。",
-                email: "Subject: Trending ${prod} for ASEAN Market - Agile Logistics\n\nHi,\nLeverage our 'Circuit Breaker' supply chain logic. We provide ${prod} with competitive regional pricing and 7-day port delivery..."
-            }
-        };
-
-        function executeAgent() {
+        async function executeAgent() {
             const prod = document.getElementById('prod-input').value || "工业品";
-            const region = document.getElementById('region-input').value;
+            const regionSelect = document.getElementById('region-input');
+            const region = regionSelect.options[regionSelect.selectedIndex].text;
+            const focus = document.querySelector('input[name="focus"]:checked').value === 'leads' ? '快速获客' : '内容霸屏';
+            
             const output = document.getElementById('output-content');
             const init = document.getElementById('init-screen');
-            const data = KNOWLEDGE_BASE[region];
 
+            // 初始动画效果
             init.classList.add('hidden');
             output.classList.remove('hidden');
-            output.innerHTML = `<p class="text-[#d4af37] animate-pulse">正在调用 2025-2030 白皮书深度数据库... 正在匹配 ${prod} 的 ${region} 市场经营逻辑... 引擎启动中...</p>`;
+            output.innerHTML = `
+                <div class="space-y-2 animate-pulse">
+                    <p class="text-[#d4af37] text-xs">> [SYSTEM] 初始化全链路 Agent 协议...</p>
+                    <p class="text-slate-500 text-xs">> [DATA] 正在通过后端安全网关接入 Gemini 1.5 Flash...</p>
+                    <p class="text-slate-500 text-xs">> [AI] 正在针对 ${prod} 的 ${region} 市场进行经营逻辑建模...</p>
+                </div>
+            `;
 
-            setTimeout(() => {
+            // 构造 Prompt，确保 AI 输出 JSON 格式
+            const prompt = `
+                你现在是 SHAO.KX 全链路外贸 AI Agent 经营系统。
+                请基于《2025-2030中国外贸白皮书》趋势，针对以下参数生成经营报告。
+                
+                参数：
+                - 产品：${prod}
+                - 目标区域：${region}
+                - 优先级：${focus}
+                
+                请严格按照以下 JSON 格式输出结果（不包含多余解释，确保 JSON 完整）：
+                {
+                    "title": "市场标题(包含2026关键壁垒词)",
+                    "logic": "白皮书深度干预逻辑(150字左右，分析该产品的合规与市场空间)",
+                    "leads": ["潜客公司名1", "潜客公司名2", "潜客公司名3", "潜客公司名4"],
+                    "strategy": "AI麦可4.0分发路径(具体到技术手段如数字人、TikTok矩阵、SEO优化)",
+                    "email": "2026智能开发信内容(英文)",
+                    "alerts": ["红线预警1", "增长机会预测", "财务避险建议"]
+                }
+            `;
+
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        messages: [{ role: "user", parts: [{ text: prompt }] }]
+                    })
+                });
+
+                const data = await response.json();
+                // 解析 AI 返回的 JSON，清洗掉可能存在的 markdown 标记
+                const cleanJson = data.answer.replace(/```json|```/g, '').trim();
+                const res = JSON.parse(cleanJson);
+
+                // 重新渲染页面
                 output.innerHTML = `
                     <div id="printable-area" class="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
                         <section>
-                            <h4 class="text-white font-black text-lg underline decoration-[#d4af37] decoration-2 underline-offset-8 mb-4">${data.title}</h4>
+                            <h4 class="text-white font-black text-lg underline decoration-[#d4af37] decoration-2 underline-offset-8 mb-4">${res.title}</h4>
                             <div class="bg-white/5 p-4 rounded-xl border border-white/5">
                                 <p class="text-[10px] text-slate-500 uppercase mb-2">白皮书深度干预逻辑 (Strategic Logic)</p>
-                                <p class="text-sm">${data.logic.replace(/\${prod}/g, prod)}</p>
+                                <p class="text-sm leading-relaxed text-slate-300">${res.logic}</p>
                             </div>
                         </section>
 
@@ -202,12 +213,12 @@
                             <div class="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
                                 <p class="text-[10px] text-blue-400 font-bold uppercase mb-2">极客系统挖掘: 精准客户池</p>
                                 <ul class="text-[11px] space-y-1">
-                                    ${data.leads.map(l => `<li>🎯 ${l}</li>`).join('')}
+                                    ${res.leads.map(l => `<li>🎯 ${l}</li>`).join('')}
                                 </ul>
                             </div>
                             <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
                                 <p class="text-[10px] text-purple-400 font-bold uppercase mb-2">AI 麦可 4.0 分发路径</p>
-                                <p class="text-[11px] leading-relaxed">${data.strategy.replace(/\${prod}/g, prod)}</p>
+                                <p class="text-[11px] leading-relaxed text-slate-300">${res.strategy}</p>
                             </div>
                         </section>
 
@@ -215,21 +226,22 @@
                             <p class="text-[10px] text-slate-500 uppercase mb-2 font-bold">2026 智能开发信 (Smart Hook)</p>
                             <div class="bg-black p-5 rounded-xl border border-white/10 relative overflow-hidden">
                                 <div class="absolute top-0 right-0 p-2 bg-white/5 text-[8px] uppercase">Verified Sourcing</div>
-                                <pre class="text-[12px] text-slate-300 whitespace-pre-wrap">${data.email.replace(/\${prod}/g, prod)}</pre>
+                                <pre class="text-[12px] text-slate-300 whitespace-pre-wrap terminal-font">${res.email}</pre>
                             </div>
                         </section>
 
                         <section class="bg-red-500/5 p-4 rounded-xl border border-red-500/20">
                             <h5 class="text-red-500 text-[10px] font-bold uppercase mb-2 tracking-widest">⚠️ 白皮书·专家级合规预警 (2026 Critical Alert)</h5>
                             <div class="text-[11px] text-slate-400 space-y-2 italic">
-                                <p>● 政策红线：2026年7月美国将强制执行 CPSC 电子申报，${prod} 必须在入境前完成溯源审计。</p>
-                                <p>● 增长机会：白皮书显示 ${region === 'SA' ? '非洲与中东' : '东盟'} 区域 ${prod} 需求增速已超过 20%，建议优先布局海外仓。</p>
-                                <p>● 财务避险：针对该区域汇率波动，建议实施白皮书提到的“自然对冲”策略，利用 Kyriba 算法降低交易手续费。</p>
+                                ${res.alerts.map(a => `<p>● ${a}</p>`).join('')}
                             </div>
                         </section>
                     </div>
                 `;
-            }, 1200);
+            } catch (error) {
+                console.error(error);
+                output.innerHTML = `<p class="text-red-500 text-xs font-bold uppercase">系统误差: 无法连接 AI 神经中枢，请检查 Vercel 环境变量配置。</p>`;
+            }
         }
 
         function copyContent() {
