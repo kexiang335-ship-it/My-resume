@@ -15,12 +15,10 @@
         .terminal-font { font-family: 'JetBrains Mono', monospace; }
         .cursor-blink::after { content: '█'; animation: blink 1s step-end infinite; color: #d4af37; margin-left: 4px; }
         @keyframes blink { 50% { opacity: 0; } }
-        /* 打印样式优化 */
         @media print {
             body { background: white; color: black; }
             .no-print, header, .logic-panel { display: none !important; }
             #report-output { color: black !important; font-size: 12pt; }
-            .lg\:col-span-8 { width: 100% !important; }
         }
     </style>
 </head>
@@ -93,37 +91,41 @@
             const btn = document.getElementById('exec-btn');
             const output = document.getElementById('report-output');
             const thoughtLog = document.getElementById('thought-log');
+            const pdfBtn = document.getElementById('pdf-btn');
 
-            // 初始化界面
+            if(!code) return alert("请输入 6 位体验码");
+
             btn.disabled = true;
             btn.innerText = "深度生成中...";
             document.getElementById('init-screen').classList.add('hidden');
             document.getElementById('output-area').classList.remove('hidden');
             output.innerHTML = "";
             thoughtLog.innerHTML = "";
-            document.getElementById('pdf-btn').classList.add('hidden');
+            pdfBtn.classList.add('hidden');
 
             // 1. 模拟深度思考过程
             for(let step of thoughtSteps) {
                 const p = document.createElement('p');
                 p.innerText = step;
                 thoughtLog.appendChild(p);
-                await new Promise(r => setTimeout(r, 800)); // 模拟思考停顿
+                await new Promise(r => setTimeout(r, 800));
                 document.getElementById('terminal-screen').scrollTop = 0;
             }
 
-            // 2. 调用真正的接口
+            // 2. 接口调用
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         code: code,
-                        messages: [{ role: "user", parts: [{ text: `你是一个顶级外贸专家。请针对"${prod}"产品在"${region}"市场生成一份极具深度的报告。包含：市场准入、竞品逻辑、以及一封极其专业的商务开发信。` }] }]
+                        messages: [{ role: "user", parts: [{ text: `针对"${prod}"在"${region}"生成深度外贸报告。` }] }]
                     })
                 });
 
                 const data = await response.json();
+                if(!response.ok) throw new Error(data.error || "请求失败");
+
                 const text = data.answer;
                 output.classList.add('cursor-blink');
 
@@ -138,13 +140,13 @@
                         output.classList.remove('cursor-blink');
                         btn.disabled = false;
                         btn.innerText = "重新生成";
-                        document.getElementById('pdf-btn').classList.remove('hidden'); // 显示导出按钮
+                        pdfBtn.classList.remove('hidden');
                     }
                 }, 15);
-
             } catch (error) {
-                output.innerHTML = "系统连接异常，请检查网络或体验码。";
+                output.innerHTML = "❌ 错误: " + error.message;
                 btn.disabled = false;
+                btn.innerText = "重试";
             }
         }
     </script>
