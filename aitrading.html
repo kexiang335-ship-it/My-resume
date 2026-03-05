@@ -7,36 +7,45 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        body { background: #080808; color: #d4af37; font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        .logic-panel { background: rgba(15, 15, 15, 0.98); border: 1px solid #333; border-radius: 16px; transition: 0.3s; }
-        .logic-panel:hover { border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+        body { background: #080808; color: #d4af37; font-family: 'Inter', sans-serif; }
+        .logic-panel { background: rgba(15, 15, 15, 0.98); border: 1px solid #333; border-radius: 16px; }
         input, select { background: #000 !important; color: #fff !important; border: 1px solid #444 !important; padding: 12px; border-radius: 8px; width: 100%; outline: none; font-size: 14px; }
         .btn-gold { background: #d4af37; color: #000; font-weight: 800; padding: 14px; border-radius: 10px; width: 100%; cursor: pointer; transition: 0.3s; }
         .btn-gold:hover:not(:disabled) { background: #fff; transform: scale(1.02); }
         .terminal-font { font-family: 'JetBrains Mono', monospace; }
         .cursor-blink::after { content: '█'; animation: blink 1s step-end infinite; color: #d4af37; margin-left: 4px; }
         @keyframes blink { 50% { opacity: 0; } }
+        /* 打印样式优化 */
+        @media print {
+            body { background: white; color: black; }
+            .no-print, header, .logic-panel { display: none !important; }
+            #report-output { color: black !important; font-size: 12pt; }
+            .lg\:col-span-8 { width: 100% !important; }
+        }
     </style>
 </head>
 <body class="p-4 md:p-10">
     <div class="max-w-7xl mx-auto">
-        <header class="mb-10 flex justify-between items-end border-b border-white/10 pb-6">
+        <header class="mb-10 flex justify-between items-end border-b border-white/10 pb-6 no-print">
             <div>
-                <h1 class="text-4xl font-black italic text-white text-white">SHAO.KX <span class="text-[#d4af37]">AGENT</span></h1>
+                <h1 class="text-4xl font-black italic text-white">SHAO.KX <span class="text-[#d4af37]">AGENT</span></h1>
                 <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-2">Professional AI Business OS</p>
             </div>
+            <button onclick="window.print()" id="pdf-btn" class="hidden text-[10px] border border-[#d4af37] px-4 py-2 rounded uppercase font-bold hover:bg-[#d4af37] hover:text-black transition">
+                导出报告 PDF
+            </button>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-4 space-y-6">
-                <div class="logic-panel p-6">
+            <div class="lg:col-span-4 space-y-6 no-print">
+                <div class="logic-panel p-6 border-white/10 border">
                     <div class="space-y-6">
                         <div>
-                            <label class="text-[10px] text-slate-500 mb-2 block font-bold tracking-widest">1. CORE PRODUCT</label>
+                            <label class="text-[10px] text-slate-500 mb-2 block font-bold tracking-widest uppercase">1. Core Product</label>
                             <input type="text" id="prod-input" placeholder="输入产品名称...">
                         </div>
                         <div>
-                            <label class="text-[10px] text-slate-500 mb-2 block font-bold tracking-widest">2. TARGET REGION</label>
+                            <label class="text-[10px] text-slate-500 mb-2 block font-bold tracking-widest uppercase">2. Target Region</label>
                             <select id="region-input">
                                 <option>欧洲市场</option>
                                 <option>北美市场</option>
@@ -45,7 +54,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] text-[#d4af37] mb-2 block font-bold tracking-widest">3. INVITE CODE (OPTIONAL)</label>
+                            <label class="text-[10px] text-[#d4af37] mb-2 block font-bold tracking-widest uppercase">3. Invite Code</label>
                             <input type="text" id="invite-code" placeholder="输入 6 位数字体验码..." class="border-[#d4af37]/30">
                         </div>
                         <button onclick="executeAgent()" id="exec-btn" class="btn-gold">生成数字化报告</button>
@@ -54,11 +63,13 @@
             </div>
 
             <div class="lg:col-span-8">
-                <div class="logic-panel h-[600px] flex flex-col relative overflow-hidden">
-                    <div id="terminal-screen" class="p-8 flex-1 overflow-y-auto terminal-font text-sm leading-relaxed text-slate-300">
-                        <div id="init-screen" class="h-full flex flex-col items-center justify-center opacity-30 text-[10px] tracking-[0.5em]">WAITING FOR COMMAND...</div>
+                <div class="logic-panel min-h-[650px] flex flex-col relative overflow-hidden border-white/10 border">
+                    <div id="terminal-screen" class="p-8 flex-1 overflow-y-auto terminal-font text-sm leading-relaxed">
+                        <div id="init-screen" class="h-full flex flex-col items-center justify-center opacity-30 text-[10px] tracking-[0.5em] no-print">WAITING FOR COMMAND...</div>
                         <div id="output-area" class="hidden">
-                            <div id="report-output" class="whitespace-pre-wrap text-white leading-relaxed"></div>
+                            <div id="thought-log" class="text-[11px] text-slate-500 mb-6 italic space-y-1"></div>
+                            <hr class="border-white/5 mb-6">
+                            <div id="report-output" class="whitespace-pre-wrap text-white leading-relaxed text-base"></div>
                         </div>
                     </div>
                 </div>
@@ -67,32 +78,54 @@
     </div>
 
     <script>
+        const thoughtSteps = [
+            "> 正在接入 2026 全球市场实时数据库...",
+            "> 分析目标区域准入标准及关税逻辑...",
+            "> 模拟 GPT-4o 深度逻辑链推理中...",
+            "> 正在根据产品特性匹配高转化开发信模版...",
+            "> 报告生成完毕，正在进行格式精修..."
+        ];
+
         async function executeAgent() {
             const prod = document.getElementById('prod-input').value || "通用工业品";
             const region = document.getElementById('region-input').value;
             const code = document.getElementById('invite-code').value.trim();
             const btn = document.getElementById('exec-btn');
             const output = document.getElementById('report-output');
+            const thoughtLog = document.getElementById('thought-log');
 
+            // 初始化界面
             btn.disabled = true;
-            btn.innerText = "数据处理中...";
+            btn.innerText = "深度生成中...";
             document.getElementById('init-screen').classList.add('hidden');
             document.getElementById('output-area').classList.remove('hidden');
             output.innerHTML = "";
-            output.classList.add('cursor-blink');
+            thoughtLog.innerHTML = "";
+            document.getElementById('pdf-btn').classList.add('hidden');
 
+            // 1. 模拟深度思考过程
+            for(let step of thoughtSteps) {
+                const p = document.createElement('p');
+                p.innerText = step;
+                thoughtLog.appendChild(p);
+                await new Promise(r => setTimeout(r, 800)); // 模拟思考停顿
+                document.getElementById('terminal-screen').scrollTop = 0;
+            }
+
+            // 2. 调用真正的接口
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         code: code,
-                        messages: [{ role: "user", parts: [{ text: `请针对${prod}在${region}市场生成外贸报告。要求专业、详细。` }] }]
+                        messages: [{ role: "user", parts: [{ text: `你是一个顶级外贸专家。请针对"${prod}"产品在"${region}"市场生成一份极具深度的报告。包含：市场准入、竞品逻辑、以及一封极其专业的商务开发信。` }] }]
                     })
                 });
 
                 const data = await response.json();
                 const text = data.answer;
+                output.classList.add('cursor-blink');
 
                 let i = 0;
                 const timer = setInterval(() => {
@@ -104,12 +137,13 @@
                         clearInterval(timer);
                         output.classList.remove('cursor-blink');
                         btn.disabled = false;
-                        btn.innerText = "重新生成报告";
+                        btn.innerText = "重新生成";
+                        document.getElementById('pdf-btn').classList.remove('hidden'); // 显示导出按钮
                     }
                 }, 15);
 
             } catch (error) {
-                output.innerHTML = "系统连接异常，请稍后重试。";
+                output.innerHTML = "系统连接异常，请检查网络或体验码。";
                 btn.disabled = false;
             }
         }
