@@ -13,9 +13,37 @@
         .glass-card:hover { border-color: #d4af37; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(184, 134, 11, 0.2); }
         .back-btn { border: 1px solid rgba(212, 175, 55, 0.3); transition: all 0.3s; }
         .back-btn:hover { background: #d4af37; color: #000; }
+
+        /* --- 发码器专用样式，确保移动端优先级 --- */
+        #admin-btn { z-index: 9999 !important; }
+        #admin-modal { z-index: 10000 !important; }
     </style>
 </head>
 <body class="bg-black min-h-screen pb-20">
+
+    <button id="admin-btn" onclick="document.getElementById('admin-modal').classList.remove('hidden')" 
+        class="hidden fixed top-6 right-6 bg-[#d4af37] text-black text-[12px] font-black px-5 py-2.5 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.4)] active:scale-95 transition-all">
+        ⚡ 发码控制台
+    </button>
+
+    <div id="admin-modal" class="hidden fixed inset-0 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+        <div class="bg-[#111] border-2 border-[#d4af37] p-8 rounded-3xl w-full max-w-[340px] text-center">
+            <h2 class="text-xl font-black text-white mb-2 italic tracking-tight">ADMIN CONSOLE</h2>
+            <p class="text-[10px] text-slate-500 mb-6 uppercase tracking-[0.2em]">点击生成 6 位体验码 (3 次额度)</p>
+            
+            <div class="bg-black border border-white/10 rounded-xl py-4 mb-6">
+                <span id="new-code-display" class="text-4xl font-mono font-bold tracking-[0.3em] text-[#d4af37]">------</span>
+            </div>
+
+            <button onclick="generateCode()" class="w-full bg-[#d4af37] text-black font-black py-4 rounded-xl hover:bg-white transition-all mb-4 uppercase tracking-widest text-sm">
+                生成新体验码
+            </button>
+            
+            <button onclick="document.getElementById('admin-modal').classList.add('hidden')" class="text-xs text-slate-600 hover:text-white underline">
+                关闭退出
+            </button>
+        </div>
+    </div>
 
     <nav class="p-8">
         <a href="index.html" class="back-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest">← 返回主页 Back to Home</a>
@@ -62,5 +90,40 @@
         </div>
 
     </main>
+
+    <script>
+        // 1. 检查访问者 IP 是否为老板
+        async function checkIdentity() {
+            try {
+                const res = await fetch('/api/admin');
+                const data = await res.json();
+                if (data.isAdmin) {
+                    document.getElementById('admin-btn').classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error("Identity check failed.");
+            }
+        }
+
+        // 2. 生成新体验码
+        async function generateCode() {
+            const display = document.getElementById('new-code-display');
+            display.innerText = "WAIT...";
+            try {
+                const res = await fetch('/api/admin', { method: 'POST' });
+                const data = await res.json();
+                if (data.code) {
+                    display.innerText = data.code;
+                } else {
+                    display.innerText = "ERROR";
+                }
+            } catch (err) {
+                display.innerText = "FAIL";
+            }
+        }
+
+        // 页面加载时运行
+        window.onload = checkIdentity;
+    </script>
 </body>
 </html>
