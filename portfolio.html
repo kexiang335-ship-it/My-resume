@@ -88,32 +88,48 @@
             try {
                 const res = await fetch('/api/admin');
                 const data = await res.json();
-                if (data.isAdmin) {
+                // 只要后端返回 isAdmin 是 true，或者 IP 匹配你的手机 IP
+                if (data.isAdmin || data.debugIp === "39.144.156.35") {
                     document.getElementById('admin-btn').style.display = 'block';
                 }
-            } catch (err) {}
+            } catch (err) {
+                console.log("Check identity failed");
+            }
         }
 
-        // 2. 秘密唤醒逻辑（连点5次标题）- 专门解决手机IP变动问题
+        // 2. 秘密唤醒逻辑（连点5次标题）
         let clickCount = 0;
         function secretClick() {
             clickCount++;
             if (clickCount >= 5) {
                 document.getElementById('admin-btn').style.display = 'block';
-                alert("Boss Mode Activated");
+                alert("Boss Mode Forced Activation");
                 clickCount = 0;
             }
         }
 
-        // 3. 发码逻辑
+        // 3. 发码逻辑（修复显示 FAIL 的问题）
         async function generateCode() {
             const display = document.getElementById('new-code-display');
             display.innerText = "WAIT...";
             try {
-                const res = await fetch('/api/admin', { method: 'POST' });
+                const res = await fetch('/api/admin', { 
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' }
+                });
                 const data = await res.json();
-                if (data.code) display.innerText = data.code;
-            } catch (err) { display.innerText = "FAIL"; }
+                
+                if (res.ok && data.code) {
+                    display.innerText = data.code;
+                } else {
+                    // 如果失败，显示后端传回的具体错误，别只显示一个 FAIL
+                    display.innerText = "ERR:" + res.status;
+                    console.error("Server Error:", data.error);
+                }
+            } catch (err) { 
+                display.innerText = "OFFLINE";
+                console.error("Fetch error:", err);
+            }
         }
 
         window.onload = checkIdentity;
