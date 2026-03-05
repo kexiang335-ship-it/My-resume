@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    // 你的双设备白名单 IP
+    // 你的双设备白名单 IP（手机、电脑无限额度权限）
     const ADMIN_IPS = ["64.23.170.38", "39.144.156.35"];
     
     // 获取访问者 IP
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     const userIp = forwarded ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
     const isAdmin = ADMIN_IPS.includes(userIp);
 
-    // 处理 GET 请求：检查身份
+    // 处理 GET 请求：返回身份标识（供前端初始化验证使用）
     if (req.method === 'GET') {
         return res.status(200).json({ 
             isAdmin, 
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
         });
     }
 
-    // 处理 POST 请求：生成 6 位体验码
+    // 处理 POST 请求：生成 6 位体验码 (仅 Boss 可用)
     if (req.method === 'POST') {
         if (!isAdmin) {
             return res.status(403).json({ error: "Unauthorized IP", yourIp: userIp });
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         const kvUrl = process.env.KV_REST_API_URL;
         const kvToken = process.env.KV_REST_API_TOKEN;
         
-        // 随机 6 位数字
+        // 随机生成 6 位数字
         const newCode = Math.floor(100000 + Math.random() * 900000).toString();
 
         try {
