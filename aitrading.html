@@ -3,72 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAO.KX | AI Agent (GPT-4 驱动)</title>
+    <title>SHAO.KX | 全链路外贸 AI Agent</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        body { background: #080808; color: #d4af37; font-family: 'Inter', sans-serif; }
-        .logic-panel { background: rgba(15, 15, 15, 0.98); border: 1px solid #333; border-radius: 16px; }
-        input, select { background: #000 !important; color: #fff !important; border: 1px solid #444 !important; padding: 12px; border-radius: 8px; width: 100%; outline: none; font-size: 14px; }
-        .btn-gold { background: #d4af37; color: #000; font-weight: 800; padding: 14px; border-radius: 10px; width: 100%; cursor: pointer; transition: 0.3s; }
-        .btn-gold:hover:not(:disabled) { background: #fff; transform: scale(1.02); }
+        body { background: #080808; color: #d4af37; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .logic-panel { background: rgba(15, 15, 15, 0.98); border: 1px solid #333; border-radius: 16px; transition: 0.3s; }
+        .logic-panel:hover { border-color: #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
         .terminal-font { font-family: 'JetBrains Mono', monospace; }
+        input, select { background: #000 !important; color: #fff !important; border: 1px solid #444 !important; padding: 12px; border-radius: 8px; width: 100%; outline: none; font-size: 14px; }
+        .btn-gold { background: #d4af37; color: #000; font-weight: 800; padding: 14px; border-radius: 10px; width: 100%; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .btn-gold:hover:not(:disabled) { background: #fff; transform: scale(1.02); }
+        .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
         .cursor-blink::after { content: '█'; animation: blink 1s step-end infinite; color: #d4af37; margin-left: 4px; }
         @keyframes blink { 50% { opacity: 0; } }
-        @media print {
-            body { background: white; color: black; }
-            .no-print, header, .logic-panel { display: none !important; }
-            #report-output { color: black !important; font-size: 12pt; }
-        }
+        /* 隐藏弹窗的样式 */
+        #admin-modal { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <div class="max-w-7xl mx-auto">
-        <header class="mb-10 flex justify-between items-end border-b border-white/10 pb-6 no-print">
+<body class="p-4 md:p-10 relative">
+    
+    <button id="admin-btn" onclick="document.getElementById('admin-modal').classList.remove('hidden')" class="hidden absolute top-4 right-4 z-50 bg-[#d4af37] text-black text-xs font-bold px-4 py-2 rounded shadow-lg hover:bg-white transition">
+        ⚡ 老板控制台
+    </button>
+
+    <div id="admin-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center">
+        <div class="bg-[#111] border border-[#d4af37] p-8 rounded-2xl w-96 text-center shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+            <h2 class="text-xl font-black text-white mb-2">专属体验码生成器</h2>
+            <p class="text-xs text-slate-400 mb-6">每次生成包含 3 次使用额度</p>
+            <div id="new-code-display" class="text-4xl font-mono text-[#d4af37] tracking-widest mb-6 font-bold h-12">------</div>
+            <button onclick="generateCode()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-[#d4af37] transition mb-3">一键生成新码</button>
+            <button onclick="document.getElementById('admin-modal').classList.add('hidden')" class="text-xs text-slate-500 hover:text-white">关闭窗口</button>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mt-8">
+        <header class="mb-10 flex justify-between items-end border-b border-white/10 pb-6">
             <div>
                 <h1 class="text-4xl font-black italic text-white">SHAO.KX <span class="text-[#d4af37]">AGENT</span></h1>
-                <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-2">Professional AI Business OS</p>
+                <p class="text-[10px] text-slate-500 uppercase tracking-[0.3em] mt-2">2026 中国外贸经营数字化操作系统</p>
             </div>
-            <button onclick="window.print()" id="pdf-btn" class="hidden text-[10px] border border-[#d4af37] px-4 py-2 rounded uppercase font-bold hover:bg-[#d4af37] hover:text-black transition">
-                导出报告 PDF
-            </button>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-4 space-y-6 no-print">
-                <div class="logic-panel p-6 border-white/10 border">
+            <div class="lg:col-span-4 space-y-6">
+                <div class="logic-panel p-6">
+                    <h3 class="text-[11px] font-black text-white mb-6 uppercase flex items-center gap-2">
+                        <span class="w-2 h-2 bg-[#d4af37] rounded-full"></span> 经营参数输入
+                    </h3>
                     <div class="space-y-6">
                         <div>
-                            <label class="text-[10px] text-slate-500 mb-2 block font-bold tracking-widest uppercase">1. Core Product</label>
-                            <input type="text" id="prod-input" placeholder="输入产品名称...">
+                            <label class="text-[10px] text-slate-500 mb-2 block font-bold">1. 核心产品线</label>
+                            <input type="text" id="prod-input" placeholder="例如：激光切割机">
                         </div>
                         <div>
-                            <label class="text-[10px] text-slate-500 mb-2 block font-bold tracking-widest uppercase">2. Target Region</label>
+                            <label class="text-[10px] text-slate-500 mb-2 block font-bold">2. 战略目标区域</label>
                             <select id="region-input">
-                                <option>欧洲市场</option>
-                                <option>北美市场</option>
-                                <option>中东市场</option>
-                                <option>东南亚市场</option>
+                                <option>德国/欧洲市场</option>
+                                <option>沙特/中东市场</option>
+                                <option>美国/北美市场</option>
+                                <option>越南/东南亚市场</option>
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] text-[#d4af37] mb-2 block font-bold tracking-widest uppercase">3. Invite Code (选填)</label>
-                            <input type="text" id="invite-code" placeholder="输入 6 位数字体验码..." class="border-[#d4af37]/30">
-                            <p class="text-[10px] text-slate-500 mt-2">* 首次使用免费，无码直接点击生成</p>
+                            <label class="text-[10px] text-[#d4af37] mb-2 block font-bold">3. 专属体验码 (新客户选填)</label>
+                            <input type="text" id="invite-code" placeholder="输入 6 位数字体验码..." class="border-[#d4af37]/30 focus:border-[#d4af37]">
                         </div>
-                        <button onclick="executeAgent()" id="exec-btn" class="btn-gold">生成数字化报告</button>
+                        <button onclick="executeAgent()" id="exec-btn" class="btn-gold">启动 AI 深度生成报告</button>
                     </div>
                 </div>
             </div>
 
             <div class="lg:col-span-8">
-                <div class="logic-panel min-h-[650px] flex flex-col relative overflow-hidden border-white/10 border">
+                <div class="logic-panel min-h-[650px] flex flex-col relative overflow-hidden">
                     <div id="terminal-screen" class="p-8 flex-1 overflow-y-auto terminal-font text-sm leading-relaxed">
-                        <div id="init-screen" class="h-full flex flex-col items-center justify-center opacity-30 text-[10px] tracking-[0.5em] no-print">WAITING FOR COMMAND...</div>
+                        <div id="init-screen" class="h-full flex flex-col items-center justify-center opacity-20 text-[10px] tracking-[0.8em]">SYSTEM READY_</div>
                         <div id="output-area" class="hidden">
-                            <div id="thought-log" class="text-[11px] text-slate-500 mb-6 italic space-y-1"></div>
-                            <hr class="border-white/5 mb-6">
-                            <div id="report-output" class="whitespace-pre-wrap text-white leading-relaxed text-base"></div>
+                            <div id="thought-process" class="text-[11px] text-slate-600 mb-8 space-y-1.5 border-l border-white/10 pl-4 italic"></div>
+                            <div id="report-output" class="text-slate-200 leading-[1.8] whitespace-pre-wrap"></div>
                         </div>
                     </div>
                 </div>
@@ -77,102 +89,82 @@
     </div>
 
     <script>
-        const thoughtSteps = [
-            "> 正在接入 2026 全球市场实时数据库...",
-            "> 分析目标区域准入标准及关税逻辑...",
-            "> 模拟 GPT-4o 深度逻辑链推理中...",
-            "> 正在根据产品特性匹配高转化开发信模版...",
-            "> 报告生成完毕，正在进行格式精修..."
-        ];
+        // 页面加载时，静默询问后端：当前是不是老板的 IP？
+        window.onload = async function() {
+            try {
+                const res = await fetch('/api/admin');
+                const data = await res.json();
+                if(data.isAdmin) {
+                    document.getElementById('admin-btn').classList.remove('hidden'); // 是老板，显示按钮
+                }
+            } catch(e) {}
+        }
 
+        // 老板生成体验码的逻辑
+        async function generateCode() {
+            const display = document.getElementById('new-code-display');
+            display.innerText = "生成中...";
+            try {
+                const res = await fetch('/api/admin', { method: 'POST' });
+                const data = await res.json();
+                if(data.code) {
+                    display.innerText = data.code;
+                } else {
+                    display.innerText = "生成失败";
+                }
+            } catch(e) {
+                display.innerText = "网络错误";
+            }
+        }
+
+        // 生成报告逻辑
         async function executeAgent() {
             const prod = document.getElementById('prod-input').value || "通用工业品";
             const region = document.getElementById('region-input').value;
-            const code = document.getElementById('invite-code').value.trim();
+            const inviteCode = document.getElementById('invite-code').value.trim(); // 获取体验码
+            
             const btn = document.getElementById('exec-btn');
-            const output = document.getElementById('report-output');
-            const thoughtLog = document.getElementById('thought-log');
-            const pdfBtn = document.getElementById('pdf-btn');
+            const terminal = document.getElementById('terminal-screen');
+            const reportOutput = document.getElementById('report-output');
+            const thoughtDiv = document.getElementById('thought-process');
 
             btn.disabled = true;
-            btn.innerText = "校验权限中...";
+            btn.innerText = "正在分析中...";
+            document.getElementById('init-screen').classList.add('hidden');
+            document.getElementById('output-area').classList.remove('hidden');
+            reportOutput.innerHTML = "";
+            thoughtDiv.innerHTML = "> [SYSTEM] 验证权限中...<br>";
 
             try {
-                // 1. 调用后端获取当前设备 IP 及身份
-                const adminRes = await fetch('/api/admin');
-                const adminData = await adminRes.json();
-                
-                // 确保 Boss 的 IP 永远拥有最高权限
-                const isAdmin = adminData.isAdmin || ["39.144.156.35", "64.23.170.38"].includes(adminData.debugIp);
-                const userIp = adminData.debugIp || "unknown_ip";
-
-                // 2. 免费额度及试用码判断逻辑
-                if (!isAdmin) {
-                    if (!code) {
-                        // 如果没有输入码，检查该 IP 是否已经用过免费额度
-                        const hasUsedFree = localStorage.getItem('free_used_' + userIp);
-                        if (hasUsedFree) {
-                            alert("本IP额度以使用完，想继续使用请联系电话/微信：13814632349或者邮箱：2306367140@qq.com获取使用码");
-                            btn.disabled = false;
-                            btn.innerText = "生成数字化报告";
-                            return;
-                        } else {
-                            // 记录该 IP 已使用免费额度
-                            localStorage.setItem('free_used_' + userIp, 'true');
-                        }
-                    }
-                    // 如果有输入 code，直接放行，由后续后端的 /api/chat 验证 Vercel KV 里的码是否有效
-                }
-
-                // 3. 开始执行动画
-                btn.innerText = "深度生成中...";
-                document.getElementById('init-screen').classList.add('hidden');
-                document.getElementById('output-area').classList.remove('hidden');
-                output.innerHTML = "";
-                thoughtLog.innerHTML = "";
-                pdfBtn.classList.add('hidden');
-
-                for(let step of thoughtSteps) {
-                    const p = document.createElement('p');
-                    p.innerText = step;
-                    thoughtLog.appendChild(p);
-                    await new Promise(r => setTimeout(r, 800));
-                    document.getElementById('terminal-screen').scrollTop = 0;
-                }
-
-                // 4. 接口调用进行实际生成
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        code: code,
-                        messages: [{ role: "user", parts: [{ text: `针对"${prod}"在"${region}"生成深度外贸报告。` }] }]
+                        code: inviteCode, // 把体验码发给后端
+                        messages: [{ role: "user", parts: [{ text: `你是一个资深外贸顾问。针对产品"${prod}"，在"${region}"市场，请生成一份报告。包含：1.市场逻辑（结合2026趋势） 2.目标客户类型 3.一份专业英文开发信。要求：格式精美，多用换行。` }] }]
                     })
                 });
 
                 const data = await response.json();
-                if(!response.ok) throw new Error(data.error || "请求失败，可能是体验码无效或已过期");
-
                 const text = data.answer;
-                output.classList.add('cursor-blink');
+                reportOutput.classList.add('cursor-blink');
 
                 let i = 0;
                 const timer = setInterval(() => {
                     if (i < text.length) {
-                        output.innerHTML += text.charAt(i);
+                        reportOutput.innerHTML += text.charAt(i);
                         i++;
-                        document.getElementById('terminal-screen').scrollTop = 9999;
+                        terminal.scrollTop = terminal.scrollHeight;
                     } else {
                         clearInterval(timer);
-                        output.classList.remove('cursor-blink');
+                        reportOutput.classList.remove('cursor-blink');
                         btn.disabled = false;
-                        btn.innerText = "重新生成";
-                        pdfBtn.classList.remove('hidden');
+                        btn.innerText = "重新启动生成";
                     }
                 }, 15);
 
             } catch (error) {
-                output.innerHTML = "❌ 错误: " + error.message;
+                reportOutput.innerHTML = "系统错误，请重试。";
                 btn.disabled = false;
                 btn.innerText = "重试";
             }
