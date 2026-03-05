@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHAO.KX | 全链路外贸 AI Agent (HiAPI 版)</title>
+    <title>SHAO.KX | 全链路外贸 AI Agent</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
@@ -17,32 +17,36 @@
         .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
         .cursor-blink::after { content: '█'; animation: blink 1s step-end infinite; color: #d4af37; margin-left: 4px; }
         @keyframes blink { 50% { opacity: 0; } }
-        /* PDF 导出优化 */
-        @media print {
-            body { background: white !important; color: black !important; padding: 0 !important; }
-            .no-print, header, .lg\:col-span-4, button { display: none !important; }
-            .lg\:col-span-8 { width: 100% !important; margin: 0 !important; }
-            .logic-panel { border: none !important; background: transparent !important; }
-            #report-output { color: black !important; font-size: 14px; line-height: 1.8; }
-            .text-[#d4af37] { color: #856404 !important; }
-        }
+        /* 隐藏弹窗的样式 */
+        #admin-modal { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
     </style>
 </head>
-<body class="p-4 md:p-10">
-    <div class="max-w-7xl mx-auto">
-        <header class="mb-10 flex justify-between items-end border-b border-white/10 pb-6 no-print">
+<body class="p-4 md:p-10 relative">
+    
+    <button id="admin-btn" onclick="document.getElementById('admin-modal').classList.remove('hidden')" class="hidden absolute top-4 right-4 z-50 bg-[#d4af37] text-black text-xs font-bold px-4 py-2 rounded shadow-lg hover:bg-white transition">
+        ⚡ 老板控制台
+    </button>
+
+    <div id="admin-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center">
+        <div class="bg-[#111] border border-[#d4af37] p-8 rounded-2xl w-96 text-center shadow-[0_0_30px_rgba(212,175,55,0.2)]">
+            <h2 class="text-xl font-black text-white mb-2">专属体验码生成器</h2>
+            <p class="text-xs text-slate-400 mb-6">每次生成包含 3 次使用额度</p>
+            <div id="new-code-display" class="text-4xl font-mono text-[#d4af37] tracking-widest mb-6 font-bold h-12">------</div>
+            <button onclick="generateCode()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-[#d4af37] transition mb-3">一键生成新码</button>
+            <button onclick="document.getElementById('admin-modal').classList.add('hidden')" class="text-xs text-slate-500 hover:text-white">关闭窗口</button>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto mt-8">
+        <header class="mb-10 flex justify-between items-end border-b border-white/10 pb-6">
             <div>
                 <h1 class="text-4xl font-black italic text-white">SHAO.KX <span class="text-[#d4af37]">AGENT</span></h1>
-                <p class="text-[10px] text-slate-500 uppercase tracking-[0.3em] mt-2">2026 中国外贸经营数字化操作系统 (GPT-4 驱动)</p>
-            </div>
-            <div class="hidden md:block text-right">
-                <p class="text-[10px] text-green-500 font-bold animate-pulse">● HIAPI_SERVER_CONNECTED</p>
-                <p class="text-[9px] text-slate-600">ENCRYPTION: AES-256-BIT</p>
+                <p class="text-[10px] text-slate-500 uppercase tracking-[0.3em] mt-2">2026 中国外贸经营数字化操作系统</p>
             </div>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div class="lg:col-span-4 space-y-6 no-print">
+            <div class="lg:col-span-4 space-y-6">
                 <div class="logic-panel p-6">
                     <h3 class="text-[11px] font-black text-white mb-6 uppercase flex items-center gap-2">
                         <span class="w-2 h-2 bg-[#d4af37] rounded-full"></span> 经营参数输入
@@ -61,29 +65,17 @@
                                 <option>越南/东南亚市场</option>
                             </select>
                         </div>
+                        <div>
+                            <label class="text-[10px] text-[#d4af37] mb-2 block font-bold">3. 专属体验码 (新客户选填)</label>
+                            <input type="text" id="invite-code" placeholder="输入 6 位数字体验码..." class="border-[#d4af37]/30 focus:border-[#d4af37]">
+                        </div>
                         <button onclick="executeAgent()" id="exec-btn" class="btn-gold">启动 AI 深度生成报告</button>
                     </div>
-                </div>
-                <div class="p-4 border border-white/5 rounded-xl bg-white/5 text-[10px] text-slate-500 leading-relaxed">
-                    注意：系统将实时连接 HiAPI 中转站。生成过程约需 10-20 秒，请勿刷新页面。
                 </div>
             </div>
 
             <div class="lg:col-span-8">
                 <div class="logic-panel min-h-[650px] flex flex-col relative overflow-hidden">
-                    <div class="absolute top-4 right-4 z-20 flex gap-2 no-print">
-                        <button onclick="window.print()" class="text-[10px] bg-white/5 text-slate-400 hover:text-white border border-white/10 px-3 py-1.5 rounded transition">导出 PDF 报告</button>
-                    </div>
-
-                    <div class="p-4 border-b border-white/5 bg-white/5 flex justify-between items-center no-print">
-                        <div class="flex gap-1.5">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-500/30 border border-red-500/50"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/30 border border-yellow-500/50"></span>
-                            <span class="w-2.5 h-2.5 rounded-full bg-green-500/30 border border-green-500/50"></span>
-                        </div>
-                        <span class="text-[9px] terminal-font text-slate-600">REPT_GEN_SYSTEM_v4.2</span>
-                    </div>
-                    
                     <div id="terminal-screen" class="p-8 flex-1 overflow-y-auto terminal-font text-sm leading-relaxed">
                         <div id="init-screen" class="h-full flex flex-col items-center justify-center opacity-20 text-[10px] tracking-[0.8em]">SYSTEM READY_</div>
                         <div id="output-area" class="hidden">
@@ -97,53 +89,66 @@
     </div>
 
     <script>
-        const logs = [
-            "> [SYSTEM] 建立 HiAPI 安全握手...",
-            "> [AUTH] 验证 sk- 密钥合法性...",
-            "> [QUERY] 正在调取 2026 外贸白皮书深度逻辑...",
-            "> [AI] 正在进行市场准入与风险建模...",
-            "> [DONE] 报告结构已就绪，开始实时渲染..."
-        ];
+        // 页面加载时，静默询问后端：当前是不是老板的 IP？
+        window.onload = async function() {
+            try {
+                const res = await fetch('/api/admin');
+                const data = await res.json();
+                if(data.isAdmin) {
+                    document.getElementById('admin-btn').classList.remove('hidden'); // 是老板，显示按钮
+                }
+            } catch(e) {}
+        }
 
+        // 老板生成体验码的逻辑
+        async function generateCode() {
+            const display = document.getElementById('new-code-display');
+            display.innerText = "生成中...";
+            try {
+                const res = await fetch('/api/admin', { method: 'POST' });
+                const data = await res.json();
+                if(data.code) {
+                    display.innerText = data.code;
+                } else {
+                    display.innerText = "生成失败";
+                }
+            } catch(e) {
+                display.innerText = "网络错误";
+            }
+        }
+
+        // 生成报告逻辑
         async function executeAgent() {
             const prod = document.getElementById('prod-input').value || "通用工业品";
             const region = document.getElementById('region-input').value;
+            const inviteCode = document.getElementById('invite-code').value.trim(); // 获取体验码
+            
             const btn = document.getElementById('exec-btn');
             const terminal = document.getElementById('terminal-screen');
             const reportOutput = document.getElementById('report-output');
             const thoughtDiv = document.getElementById('thought-process');
 
-            // UI 状态切换
             btn.disabled = true;
             btn.innerText = "正在分析中...";
             document.getElementById('init-screen').classList.add('hidden');
             document.getElementById('output-area').classList.remove('hidden');
             reportOutput.innerHTML = "";
-            thoughtDiv.innerHTML = "";
-
-            // 模拟思维日志
-            for(let log of logs) {
-                await new Promise(r => setTimeout(r, 600));
-                thoughtDiv.innerHTML += `<div>${log}</div>`;
-                terminal.scrollTop = terminal.scrollHeight;
-            }
+            thoughtDiv.innerHTML = "> [SYSTEM] 验证权限中...<br>";
 
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
+                        code: inviteCode, // 把体验码发给后端
                         messages: [{ role: "user", parts: [{ text: `你是一个资深外贸顾问。针对产品"${prod}"，在"${region}"市场，请生成一份报告。包含：1.市场逻辑（结合2026趋势） 2.目标客户类型 3.一份专业英文开发信。要求：格式精美，多用换行。` }] }]
                     })
                 });
 
                 const data = await response.json();
-                if(!response.ok) throw new Error(data.answer);
-
                 const text = data.answer;
                 reportOutput.classList.add('cursor-blink');
 
-                // 逐字打印效果
                 let i = 0;
                 const timer = setInterval(() => {
                     if (i < text.length) {
@@ -159,7 +164,7 @@
                 }, 15);
 
             } catch (error) {
-                reportOutput.innerHTML = `<span class="text-red-500">>>> [错误]：${error.message}</span><br>请检查 Vercel 环境变量中 Key 是否正确，或联系闲鱼卖家确认 Key 额度。`;
+                reportOutput.innerHTML = "系统错误，请重试。";
                 btn.disabled = false;
                 btn.innerText = "重试";
             }
