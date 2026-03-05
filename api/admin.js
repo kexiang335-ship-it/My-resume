@@ -1,41 +1,36 @@
 export default async function handler(req, res) {
-    // 你的双设备白名单 IP
-    const ADMIN_IPS = ["64.23.170.38", "39.144.156.35"];
-    
-    // 获取访问者 IP
+    const ADMIN_IPS = ["64.23.170.38", "39.144.156.43"]; // 你的白名单
     const forwarded = req.headers["x-forwarded-for"];
     const userIp = forwarded ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
+    
+    // 检查是不是老板的 IP
     const isAdmin = ADMIN_IPS.includes(userIp);
 
-    // 处理 GET 请求：检查身份，供前端判断当前是否是 Boss 和提取 IP
+    // 网页加载时调用的接口，告诉前端要不要显示右上角的按钮
     if (req.method === 'GET') {
-        return res.status(200).json({ 
-            isAdmin, 
-            debugIp: userIp,
-            msg: isAdmin ? "Welcome Boss" : "Access Check"
-        });
+        return res.status(200).json({ isAdmin });
     }
 
-    // 处理 POST 请求：生成 6 位体验码并限制 3 次
+    // 点击“生成新码”时调用的接口
     if (req.method === 'POST') {
         if (!isAdmin) {
-            return res.status(403).json({ error: "Unauthorized IP", yourIp: userIp });
+            return res.status(403).json({ error: "非法入侵：无权生成体验码" });
         }
 
         const kvUrl = process.env.KV_REST_API_URL;
         const kvToken = process.env.KV_REST_API_TOKEN;
         
-        // 随机生成 6 位数字码
-        const newCode = Math.floor(100000 + Math.random() * 900000).toString();
+        // 随机生成 6 位数
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
 
         try {
-            // 将码存入 Vercel KV，设置 3 次可用额度
-            await fetch(`${kvUrl}/set/code:${newCode}/3`, {
+            // 存入数据库，赋予 3 次权限
+            await fetch(`${kvUrl}/set/code:${code}/3`, { 
                 headers: { Authorization: `Bearer ${kvToken}` }
             });
-            return res.status(200).json({ code: newCode });
-        } catch (e) {
-            return res.status(500).json({ error: "Storage Error" });
+            return res.status(200).json({ code: code });
+        } catch(e) {
+            return res.status(500).json({ error: "发码失败" });
         }
     }
 }
