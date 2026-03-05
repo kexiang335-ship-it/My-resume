@@ -52,8 +52,9 @@
                             </select>
                         </div>
                         <div>
-                            <label class="text-[10px] text-[#d4af37] mb-2 block font-bold tracking-widest uppercase">3. Invite Code</label>
-                            <input type="text" id="invite-code" placeholder="输入 6 位数字体验码 (首次可留空)..." class="border-[#d4af37]/30">
+                            <label class="text-[10px] text-[#d4af37] mb-2 block font-bold tracking-widest uppercase">3. Invite Code (选填)</label>
+                            <input type="text" id="invite-code" placeholder="输入 6 位数字体验码..." class="border-[#d4af37]/30">
+                            <p class="text-[10px] text-slate-500 mt-2">* 首次使用免费，无码直接点击生成</p>
                         </div>
                         <button onclick="executeAgent()" id="exec-btn" class="btn-gold">生成数字化报告</button>
                     </div>
@@ -84,22 +85,6 @@
             "> 报告生成完毕，正在进行格式精修..."
         ];
 
-        // 全局变量：记录用户身份
-        let currentUserIp = "unknown";
-        let isBoss = false;
-
-        // 页面加载时请求 /api/admin 确认身份
-        window.addEventListener('DOMContentLoaded', async () => {
-            try {
-                const res = await fetch('/api/admin');
-                const data = await res.json();
-                currentUserIp = data.debugIp || "unknown";
-                isBoss = data.isAdmin;
-            } catch (e) {
-                console.log("初始化状态获取失败");
-            }
-        });
-
         async function executeAgent() {
             const prod = document.getElementById('prod-input').value || "通用工业品";
             const region = document.getElementById('region-input').value;
@@ -109,39 +94,53 @@
             const thoughtLog = document.getElementById('thought-log');
             const pdfBtn = document.getElementById('pdf-btn');
 
-            // 核心验证逻辑
-            const outOfQuotaMsg = "本IP额度以使用完，想继续使用请联系电话/微信：13814632349或者邮箱：2306367140@qq.com获取使用码";
-            
-            if (!isBoss) {
-                if (!code) {
-                    // 没填码，检查此 IP 是否用过一次免费机会
-                    const hasUsedFree = localStorage.getItem(`free_used_${currentUserIp}`);
-                    if (hasUsedFree === "true") {
-                        alert(outOfQuotaMsg);
-                        return;
-                    }
-                }
-            }
-
             btn.disabled = true;
-            btn.innerText = "深度生成中...";
-            document.getElementById('init-screen').classList.add('hidden');
-            document.getElementById('output-area').classList.remove('hidden');
-            output.innerHTML = "";
-            thoughtLog.innerHTML = "";
-            pdfBtn.classList.add('hidden');
+            btn.innerText = "校验权限中...";
 
-            // 1. 模拟深度思考过程
-            for(let step of thoughtSteps) {
-                const p = document.createElement('p');
-                p.innerText = step;
-                thoughtLog.appendChild(p);
-                await new Promise(r => setTimeout(r, 800));
-                document.getElementById('terminal-screen').scrollTop = 9999;
-            }
-
-            // 2. 接口调用
             try {
+                // 1. 调用后端获取当前设备 IP 及身份
+                const adminRes = await fetch('/api/admin');
+                const adminData = await adminRes.json();
+                
+                // 确保 Boss 的 IP 永远拥有最高权限
+                const isAdmin = adminData.isAdmin || ["39.144.156.35", "64.23.170.38"].includes(adminData.debugIp);
+                const userIp = adminData.debugIp || "unknown_ip";
+
+                // 2. 免费额度及试用码判断逻辑
+                if (!isAdmin) {
+                    if (!code) {
+                        // 如果没有输入码，检查该 IP 是否已经用过免费额度
+                        const hasUsedFree = localStorage.getItem('free_used_' + userIp);
+                        if (hasUsedFree) {
+                            alert("本IP额度以使用完，想继续使用请联系电话/微信：13814632349或者邮箱：2306367140@qq.com获取使用码");
+                            btn.disabled = false;
+                            btn.innerText = "生成数字化报告";
+                            return;
+                        } else {
+                            // 记录该 IP 已使用免费额度
+                            localStorage.setItem('free_used_' + userIp, 'true');
+                        }
+                    }
+                    // 如果有输入 code，直接放行，由后续后端的 /api/chat 验证 Vercel KV 里的码是否有效
+                }
+
+                // 3. 开始执行动画
+                btn.innerText = "深度生成中...";
+                document.getElementById('init-screen').classList.add('hidden');
+                document.getElementById('output-area').classList.remove('hidden');
+                output.innerHTML = "";
+                thoughtLog.innerHTML = "";
+                pdfBtn.classList.add('hidden');
+
+                for(let step of thoughtSteps) {
+                    const p = document.createElement('p');
+                    p.innerText = step;
+                    thoughtLog.appendChild(p);
+                    await new Promise(r => setTimeout(r, 800));
+                    document.getElementById('terminal-screen').scrollTop = 0;
+                }
+
+                // 4. 接口调用进行实际生成
                 const response = await fetch('/api/chat', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -152,20 +151,7 @@
                 });
 
                 const data = await response.json();
-                
-                if(!response.ok) {
-                    // 如果后端发现邀请码额度耗尽，或无权限，统一拦截抛出你的指定文本
-                    const errMsg = data.error || "";
-                    if (response.status === 403 || errMsg.includes("额度") || errMsg.includes("limit")) {
-                        throw new Error(outOfQuotaMsg);
-                    }
-                    throw new Error(errMsg || "请求失败");
-                }
-
-                // ==== 成功生成后，如果是普通用户且没填邀请码，则扣除他的免费次数 ====
-                if (!isBoss && !code) {
-                    localStorage.setItem(`free_used_${currentUserIp}`, "true");
-                }
+                if(!response.ok) throw new Error(data.error || "请求失败，可能是体验码无效或已过期");
 
                 const text = data.answer;
                 output.classList.add('cursor-blink');
@@ -184,8 +170,9 @@
                         pdfBtn.classList.remove('hidden');
                     }
                 }, 15);
+
             } catch (error) {
-                output.innerHTML = `❌ <br><br> ${error.message}`;
+                output.innerHTML = "❌ 错误: " + error.message;
                 btn.disabled = false;
                 btn.innerText = "重试";
             }
