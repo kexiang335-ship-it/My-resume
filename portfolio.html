@@ -7,75 +7,34 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; margin: 0; overflow-x: hidden; }
-        
-        #sand-background { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000; overflow: hidden; }
-        .sand-flow { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; mix-blend-mode: screen; transition: transform 1.8s cubic-bezier(0.1, 0.4, 0.2, 1); }
-        #flow-1 { width: 1000px; height: 800px; background: radial-gradient(circle, rgba(184, 134, 11, 0.2) 0%, transparent 70%); }
-
+        body { font-family: 'Inter', sans-serif; background: #000; color: #d4af37; margin: 0; }
         .gold-text { background: linear-gradient(135deg, #fff3ad 0%, #d4af37 50%, #8a6d3b 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        
-        .glass-card { 
-            background: rgba(15, 15, 15, 0.8); 
-            backdrop-filter: blur(20px); 
-            border: 1px solid rgba(212, 175, 55, 0.15); 
-            transition: all 0.4s ease; 
-            height: 100%; 
-            display: flex; 
-            flex-direction: column; 
-        }
+        .glass-card { background: rgba(15, 15, 15, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.15); transition: all 0.4s ease; height: 100%; display: flex; flex-direction: column; }
         .glass-card:hover { border-color: #d4af37; transform: translateY(-5px); box-shadow: 0 10px 30px rgba(184, 134, 11, 0.2); }
-        
-        .back-btn { border: 1px solid rgba(212, 175, 55, 0.3); transition: all 0.3s; background: rgba(0,0,0,0.5); }
+        .back-btn { border: 1px solid rgba(212, 175, 55, 0.3); transition: all 0.3s; }
         .back-btn:hover { background: #d4af37; color: #000; }
-
-        #admin-btn { z-index: 99999 !important; position: fixed !important; display: none; }
-        #admin-modal { z-index: 100000 !important; }
     </style>
 </head>
 <body class="bg-black min-h-screen pb-20">
 
-    <div id="sand-background">
-        <div id="flow-1" class="sand-flow"></div>
-    </div>
-
-    <button id="admin-btn" onclick="document.getElementById('admin-modal').classList.remove('hidden')" 
-        class="fixed top-4 right-4 bg-[#d4af37] text-black text-[11px] font-bold px-4 py-2 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.6)] active:scale-95 transition-all uppercase tracking-tighter">
-        ⚡ 生码器
-    </button>
-
-    <div id="admin-modal" class="hidden fixed inset-0 flex items-center justify-center bg-black/95 backdrop-blur-xl p-4">
-        <div class="bg-[#111] border-2 border-[#d4af37] p-8 rounded-3xl w-full max-w-[340px] text-center">
-            <h2 class="text-xl font-black text-white mb-2 italic tracking-tighter">ADMIN PANEL</h2>
-            <p class="text-[10px] text-slate-500 mb-6 uppercase tracking-widest">生成 6 位体验码 (3 次额度)</p>
-            <div class="bg-black border border-white/10 rounded-xl py-4 mb-6">
-                <span id="new-code-display" class="text-4xl font-mono font-bold tracking-[0.3em] text-[#d4af37]">------</span>
-            </div>
-            <button id="gen-btn-actual" onclick="generateCode()" class="w-full bg-[#d4af37] text-black font-black py-4 rounded-xl hover:bg-white transition-all mb-4 uppercase tracking-widest text-sm">生成新码</button>
-            <button onclick="document.getElementById('admin-modal').classList.add('hidden')" class="text-xs text-slate-600 hover:text-white underline">返回仓库</button>
-        </div>
-    </div>
-
-    <nav class="p-8 flex justify-between items-center">
-        <a href="index.html" class="back-btn px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest text-[#d4af37]">
-            ← Back to Home
-        </a>
-        <span class="text-xl font-black gold-text italic">SHAO.<span class="text-white">KX</span></span>
+    <nav class="p-8">
+        <a href="index.html" class="back-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest">← 返回主页 Back to Home</a>
     </nav>
 
     <header class="text-center py-16">
-        <h1 onclick="secretClick()" class="text-5xl font-black gold-text italic uppercase tracking-tighter cursor-default">作品集仓库</h1>
+        <h1 class="text-5xl font-black gold-text italic uppercase tracking-tighter">作品集仓库</h1>
         <p class="text-slate-500 text-sm mt-4 tracking-[0.3em] uppercase">Full Project Repository</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
         <div class="glass-card rounded-3xl overflow-hidden">
             <div class="h-48 bg-gradient-to-br from-[#d4af37]/10 to-black flex items-center justify-center text-4xl">🌍</div>
             <div class="p-8 flex-1 flex flex-col">
                 <h3 class="text-xl font-bold text-white mb-2">AI 外贸谈判与报价系统</h3>
                 <p class="text-xs text-slate-400 mb-6 leading-relaxed">利用大语言模型模拟全球市场商务谈判逻辑，自动生成多币种报价单。</p>
                 <div class="mt-auto">
-                    <a href="aitrading.html" class="inline-block w-full text-center py-3 bg-[#d4af37]/10 border border-[#d4af37]/50 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#d4af37] hover:text-black transition-all">进入项目</a>
+                    <a href="aitrading.html" class="inline-block w-full text-center py-3 bg-[#d4af37]/10 border border-[#d4af37]/50 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#d4af37] hover:text-black transition-all">立即进入体验项目</a>
                 </div>
             </div>
         </div>
@@ -86,7 +45,7 @@
                 <h3 class="text-xl font-bold text-white mb-2">跨境电商流程重构 (RPA)</h3>
                 <p class="text-xs text-slate-400 mb-6 leading-relaxed">基于 Python 的自动化脚本，实现商品信息全自动采集与一键上架展示。</p>
                 <div class="mt-auto">
-                    <a href="rpa-tool.html" class="inline-block w-full text-center py-3 bg-[#d4af37]/10 border border-[#d4af37]/50 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#d4af37] hover:text-black transition-all">进入项目</a>
+                    <a href="rpa-tool.html" class="inline-block w-full text-center py-3 bg-[#d4af37]/10 border border-[#d4af37]/50 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#d4af37] hover:text-black transition-all">立即进入体验项目</a>
                 </div>
             </div>
         </div>
@@ -95,73 +54,13 @@
             <div class="h-48 bg-gradient-to-br from-[#d4af37]/10 to-black flex items-center justify-center text-4xl">🩺</div>
             <div class="p-8 flex-1 flex flex-col">
                 <h3 class="text-xl font-bold text-white mb-2">数字宠物医疗知识库</h3>
-                <p class="text-xs text-slate-400 mb-6 leading-relaxed">结合动物医学背景开发的结构化疾病诊断索引，快速查询用药逻辑。</p>
+                <p class="text-xs text-slate-400 mb-6 leading-relaxed">结合动物医学背景开发的结构化疾病诊断索引，方便快速查询用药逻辑。</p>
                 <div class="mt-auto">
-                    <a href="pet-med.html" class="inline-block w-full text-center py-3 bg-[#d4af37]/10 border border-[#d4af37]/50 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#d4af37] hover:text-black transition-all">进入项目</a>
+                    <a href="pet-med.html" class="inline-block w-full text-center py-3 bg-[#d4af37]/10 border border-[#d4af37]/50 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:bg-[#d4af37] hover:text-black transition-all">立即进入体验项目</a>
                 </div>
             </div>
         </div>
+
     </main>
-
-    <script>
-        // 自动检查身份（双设备 IP 白名单），是 Boss 就显示生码器
-        async function checkIdentity() {
-            try {
-                const res = await fetch('/api/admin');
-                const data = await res.json();
-                
-                const myIps = ["39.144.156.35", "64.23.170.38"];
-                
-                if (data.isAdmin || myIps.includes(data.debugIp)) {
-                    document.getElementById('admin-btn').style.display = 'block';
-                }
-            } catch (err) { 
-                console.log("Identity check bypass"); 
-            }
-        }
-
-        // 秘密唤醒生码器：连点标题 5 次
-        let clickCount = 0;
-        function secretClick() {
-            clickCount++;
-            if (clickCount >= 5) {
-                document.getElementById('admin-btn').style.display = 'block';
-                alert("Boss Mode Activated");
-                clickCount = 0;
-            }
-        }
-
-        // 发码逻辑
-        async function generateCode() {
-            const display = document.getElementById('new-code-display');
-            const btn = document.getElementById('gen-btn-actual');
-            display.innerText = "WAIT...";
-            btn.disabled = true;
-            try {
-                const res = await fetch('/api/admin', { 
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                const data = await res.json();
-                if (res.ok && data.code) {
-                    display.innerText = data.code;
-                } else {
-                    display.innerText = "ERR:" + res.status;
-                }
-            } catch (err) { 
-                display.innerText = "FAIL"; 
-            } finally {
-                btn.disabled = false;
-            }
-        }
-
-        const flow = document.getElementById('flow-1');
-        document.addEventListener('mousemove', (e) => {
-            const { clientX, clientY } = e;
-            flow.style.transform = `translate(${clientX - 500}px, ${clientY - 400}px)`;
-        });
-
-        window.onload = checkIdentity;
-    </script>
 </body>
 </html>
