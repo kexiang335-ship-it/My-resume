@@ -16,7 +16,7 @@ export default async function handler(req, res) {
             content: m.parts[0].text
         }));
 
-        // 直接调用 AI，不再检查权限
+        // 【核心】直接调用 AI，删除了所有 IP 限制和额度检查
         const response = await fetch(BASE_URL, {
             method: 'POST',
             headers: { 
@@ -31,13 +31,11 @@ export default async function handler(req, res) {
         });
 
         const data = await response.json();
-        
         if (data.error) throw new Error(data.error.message);
         
         res.status(200).json({ answer: data.choices[0].message.content });
 
     } catch (error) {
-        console.error("AI Error:", error);
         res.status(500).json({ answer: `AI 服务调用失败: ${error.message}` });
     }
 }
