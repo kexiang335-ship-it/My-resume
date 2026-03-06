@@ -41,7 +41,7 @@
         <header class="mb-10 flex justify-between items-end border-b border-white/10 pb-6">
             <div>
                 <h1 class="text-4xl font-black italic text-white">SHAO.KX <span class="text-[#d4af37]">AGENT</span></h1>
-                <p class="text-[10px] text-slate-500 uppercase tracking-[0.3em] mt-2">2026 中国外贸经营数字化操作系统</p>
+                <p id="secret-title" class="text-[10px] text-slate-500 uppercase tracking-[0.3em] mt-2 cursor-pointer select-none">2026 中国外贸经营数字化操作系统</p>
             </div>
         </header>
 
@@ -89,10 +89,42 @@
     </div>
 
     <script>
-        // 页面加载时，静默询问后端：当前是不是老板的 IP？
+        // --- 核心：设备指纹生成器 ---
+        function getDeviceId() {
+            let deviceId = localStorage.getItem('shao_device_id');
+            if (!deviceId) {
+                // 收集基础指纹特征 (屏幕、内核、语言等)
+                const fpData = [navigator.userAgent, screen.width, screen.height, navigator.language].join('|');
+                let hash = 0;
+                for (let i = 0; i < fpData.length; i++) {
+                    hash = ((hash << 5) - hash) + fpData.charCodeAt(i);
+                    hash |= 0; 
+                }
+                // 生成唯一的设备 ID 并加密固化在本地
+                deviceId = 'DEV-' + Math.abs(hash).toString(16) + '-' + Math.random().toString(36).substring(2, 10);
+                localStorage.setItem('shao_device_id', deviceId);
+            }
+            return deviceId;
+        }
+
+        // 老板专属快捷通道：连点三次副标题获取设备ID
+        let clickCount = 0;
+        document.getElementById('secret-title').addEventListener('click', () => {
+            clickCount++;
+            if (clickCount >= 3) {
+                prompt("这是你的设备专属 ID，请复制并添加到后端白名单中：", getDeviceId());
+                clickCount = 0;
+            }
+        });
+
+        const currentDeviceId = getDeviceId();
+
+        // 页面加载时，静默询问后端：当前是不是老板的设备？
         window.onload = async function() {
             try {
-                const res = await fetch('/api/admin');
+                const res = await fetch('/api/admin', {
+                    headers: { 'X-Device-Id': currentDeviceId } // 传入设备ID
+                });
                 const data = await res.json();
                 if(data.isAdmin) {
                     document.getElementById('admin-btn').classList.remove('hidden'); // 是老板，显示按钮
@@ -105,12 +137,15 @@
             const display = document.getElementById('new-code-display');
             display.innerText = "生成中...";
             try {
-                const res = await fetch('/api/admin', { method: 'POST' });
+                const res = await fetch('/api/admin', { 
+                    method: 'POST',
+                    headers: { 'X-Device-Id': currentDeviceId } // 必须传入才能被鉴权
+                });
                 const data = await res.json();
                 if(data.code) {
                     display.innerText = data.code;
                 } else {
-                    display.innerText = "生成失败";
+                    display.innerText = "生成失败: " + (data.error || "未知原因");
                 }
             } catch(e) {
                 display.innerText = "网络错误";
@@ -121,7 +156,7 @@
         async function executeAgent() {
             const prod = document.getElementById('prod-input').value || "通用工业品";
             const region = document.getElementById('region-input').value;
-            const inviteCode = document.getElementById('invite-code').value.trim(); // 获取体验码
+            const inviteCode = document.getElementById('invite-code').value.trim(); 
             
             const btn = document.getElementById('exec-btn');
             const terminal = document.getElementById('terminal-screen');
@@ -138,14 +173,25 @@
             try {
                 const response = await fetch('/api/chat', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Device-Id': currentDeviceId // 将设备ID发给后端，后端通过它判断是否用过免费次数
+                    },
                     body: JSON.stringify({
-                        code: inviteCode, // 把体验码发给后端
+                        code: inviteCode,
                         messages: [{ role: "user", parts: [{ text: `你是一个资深外贸顾问。针对产品"${prod}"，在"${region}"市场，请生成一份报告。包含：1.市场逻辑（结合2026趋势） 2.目标客户类型 3.一份专业英文开发信。要求：格式精美，多用换行。` }] }]
                     })
                 });
 
                 const data = await response.json();
+                
+                if (data.error) {
+                    reportOutput.innerHTML = `<span class="text-red-500">❌ 错误：${data.error}</span><br>如果免费次数已用完，请在左侧输入专属体验码。`;
+                    btn.disabled = false;
+                    btn.innerText = "重新启动生成";
+                    return;
+                }
+
                 const text = data.answer;
                 reportOutput.classList.add('cursor-blink');
 
